@@ -63,13 +63,14 @@ const getEdgarStatement = async ({ queryKey }: QueryFunctionContext<string[]>) =
   return r;
 };
 
-const parseItemArray = (d: TypeEdgarStatementItemRaw[]) => {
+const parseItemArray = (data: TypeEdgarStatementItemRaw[]) => {
   const r: TypeEdgarStatementItem[] = [];
-  for (const item of d) {
-    const date = new Date(item.date ? item.date : item.end_date);
+  for (const item of data) {
+    const dateStr = item.date ? item.date : item.end_date;
+    const date = dateStr ? new Date(dateStr) : new Date();
     const value = parseFloat(item.value);
     r.push({ date, value });
   }
-  r.sort((a, b) => b.date - a.date); // order by date: latest comes first
+  r.sort((a, b) => b.date.valueOf() - a.date.valueOf()); // order by date: latest comes first
   return r;
 };
