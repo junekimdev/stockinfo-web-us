@@ -1,0 +1,204 @@
+$screen-1: 320px;
+$screen-2: 720px;
+$screen-3: 1366px;
+$screen-4: 1920px;
+
+// Media queries
+@mixin mobile-xs {
+  @media only screen and (max-width: #{$screen-1}) {
+    @content;
+  }
+}
+
+// "Mobile screen" is the base of css stylesheet
+
+@mixin tablet {
+  @media only screen and (min-width: #{$screen-2}) {
+    @content;
+  }
+}
+
+@mixin pc {
+  @media only screen and (min-width: #{$screen-3}) {
+    @content;
+  }
+}
+
+@mixin pc-xl {
+  @media only screen and (min-width: #{$screen-4}) {
+    @content;
+  }
+}
+
+// Button style
+@mixin getBtn($bg-color, $font-color, $font-size) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 8px;
+  font-size: $font-size;
+  background-color: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+
+  &,
+  &:link,
+  &:visited,
+  &:active {
+    color: $font-color;
+    background-color: $bg-color;
+  }
+
+  // Hovering feedback: color inversion & bordering
+  &:hover {
+    color: $bg-color;
+    background-color: $font-color;
+    box-shadow: 0 0 0 2px $bg-color;
+  }
+
+  // Focus feedback: bordering in black
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px black;
+  }
+
+  &:disabled {
+    color: $font-color;
+    background-color: var(--disabled-color);
+    box-shadow: none;
+    cursor: default;
+  }
+}
+
+@mixin getSpinner($size, $thick, $color) {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &::after {
+    content: '';
+    display: block;
+    width: $size;
+    height: $size;
+    margin: 0.5rem;
+    border-radius: 50%;
+    border: $thick solid $color;
+    border-color: $color transparent $color transparent;
+    animation: spinning 1.2s linear infinite;
+  }
+}
+
+// Animation keyframes for spins
+@keyframes spinning {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@mixin arrow {
+  --arrow-size: 1rem;
+  --arrow-thick: 3px;
+  position: relative;
+  width: var(--arrow-size);
+  height: var(--arrow-size);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    margin-top: calc(var(--arrow-thick) / 2);
+    margin-left: 0;
+    width: 100%;
+    height: var(--arrow-thick);
+    background: var(--font-color);
+    transition:
+      transform 0.2s,
+      transform-origin 0.2s;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: var(--arrow-thick);
+    background: var(--font-color);
+    transition:
+      transform 0.2s,
+      transform-origin 0.2s;
+  }
+}
+
+@mixin arrowRight {
+  @include arrow;
+
+  &::before {
+    transform-origin: center right;
+    transform: rotate(45deg);
+  }
+
+  &::after {
+    transform-origin: center right;
+    transform: rotate(-45deg);
+  }
+}
+
+@mixin arrowLeft {
+  @include arrowRight;
+
+  &::before {
+    transform-origin: center left;
+    transform: rotate(-45deg);
+  }
+
+  &::after {
+    transform-origin: center left;
+    transform: rotate(45deg);
+  }
+}
+
+@mixin arrowDown {
+  @include arrow;
+
+  &::before {
+    top: 0;
+    left: 50%;
+    margin-top: 0;
+    margin-left: calc(var(--arrow-thick) / 2);
+    width: var(--arrow-thick);
+    height: 100%;
+    transform-origin: top center;
+    transform: rotate(45deg);
+  }
+
+  &::after {
+    top: 0;
+    left: 50%;
+    width: var(--arrow-thick);
+    height: 100%;
+    transform-origin: top center;
+    transform: rotate(-45deg);
+  }
+}
+
+@mixin arrowUp {
+  @include arrowDown;
+
+  &::before {
+    transform-origin: bottom center;
+    transform: rotate(-45deg);
+  }
+
+  &::after {
+    transform-origin: bottom center;
+    transform: rotate(45deg);
+  }
+}

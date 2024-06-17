@@ -1,0 +1,106 @@
+@use '../components/theme.scss';
+@import 'https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css';
+@import 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
+//@import 'https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap';
+@import 'https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap';
+@import 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+// css variables
+:root {
+  --white: #f5f5f5;
+  --black: #1a1a1a;
+  --red: #db4d4d;
+  --background-color: #42423e;
+  --disabled-color: rgba(255, 255, 255, 0.3);
+  --font-color: #f5f5f5;
+  --font-color-alt: #353535;
+  --font-color-grey: #a0a0a0;
+  --font-size: 12px;
+  --btn-bg-color: #392094;
+  --btn-font-color: var(--white);
+  --btn-font-size: 14px;
+  --link-color: #5ccbf2;
+  --max-width: 1366px;
+  --chart-background-color: #f5f5f5;
+  --chart-font-color: #353535;
+  --spinner-bg-color: rgba(255, 255, 255, 0.1);
+  --spinner-bar-color: rgba(255, 255, 255, 0.1);
+  --spinner-color: #f5f5f5;
+  --color-wheel: conic-gradient(
+    hsl(360 100% 50%),
+    hsl(315 100% 50%),
+    hsl(270 100% 50%),
+    hsl(225 100% 50%),
+    hsl(180 100% 50%),
+    hsl(135 100% 50%),
+    hsl(90 100% 50%),
+    hsl(45 100% 50%),
+    hsl(0 100% 50%)
+  );
+}
+
+// Smooth scroll
+@include theme.pc {
+  html {
+    scroll-behavior: smooth;
+
+    // Turn off smooth scroll for people who have motion sickness
+    @media screen and (prefers-reduced-motion: reduce) {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 400;
+  color: var(--font-color);
+  background-color: var(--background-color);
+  font-size: var(--font-size);
+}
+
+// Anchor tag style
+a,
+a:link,
+a:visited,
+a:hover,
+a:active {
+  color: var(--font-color);
+  text-decoration: none;
+}
+
+// List wrapper tag style
+ol,
+ul {
+  padding: 0;
+  margin: 0;
+  text-indent: 0;
+  list-style-type: none;
+}
+
+// Button class style
+.btn {
+  @include theme.getBtn(var(--btn-bg-color), var(--btn-font-color), var(--btn-font-size));
+}
+
+// Underlined link style
+.underline-link {
+  display: block;
+
+  &:link,
+  &:visited,
+  &:active {
+    color: var(--link-color);
+    text-decoration: underline;
+  }
+
+  &:hover {
+    color: var(--font-color);
+  }
+}

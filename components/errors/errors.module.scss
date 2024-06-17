@@ -1,0 +1,52 @@
+/* autoprefixer grid: autoplace */
+@use '../theme';
+
+.container {
+  --errors-color-bg: var(--background-color);
+  --errors-color-primary: #392094;
+  --errors-color-license: #a0a0a0;
+  flex-grow: 1;
+  background-color: var(--errors-color-bg);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+
+  @include theme.pc {
+    flex-direction: row;
+  }
+}
+
+.errorImage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    width: min(80vh, 80vw);
+    height: min(80vh, 80vw);
+    // mix-blend-mode: screen; // for dark background color
+  }
+}
+
+.imageLicenseTxt {
+  font-size: 0.5rem;
+  color: var(--errors-color-license);
+}
+
+.btnBackToHome {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20ch;
+  height: 2.5rem;
+  font-size: 1.5rem;
+  background-color: var(--errors-color-primary);
+  color: var(--errors-color-bg);
+  border-radius: 8px;
+}

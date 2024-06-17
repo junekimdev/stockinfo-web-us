@@ -1,0 +1,357 @@
+/* autoprefixer grid: autoplace */
+@use '../theme';
+
+.main {
+  --navbar-font-color: var(--font-color);
+  --navbar-color-primary: #392094;
+  --navbar-width: 7rem;
+  --navbar-height-main: 5rem;
+  --navbar-height-item: 2rem;
+  --header-btn-bg: #a0a0a0;
+  --header-btn-font-size: 1 rem;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  @include theme.tablet {
+    flex-direction: row;
+  }
+}
+
+.navbarVertical {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--navbar-color-primary);
+  color: var(--navbar-font-color);
+
+  @include theme.tablet {
+    position: sticky;
+    top: 0;
+    width: var(--navbar-width);
+    height: 100vh;
+  }
+}
+
+.mainFrame {
+  flex-grow: 1;
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: auto;
+
+  @include theme.tablet {
+    width: calc(100% - var(--navbar-width));
+    height: 100vh;
+  }
+}
+
+.brandWrapper {
+  width: 100%;
+  min-height: var(--navbar-height-main);
+  padding: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  h1 {
+    font-size: 1.2rem;
+    text-align: center;
+  }
+}
+
+.changeNation {
+  width: 100%;
+  min-height: 3rem;
+  padding: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  a {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 800;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &:link,
+    &:visited,
+    &:active {
+      color: var(--black);
+      background: skyblue;
+    }
+
+    &:hover {
+      color: var(--font-color);
+      background: rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+.tabList {
+  width: 100%;
+  padding: 0.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.addNewTab {
+  width: 100%;
+  min-height: var(--navbar-height-item);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  border: dashed 2px rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.1);
+  }
+}
+
+.tabItem {
+  width: 100%;
+  min-height: var(--navbar-height-item);
+  display: flex;
+  align-items: center;
+  font-size: 0.75rem;
+  border-radius: 4px;
+  transition: background 0.2s linear;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.1);
+  }
+}
+
+.tabItemCurrent {
+  @extend .tabItem;
+  background: rgba(255, 255, 255, 0.1);
+  cursor: auto;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
+
+.tabItemClose {
+  min-width: 1.5rem;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+  color: rgba(255, 0, 0, 0.5);
+  transition: color 0.2s linear;
+  cursor: pointer;
+
+  &:hover {
+    color: rgba(255, 0, 0, 1);
+  }
+}
+
+.tabItemText {
+  width: 100%;
+  padding-right: 4px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.menuToggleBtn {
+  display: none;
+
+  @include theme.tablet {
+    width: 100%;
+    min-height: var(--navbar-height-main);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    color: var(--navbar-font-color);
+    cursor: pointer;
+  }
+}
+
+.menuOpenBtn {
+  @include theme.arrowDown;
+
+  @include theme.tablet {
+    @include theme.arrowRight;
+  }
+}
+
+.menuCloseBtn {
+  @include theme.arrowUp;
+
+  @include theme.tablet {
+    @include theme.arrowLeft;
+  }
+}
+
+.menusOpened {
+  min-height: var(--navbar-height-main);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+  background-color: var(--navbar-color-primary);
+  z-index: 1;
+
+  transform: scaleX(1);
+  transform-origin: center left;
+  transition: transform 0.2s ease-in-out;
+
+  @include theme.tablet {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: calc(100% - var(--navbar-width));
+    margin-left: var(--navbar-width);
+    flex-direction: row;
+  }
+}
+
+.menusClosed {
+  @extend .menusOpened;
+  @include theme.tablet {
+    transform: scaleX(0);
+  }
+}
+
+.menuBtn {
+  @include theme.getBtn(var(--white), var(--navbar-color-primary), var(--btn-font-size));
+  padding: 0.5rem;
+}
+
+.closeAllBtn {
+  @include theme.getBtn(var(--red), var(--navbar-color-primary), var(--btn-font-size));
+  padding: 0.5rem;
+}
+
+.header {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 1;
+
+  @include theme.tablet {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.companyInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+
+  @include theme.tablet {
+    flex-direction: row;
+    align-items: flex-end;
+  }
+
+  h1,
+  h3,
+  h5 {
+    margin: 0;
+  }
+
+  h3,
+  h5 {
+    color: var(--font-color-grey);
+  }
+}
+
+.latestPriceWrapper {
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 4px;
+}
+
+.latestPrice {
+  margin: 0 0.5rem;
+  font-size: 1rem;
+  color: yellow;
+}
+
+.miniChartsWrapper {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.miniChart {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.headerBtnWrapper {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.headerBtn {
+  @include theme.getBtn(
+    var(--navbar-color-primary),
+    var(--navbar-font-color),
+    var(--header-btn-font-size)
+  );
+  width: 20ch;
+  box-shadow: 0 0 2px 2px rgba(12, 7, 34, 0.1);
+}
+
+.footer {
+  position: fixed;
+  bottom: 1rem;
+  padding: 0 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--black);
+  z-index: -1;
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.author {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.spinner {
+  @include theme.getSpinner(24px, 2px, var(--spinner-color));
+}

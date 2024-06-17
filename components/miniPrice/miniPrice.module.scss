@@ -1,0 +1,23 @@
+/* autoprefixer grid: autoplace */
+@use '../theme';
+
+.chart {
+  color: var(--chart-font-color);
+  background-color: var(--chart-background-color);
+  border-radius: 4px;
+
+  text {
+    font-family: 'Roboto Mono', monospace;
+  }
+}
+
+.placeholder {
+  width: 150px;
+  height: 50px;
+  background: var(--spinner-bg-color);
+  border-radius: 4px;
+}
+
+.spinner {
+  @include theme.getSpinner(24px, 2px, var(--spinner-color));
+}

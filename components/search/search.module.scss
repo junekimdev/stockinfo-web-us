@@ -1,0 +1,179 @@
+/* autoprefixer grid: autoplace */
+@use '../theme';
+
+.container {
+  --search-bar-height: 3rem;
+  --search-bar-color: #909090;
+  --search-bar-font-size: 1.5rem;
+  --search-bar-border-radius: 4px;
+  --company-card-bg: #e9e9e9;
+  --company-card-min-width: 15rem;
+  --company-card-border: 3px;
+  --company-card-hover: var(--background-color);
+  width: 100%;
+  padding: 1rem;
+}
+
+.searchInputContainer {
+  width: 100%;
+  margin: 2rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.searchInputWrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+
+  @include theme.tablet {
+    width: 70%;
+  }
+}
+
+.searchIcon {
+  width: var(--search-bar-height);
+  height: var(--search-bar-height);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: var(--search-bar-font-size);
+  color: var(--white);
+  background: var(--search-bar-color);
+  border-radius: var(--search-bar-border-radius) 0 0 var(--search-bar-border-radius);
+}
+
+.searchInput {
+  width: 100%;
+  height: var(--search-bar-height);
+  padding: 0.5rem;
+  font-size: var(--search-bar-font-size);
+  outline: none;
+  border: none;
+  border-radius: 0 var(--search-bar-border-radius) var(--search-bar-border-radius) 0;
+}
+
+.titleWrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.title {
+  margin: 0.5rem 0;
+}
+
+.deleteAllRecentBtn {
+  padding: 4px;
+  font-size: small;
+  cursor: pointer;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+
+  &:hover {
+    color: var(--red);
+    background: rgba(0, 0, 0, 0.3);
+  }
+}
+
+.division {
+  width: 100%;
+  height: 2px;
+  margin: 1rem 0 0.5rem 0;
+  background: #909090;
+}
+
+.placeholder {
+  margin: 0.5rem 0;
+  color: var(--font-color);
+}
+
+.companyList {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--company-card-min-width), 1fr));
+  grid-auto-flow: dense;
+  gap: 1rem;
+}
+
+.companyCard {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 0.5rem;
+  display: grid;
+  align-items: center;
+  grid-template:
+    'name name' 2rem
+    'code cik' 1rem
+    'corp corp' 1rem
+    / 1fr 1fr;
+  gap: 0.5rem;
+  border-radius: 0.5rem;
+  background: var(--company-card-bg);
+  color: var(--font-color-alt);
+  overflow: hidden;
+  z-index: 0;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--company-card-bg);
+  }
+
+  &:hover::before {
+    content: '';
+    position: absolute;
+    top: calc(50% - var(--company-card-min-width));
+    left: calc(50% - var(--company-card-min-width));
+    width: calc(var(--company-card-min-width) * 2);
+    height: calc(var(--company-card-min-width) * 2);
+    background: var(--color-wheel);
+    animation: spinning 3s linear infinite;
+    z-index: -2;
+  }
+
+  &:hover::after {
+    content: '';
+    position: absolute;
+    top: var(--company-card-border);
+    left: var(--company-card-border);
+    width: calc(100% - var(--company-card-border) * 2);
+    height: calc(100% - var(--company-card-border) * 2);
+    border-radius: 0.5rem;
+    background: var(--company-card-hover);
+    z-index: -1;
+  }
+}
+
+.companyName {
+  grid-area: name;
+  font-size: 1.5rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.companyCode {
+  grid-area: code;
+}
+
+.companyCIK {
+  grid-area: cik;
+}
+
+.companyCorp {
+  grid-area: corp;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+@keyframes spinning {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
