@@ -15,7 +15,7 @@ const View = () => {
   return (
     <div className={menuOpened ? styles.menusOpened : styles.menusClosed}>
       <button className={styles.closeAllBtn} onClick={onCloseAllClick} disabled={!tabs.length}>
-        Closs All Tabs
+        Close All Tabs
       </button>
       <button className={styles.menuBtn} onClick={onSaveTabsClick} disabled={!tabs.length}>
         Save Tabs in Browser
