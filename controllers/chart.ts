@@ -35,6 +35,25 @@ export const getDateString = (d: TypeDate) => {
 export const getXCentered = (d: TypeDate, x: d3.ScaleBand<string>) =>
   (x(getDateString(d)) ?? 0) + x.bandwidth() / 2;
 
+export const drawLatestPrice = (
+  chart: d3.Selection<SVGGElement, unknown, HTMLElement, any>,
+  x: d3.ScaleBand<string>,
+  y: d3.ScaleLinear<number, number, never>,
+  start: TypeDate,
+  end: TypeDate,
+  data: TypePrice,
+) => {
+  const p1 = [x(getDateString(start)) ?? 0, y(data.close)];
+  const p2 = [x(getDateString(end)) + x.bandwidth() ?? 0, y(data.close)];
+  const group = chart.append('g').attr('class', 'latest');
+  group
+    .append('path')
+    .attr('d', d3.line()([p1, p2]))
+    .attr('fill', 'none')
+    .attr('stroke', 'black')
+    .attr('stroke-width', 1);
+};
+
 export const drawSAR = (
   chart: d3.Selection<SVGGElement, unknown, HTMLElement, any>,
   x: d3.ScaleBand<string>,
