@@ -7,34 +7,32 @@ import {
   StatePriceHeikinAshiSmoothed,
   StatePriceSAR,
 } from '../../controllers/data/states';
-import { TypePriceRequest } from '../../controllers/data/types';
+import { TypeChart, TypePriceRequest } from '../../controllers/data/types';
+import { useGetPricesLatest } from '../../controllers/net/price';
 import styles from './heikinAshi.module.scss';
 import draw from './heikinAshiFnDraw';
 
 const Presenter = (props: { req: TypePriceRequest; marginLeft: number; max?: number }) => {
   const { req, marginLeft, max = 120 } = props;
+  const chartType: TypeChart = 'heikin-aski-smoothed';
+  const { data } = useGetPricesLatest({ code: req.code, type: 'latest' });
   const dataHeikinAshi = useRecoilValue(StatePriceHeikinAshiSmoothed(req));
   const dataSar = useRecoilValue(StatePriceSAR(req));
   const dataBands = useRecoilValue(StatePriceBollingerBands(req));
-  const overlays = useRecoilValue(
-    StateChartOverlays({ code: req.code, type: 'heikin-aski-smoothed' }),
-  );
+  const overlays = useRecoilValue(StateChartOverlays({ code: req.code, type: chartType }));
 
   const chartTitle = `${req.type} Heikin-Ashi Smoothed`;
   const chartID = `${styles.chart}-${req.code}-${req.type}`;
-  const sarInputID = `${styles.chart}-${req.code}-${req.type}-ParabolicSAR`;
-  const bollingerInputID = `${styles.chart}-${req.code}-${req.type}-BollingerBands`;
+  const latestPriceInputID = `${chartID}-LatestPrice`;
+  const sarInputID = `${chartID}-ParabolicSAR`;
+  const bollingerInputID = `${chartID}-BollingerBands`;
 
-  const onSarCheckboxChange = useCheckboxChange(req.code, 'heikin-aski-smoothed', 'ParabolicSAR');
-  const onBollingerCheckboxChange = useCheckboxChange(
-    req.code,
-    'heikin-aski-smoothed',
-    'BollingerBands',
-  );
+  const onLatestPriceCheckboxChange = useCheckboxChange(req.code, chartType, 'LatestPrice');
+  const onSarCheckboxChange = useCheckboxChange(req.code, chartType, 'ParabolicSAR');
+  const onBollingerCheckboxChange = useCheckboxChange(req.code, chartType, 'BollingerBands');
 
   useEffect(() => {
-    const ready = dataHeikinAshi.length && dataSar.length && dataBands.length;
-    if (ready) {
+    if (dataHeikinAshi.length) {
       draw(
         req,
         dataHeikinAshi.slice(-max),
@@ -42,9 +40,10 @@ const Presenter = (props: { req: TypePriceRequest; marginLeft: number; max?: num
         dataBands.slice(-max),
         overlays,
         marginLeft,
+        data?.[0],
       );
     }
-  }, [req, marginLeft, max, dataHeikinAshi, dataSar, dataBands, overlays]);
+  }, [req, marginLeft, max, dataHeikinAshi, dataSar, dataBands, overlays, data]);
 
   return (
     <div className={styles.chartContainer}>
@@ -59,6 +58,16 @@ const Presenter = (props: { req: TypePriceRequest; marginLeft: number; max?: num
       </div>
       <svg id={chartID} className={styles.chart}></svg>
       <div className={styles.overlaySelectorWrapper} onClick={(e) => e.stopPropagation()}>
+        <div className={styles.overlaySelector} title="Latest Price">
+          <input
+            type="checkbox"
+            name={latestPriceInputID}
+            id={latestPriceInputID}
+            checked={overlays.LatestPrice}
+            onChange={onLatestPriceCheckboxChange}
+          />
+          <label htmlFor={latestPriceInputID}>Latest Price</label>
+        </div>
         <div className={styles.overlaySelector} title="Parabolic SAR (0.2,0.01)">
           <input
             type="checkbox"
