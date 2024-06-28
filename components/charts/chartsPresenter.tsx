@@ -29,7 +29,7 @@ const Presenter = () => {
 
   return (
     <section className={styles.container} onClick={rulerOnClick}>
-      {priceData.data && priceData.data.length ? (
+      {priceData.data?.length ? (
         <>
           <Price req={req} marginLeft={marginLeft} />
           <HeikinAshi req={req} marginLeft={marginLeft} />

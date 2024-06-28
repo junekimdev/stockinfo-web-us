@@ -15,7 +15,7 @@ export const StateTabsInitiated = atom<boolean>({ key: 'StateTabsInitiated', def
 
 export const StateChartOverlays = atomFamily<TypeChartDisplay, TypeChartRequest>({
   key: 'StateChartOverlays',
-  default: { ParabolicSAR: true, BollingerBands: true },
+  default: { LatestPrice: true, ParabolicSAR: true, BollingerBands: true },
 });
 
 export const StatePriceHeikinAshi = atomFamily<TypePrice[], TypePriceRequest>({
