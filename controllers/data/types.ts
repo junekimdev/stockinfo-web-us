@@ -46,8 +46,9 @@ export type TypeCompanyTab = {
   mainType: TypePriceRequestType;
 };
 
-export type TypeChartOverlay = 'ParabolicSAR' | 'BollingerBands';
+export type TypeChartOverlay = 'LatestPrice' | 'ParabolicSAR' | 'BollingerBands';
 export type TypeChartDisplay = {
+  LatestPrice: boolean;
   ParabolicSAR: boolean;
   BollingerBands: boolean;
 };
