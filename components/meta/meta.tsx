@@ -7,7 +7,7 @@ const Meta = (props: TMPropsMeta) => {
   const siteName = "another junekimdev's website";
   const homeUrl = process.env.NEXT_PUBLIC_URL ?? 'localhost:3000';
   const {
-    image = `${homeUrl}/assets/images/LogoPlace_Extended_1200x627.png`,
+    image = `${homeUrl}/assets/images/JKstock_1200x627.png`,
     imageWidth = '1200',
     imageHeight = '627',
   } = props;
