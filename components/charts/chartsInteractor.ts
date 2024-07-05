@@ -58,7 +58,7 @@ export const useHeikinAshiSmoothed = (req: TypePriceRequest, p1 = 10, p2 = 10) =
   useEffect(() => {
     if (data && data.length > 1 && !dataHeikinAshiSmoothed.length) {
       const smoothed = getPriceEMA(getPriceEMA(data, p1), p2);
-      if (smoothed) setState(smoothed);
+      setState(smoothed);
     }
   }, [data, dataHeikinAshiSmoothed]);
 };
