@@ -48,10 +48,15 @@ const draw = (
   const chart = svg.append('g').attr('transform', `translate(${marginLeft},${margin.top})`);
 
   // Set scales
+  const minData = d3.min(candleData, (d) => d.low) ?? 0;
+  const maxData = d3.max(candleData, (d) => d.high) ?? 0;
   const x = d3.scaleBand().range([0, chartWidth]).padding(0.2);
   const y = d3.scaleLinear().range([chartHeight, 0]);
   x.domain(candleData.map(getDateString));
-  y.domain([d3.min(candleData, (d) => d.low) ?? 0, d3.max(candleData, (d) => d.high) ?? 1]).nice();
+  y.domain([
+    Math.min(minData, latestPriceData?.close ?? minData),
+    Math.max(maxData, latestPriceData?.close ?? maxData),
+  ]).nice();
 
   // Draw the Y Axis
   chart
