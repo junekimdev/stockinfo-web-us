@@ -1,0 +1,52 @@
+/* autoprefixer grid: autoplace */
+@use '../theme';
+
+.chartContainer {
+  display: grid;
+  grid-template:
+    'title title' auto
+    'chart selector' auto
+    / max-content 1fr;
+}
+
+.chartTitle {
+  grid-area: title;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  h5 {
+    margin: 0;
+  }
+
+  span {
+    font-size: 1rem;
+  }
+}
+
+.chart {
+  grid-area: chart;
+  color: var(--chart-font-color);
+  background-color: var(--chart-background-color);
+  border-radius: 4px;
+
+  text {
+    font-family: 'Roboto Mono', monospace;
+  }
+}
+
+.overlaySelectorWrapper {
+  grid-area: selector;
+  padding: 0 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  cursor: default;
+}
+
+.overlaySelector {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
