@@ -1,24 +1,20 @@
 import * as d3 from 'd3';
 import { getCandleColor, getDateString } from '../../controllers/chart';
-import { TypePriceRequest, TypePriceVolume } from '../../controllers/data/types';
-import styles from './volume.module.scss';
+import { TypePriceVolume } from '../../controllers/data/types';
 
 const chartHeight = 70;
 const margin = { top: 10, bottom: 80 };
 const barWidth = 10;
 const gridColor = '#D0D0D0';
 
-const draw = (req: TypePriceRequest, data: TypePriceVolume[], marginLeft: number) => {
+const draw = (chartID: string, data: TypePriceVolume[], marginLeft: number) => {
   if (!data.length) return;
 
   const chartWidth = barWidth * data.length;
   const height = chartHeight + margin.top + margin.bottom;
   const width = chartWidth + marginLeft + marginLeft;
 
-  const svg = d3
-    .select(`#${styles.chart}-${req.code}-${req.type}`)
-    .attr('width', width)
-    .attr('height', height);
+  const svg = d3.select(`#${chartID}`).attr('width', width).attr('height', height);
 
   // Clear SVG before redrawing
   svg.selectAll('*').remove();

@@ -12,9 +12,7 @@ import {
   TypeParabolicSAR,
   TypePrice,
   TypePriceBollingerBands,
-  TypePriceRequest,
 } from '../../controllers/data/types';
-import styles from './heikinAshi.module.scss';
 
 const chartHeight = 250;
 const margin = { top: 10, bottom: 10 };
@@ -22,7 +20,7 @@ const barWidth = 10;
 const gridColor = '#D0D0D0';
 
 const draw = (
-  req: TypePriceRequest,
+  chartID: string,
   candleData: TypePrice[],
   sarData: TypeParabolicSAR[],
   bandData: TypePriceBollingerBands[],
@@ -36,10 +34,7 @@ const draw = (
   const height = chartHeight + margin.top + margin.bottom;
   const width = chartWidth + marginLeft + marginLeft;
 
-  const svg = d3
-    .select(`#${styles.chart}-${req.code}-${req.type}`)
-    .attr('width', width)
-    .attr('height', height);
+  const svg = d3.select(`#${chartID}`).attr('width', width).attr('height', height);
 
   // Clear SVG before redrawing
   svg.selectAll('*').remove();

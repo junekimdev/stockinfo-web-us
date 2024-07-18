@@ -34,7 +34,7 @@ const Presenter = (props: { req: TypePriceRequest; marginLeft: number; max?: num
   useEffect(() => {
     if (dataHeikinAshi.length) {
       draw(
-        req,
+        chartID,
         dataHeikinAshi.slice(-max),
         dataSar.slice(-max),
         dataBands.slice(-max),
@@ -43,7 +43,7 @@ const Presenter = (props: { req: TypePriceRequest; marginLeft: number; max?: num
         data?.[0],
       );
     }
-  }, [req, marginLeft, max, dataHeikinAshi, dataSar, dataBands, overlays, data]);
+  }, [chartID, marginLeft, max, dataHeikinAshi, dataSar, dataBands, overlays, data]);
 
   return (
     <div className={styles.chartContainer}>

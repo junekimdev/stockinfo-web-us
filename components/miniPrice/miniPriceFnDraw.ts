@@ -1,24 +1,20 @@
 import * as d3 from 'd3';
 import { getDateString, getXCentered } from '../../controllers/chart';
-import { TypePrice, TypePriceRequest } from '../../controllers/data/types';
-import styles from './miniPrice.module.scss';
+import { TypePrice } from '../../controllers/data/types';
 
 const chartHeight = 40;
 const margin = { top: 4, bottom: 4, left: 4, right: 4 };
 const gap = 3;
 const lineColor = '#808080';
 
-const draw = (req: TypePriceRequest, data: TypePrice[]) => {
+const draw = (chartID: string, data: TypePrice[]) => {
   if (!data.length) return;
 
   const chartWidth = gap * data.length;
   const height = chartHeight + margin.top + margin.bottom;
   const width = chartWidth + margin.left + margin.right;
 
-  const svg = d3
-    .select(`#${styles.chart}-${req.code}-${req.type}`)
-    .attr('width', width)
-    .attr('height', height);
+  const svg = d3.select(`#${chartID}`).attr('width', width).attr('height', height);
 
   // Clear SVG before redrawing
   svg.selectAll('*').remove();
