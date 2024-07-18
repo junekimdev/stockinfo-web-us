@@ -49,7 +49,7 @@ export const drawLatestPrice = (
   data: TypePrice,
 ) => {
   const p1: [number, number] = [x(getDateString(start)) ?? 0, y(data.close)];
-  const p2: [number, number] = [x(getDateString(end)) ?? 0 + x.bandwidth(), y(data.close)];
+  const p2: [number, number] = [(x(getDateString(end)) ?? 0) + x.bandwidth(), y(data.close)];
   const group = chart.append('g').attr('class', 'latest');
   group
     .append('path')
