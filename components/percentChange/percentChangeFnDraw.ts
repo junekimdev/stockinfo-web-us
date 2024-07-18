@@ -59,7 +59,7 @@ const draw = (
     .attr('width', x.bandwidth())
     .attr('fill', (d) => getChangeColor(d.percent_change));
 
-  if (overlays.LatestPrice && latestChange)
+  if (overlays.LatestPrice)
     drawLatestChange(chart, x, y, data[0], data[data.length - 1], latestChange);
 
   // Draw the X Axis
