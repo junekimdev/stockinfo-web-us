@@ -3,7 +3,7 @@ export type TypeError = { code: number; message: string };
 export type TypePriceRequestType = 'daily' | 'weekly' | 'latest';
 export type TypeAvgMethod = 'simple' | 'exponential' | 'weighted';
 export type TypeAvgValue = 'close' | 'open' | 'high' | 'low';
-export type TypeChart = 'price' | 'heikin-aski' | 'heikin-aski-smoothed';
+export type TypeChart = 'price' | 'percent-change' | 'heikin-aski' | 'heikin-aski-smoothed';
 export type TypeDartReportCode = '11011' | '11012' | '11013' | '11014';
 export type TypeDartIndexCode = 'M210000' | 'M220000' | 'M230000' | 'M240000';
 export type TypeDartStatementType = 'OFS' | 'CFS';
@@ -21,6 +21,8 @@ export type TypePrice = TypeDate & {
   high: number;
   low: number;
 };
+
+export type TypePricePercentChange = TypeDate & { percent_change: number };
 
 export type TypePriceVolume = TypePrice & { volume: number };
 

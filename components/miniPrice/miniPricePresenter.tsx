@@ -13,9 +13,9 @@ const Presenter = (props: { req: TypePriceRequest; max?: number }) => {
   useEffect(() => {
     const ready = data && data.length;
     if (ready) {
-      draw(req, data.slice(-max));
+      draw(chartID, data.slice(-max));
     }
-  }, [req, max, data]);
+  }, [chartID, max, data]);
 
   return data && data.length ? <svg id={chartID} className={styles.chart}></svg> : <Placeholder />;
 };

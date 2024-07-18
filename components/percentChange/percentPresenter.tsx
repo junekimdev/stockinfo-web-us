@@ -1,48 +1,36 @@
 import { useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import { useCheckboxChange } from '../../controllers/chart';
-import {
-  StateChartOverlays,
-  StatePriceBollingerBands,
-  StatePriceSAR,
-} from '../../controllers/data/states';
+import { StateChartOverlays, StatePricePercentChange } from '../../controllers/data/states';
 import { TypeChart, TypePriceRequest } from '../../controllers/data/types';
 import { useGetPrices, useGetPricesLatest } from '../../controllers/net/price';
-import styles from './price.module.scss';
-import draw from './priceFnDraw';
+import styles from './percentChange.module.scss';
+import draw from './percentChangeFnDraw';
 
 const Presenter = (props: { req: TypePriceRequest; marginLeft: number; max?: number }) => {
   const { req, marginLeft, max = 120 } = props;
-  const chartType: TypeChart = 'price';
+  const chartType: TypeChart = 'percent-change';
   const { data } = useGetPrices(req);
   const { data: latestPriceData } = useGetPricesLatest({ code: req.code, type: 'latest' });
-  const dataSar = useRecoilValue(StatePriceSAR(req));
-  const dataBands = useRecoilValue(StatePriceBollingerBands(req));
+  const dataPercentChange = useRecoilValue(StatePricePercentChange(req));
   const overlays = useRecoilValue(StateChartOverlays({ code: req.code, type: chartType }));
 
-  const chartTitle = `${req.type} price`;
+  const chartTitle = `${req.type} price percent change`;
   const chartID = `${styles.chart}-${req.code}-${req.type}`;
   const latestPriceInputID = `${chartID}-LatestPrice`;
-  const sarInputID = `${chartID}-ParabolicSAR`;
-  const bollingerInputID = `${chartID}-BollingerBands`;
 
   const onLatestPriceCheckboxChange = useCheckboxChange(req.code, chartType, 'LatestPrice');
-  const onSarCheckboxChange = useCheckboxChange(req.code, chartType, 'ParabolicSAR');
-  const onBollingerCheckboxChange = useCheckboxChange(req.code, chartType, 'BollingerBands');
+
+  const lastestPercentChange =
+    data?.length && latestPriceData?.length
+      ? (100 * latestPriceData[0].close) / data[data.length - 1].close - 100
+      : undefined;
 
   useEffect(() => {
     if (data?.length) {
-      draw(
-        chartID,
-        data.slice(-max),
-        dataSar.slice(-max),
-        dataBands.slice(-max),
-        overlays,
-        marginLeft,
-        latestPriceData?.[0],
-      );
+      draw(chartID, dataPercentChange.slice(-max), overlays, marginLeft, lastestPercentChange);
     }
-  }, [chartID, marginLeft, max, data, dataSar, dataBands, overlays, latestPriceData]);
+  }, [chartID, marginLeft, max, data, dataPercentChange, overlays, lastestPercentChange]);
 
   return (
     <div className={styles.chartContainer}>
@@ -66,26 +54,6 @@ const Presenter = (props: { req: TypePriceRequest; marginLeft: number; max?: num
             onChange={onLatestPriceCheckboxChange}
           />
           <label htmlFor={latestPriceInputID}>Latest Price</label>
-        </div>
-        <div className={styles.overlaySelector} title="Parabolic SAR (0.2,0.01)">
-          <input
-            type="checkbox"
-            name={sarInputID}
-            id={sarInputID}
-            checked={overlays.ParabolicSAR}
-            onChange={onSarCheckboxChange}
-          />
-          <label htmlFor={sarInputID}>Parabolic SAR</label>
-        </div>
-        <div className={styles.overlaySelector} title="Bollinger Bands (20,2)">
-          <input
-            type="checkbox"
-            name={bollingerInputID}
-            id={bollingerInputID}
-            checked={overlays.BollingerBands}
-            onChange={onBollingerCheckboxChange}
-          />
-          <label htmlFor={bollingerInputID}>Bollinger Bands</label>
         </div>
       </div>
     </div>

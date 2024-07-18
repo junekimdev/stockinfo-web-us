@@ -8,6 +8,7 @@ import {
   TypeParabolicSAR,
   TypePrice,
   TypePriceBollingerBands,
+  TypePricePercentChange,
   TypePriceRequest,
 } from './types';
 
@@ -16,6 +17,11 @@ export const StateTabsInitiated = atom<boolean>({ key: 'StateTabsInitiated', def
 export const StateChartOverlays = atomFamily<TypeChartDisplay, TypeChartRequest>({
   key: 'StateChartOverlays',
   default: { LatestPrice: true, ParabolicSAR: true, BollingerBands: true },
+});
+
+export const StatePricePercentChange = atomFamily<TypePricePercentChange[], TypePriceRequest>({
+  key: 'StatePricePercentChange',
+  default: [],
 });
 
 export const StatePriceHeikinAshi = atomFamily<TypePrice[], TypePriceRequest>({

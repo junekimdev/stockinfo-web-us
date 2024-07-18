@@ -19,6 +19,11 @@ export const getCandleColor = (d: TypePrice) => {
   return d.open > d.close ? 'blue' : 'red';
 };
 
+export const getChangeColor = (d: number) => {
+  if (d === 0) return 'gray';
+  return d < 0 ? 'blue' : 'red';
+};
+
 export const getDateString = (d: TypeDate) => {
   if (Object.hasOwn(d.date, 'year')) {
     const { year, week } = d.date as TypeIDWeek;
@@ -45,6 +50,25 @@ export const drawLatestPrice = (
 ) => {
   const p1: [number, number] = [x(getDateString(start)) ?? 0, y(data.close)];
   const p2: [number, number] = [x(getDateString(end)) ?? 0 + x.bandwidth(), y(data.close)];
+  const group = chart.append('g').attr('class', 'latest');
+  group
+    .append('path')
+    .attr('d', d3.line()([p1, p2]))
+    .attr('fill', 'none')
+    .attr('stroke', 'black')
+    .attr('stroke-width', 1);
+};
+
+export const drawLatestChange = (
+  chart: d3.Selection<SVGGElement, unknown, HTMLElement, any>,
+  x: d3.ScaleBand<string>,
+  y: d3.ScaleLinear<number, number, never>,
+  start: TypeDate,
+  end: TypeDate,
+  data: number,
+) => {
+  const p1: [number, number] = [x(getDateString(start)) ?? 0, y(data)];
+  const p2: [number, number] = [(x(getDateString(end)) ?? 0) + x.bandwidth(), y(data)];
   const group = chart.append('g').attr('class', 'latest');
   group
     .append('path')
