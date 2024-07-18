@@ -22,6 +22,8 @@ export type TypePrice = TypeDate & {
   low: number;
 };
 
+export type TypePricePercentChange = TypeDate & { percent_change: number };
+
 export type TypePriceVolume = TypePrice & { volume: number };
 
 export type TypeParabolicSAR = TypeDate & { sar: number; isUpTrend: boolean };
