@@ -23,6 +23,9 @@ export const useGetEdgarStatement = (cik: string) => {
       operatingIncome: [],
       netIncome: [],
       comprehensiveIncome: [],
+      operatingCashFlow: [],
+      investingCashFlow: [],
+      financingCashFlow: [],
     } as TypeEdgarStatementRes,
   });
 };
