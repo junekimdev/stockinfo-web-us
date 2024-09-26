@@ -37,11 +37,11 @@ const View = () => {
         </div>
         <div className={styles.diagramPBR}>
           <h5>PBR</h5>
-          <span>{cap && equ ? getRatioString(cap / equ) : undefined}</span>
+          <span>{cap && equ ? `${getRatioString(cap / equ)} x` : undefined}</span>
         </div>
         <div className={styles.diagramPER}>
           <h5>PER</h5>
-          <span>{cap && net ? getRatioString(cap / net) : undefined}</span>
+          <span>{cap && net ? `${getRatioString(cap / net)} x` : undefined}</span>
         </div>
         <div className={styles.diagramROE}>
           <h5>ROE</h5>
