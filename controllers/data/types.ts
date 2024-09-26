@@ -3,10 +3,13 @@ export type TypeError = { code: number; message: string };
 export type TypePriceRequestType = 'daily' | 'weekly' | 'latest';
 export type TypeAvgMethod = 'simple' | 'exponential' | 'weighted';
 export type TypeAvgValue = 'close' | 'open' | 'high' | 'low';
-export type TypeChart = 'price' | 'percent-change' | 'heikin-aski' | 'heikin-aski-smoothed';
-export type TypeDartReportCode = '11011' | '11012' | '11013' | '11014';
-export type TypeDartIndexCode = 'M210000' | 'M220000' | 'M230000' | 'M240000';
-export type TypeDartStatementType = 'OFS' | 'CFS';
+export type TypeChart =
+  | 'price'
+  | 'percent-change'
+  | 'heikin-aski'
+  | 'heikin-aski-smoothed'
+  | 'mini-price'
+  | 'volume';
 
 export type TypeIDWeek = { year: number; week: number };
 export type TypeDate = { date: Date | TypeIDWeek };
@@ -21,19 +24,29 @@ export type TypePrice = TypeDate & {
   high: number;
   low: number;
 };
-
 export type TypePricePercentChange = TypeDate & { percent_change: number };
-
 export type TypePriceVolume = TypePrice & { volume: number };
-
 export type TypeParabolicSAR = TypeDate & { sar: number; isUpTrend: boolean };
-
 export type TypeMovingAvg = TypeDate & { avg: number };
-
 export type TypePriceBollingerBands = TypeDate & {
   upper: number;
   middle: number;
   lower: number;
+};
+
+export type TypeChartData =
+  | TypePrice
+  | TypePriceVolume
+  | TypePricePercentChange
+  | TypeParabolicSAR
+  | TypeMovingAvg
+  | TypePriceBollingerBands;
+
+export type TypeChartOverlay = 'LatestPrice' | 'ParabolicSAR' | 'BollingerBands';
+export type TypeChartDisplay = {
+  LatestPrice: boolean;
+  ParabolicSAR: boolean;
+  BollingerBands: boolean;
 };
 
 export type TypeCompany = {
@@ -41,18 +54,10 @@ export type TypeCompany = {
   code: string;
   name: string;
 };
-
 export type TypeCompanyTab = {
   uuid: string;
   company: TypeCompany;
   mainType: TypePriceRequestType;
-};
-
-export type TypeChartOverlay = 'LatestPrice' | 'ParabolicSAR' | 'BollingerBands';
-export type TypeChartDisplay = {
-  LatestPrice: boolean;
-  ParabolicSAR: boolean;
-  BollingerBands: boolean;
 };
 
 export type TypeEdgarStatementResRaw = {
@@ -66,14 +71,12 @@ export type TypeEdgarStatementResRaw = {
   netIncome: TypeEdgarStatementItemRaw[];
   comprehensiveIncome: TypeEdgarStatementItemRaw[];
 };
-
 export type TypeEdgarStatementItemRaw = {
   date?: string;
   start_date?: string;
   end_date?: string;
   value: string;
 };
-
 export type TypeEdgarStatementRes = {
   cik: string;
   outstandingStock: TypeEdgarStatementItem[];
@@ -85,7 +88,6 @@ export type TypeEdgarStatementRes = {
   netIncome: TypeEdgarStatementItem[];
   comprehensiveIncome: TypeEdgarStatementItem[];
 };
-
 export type TypeEdgarStatementItem = {
   date: Date;
   value: number;
