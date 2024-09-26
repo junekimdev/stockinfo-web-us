@@ -84,6 +84,11 @@ ul {
   list-style-type: none;
 }
 
+svg {
+  width: 100%;
+  height: 100%;
+}
+
 // Button class style
 .btn {
   @include theme.getBtn(var(--btn-bg-color), var(--btn-font-color), var(--btn-font-size));
