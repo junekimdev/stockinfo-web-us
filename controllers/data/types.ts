@@ -70,6 +70,9 @@ export type TypeEdgarStatementResRaw = {
   operatingIncome: TypeEdgarStatementItemRaw[];
   netIncome: TypeEdgarStatementItemRaw[];
   comprehensiveIncome: TypeEdgarStatementItemRaw[];
+  operatingCashFlow: TypeEdgarStatementItemRaw[];
+  investingCashFlow: TypeEdgarStatementItemRaw[];
+  financingCashFlow: TypeEdgarStatementItemRaw[];
 };
 export type TypeEdgarStatementItemRaw = {
   date?: string;
@@ -87,6 +90,9 @@ export type TypeEdgarStatementRes = {
   operatingIncome: TypeEdgarStatementItem[];
   netIncome: TypeEdgarStatementItem[];
   comprehensiveIncome: TypeEdgarStatementItem[];
+  operatingCashFlow: TypeEdgarStatementItem[];
+  investingCashFlow: TypeEdgarStatementItem[];
+  financingCashFlow: TypeEdgarStatementItem[];
 };
 export type TypeEdgarStatementItem = {
   date: Date;

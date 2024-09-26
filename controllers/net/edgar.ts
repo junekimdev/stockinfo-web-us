@@ -48,6 +48,9 @@ const getEdgarStatement = async ({ queryKey }: QueryFunctionContext<string[]>) =
   const operatingIncome = parseItemArray(data.operatingIncome);
   const netIncome = parseItemArray(data.netIncome);
   const comprehensiveIncome = parseItemArray(data.comprehensiveIncome);
+  const operatingCashFlow = parseItemArray(data.operatingCashFlow);
+  const investingCashFlow = parseItemArray(data.investingCashFlow);
+  const financingCashFlow = parseItemArray(data.financingCashFlow);
   const r: TypeEdgarStatementRes = {
     cik,
     outstandingStock,
@@ -58,6 +61,9 @@ const getEdgarStatement = async ({ queryKey }: QueryFunctionContext<string[]>) =
     operatingIncome,
     netIncome,
     comprehensiveIncome,
+    operatingCashFlow,
+    investingCashFlow,
+    financingCashFlow,
   };
 
   return r;
