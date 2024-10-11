@@ -3,9 +3,11 @@ import { useRecoilValue } from 'recoil';
 import { COMPANIES_URL } from '../apiURLs';
 import { StateSearchInput } from '../data/states';
 import { TypeCompany, TypeError } from '../data/types';
+import { useDebounce } from '../debounce';
 
 export const useGetCompanies = () => {
-  const search_word = useRecoilValue(StateSearchInput);
+  // use debounced value so that everytime the user types won't fire fetching
+  const search_word = useDebounce(useRecoilValue(StateSearchInput), 300);
 
   return useQuery({
     queryKey: ['company', search_word],
