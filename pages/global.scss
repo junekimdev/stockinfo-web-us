@@ -109,3 +109,12 @@ svg {
     color: var(--font-color);
   }
 }
+
+.dragged {
+  transform: translateX(-9999px);
+}
+
+.draggedByTouch {
+  position: fixed;
+  touch-action: none;
+}

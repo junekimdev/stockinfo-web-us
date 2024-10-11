@@ -7,6 +7,7 @@
   --navbar-width: 7rem;
   --navbar-height-main: 5rem;
   --navbar-height-item: 2rem;
+  --navbar-min-gap: 8px;
   --header-btn-bg: #a0a0a0;
   --header-btn-font-size: 1 rem;
   position: relative;
@@ -16,19 +17,23 @@
   display: flex;
   flex-direction: column;
 
-  @include theme.tablet {
+  @include theme.pc {
     flex-direction: row;
+    --navbar-min-gap: 4px;
   }
 }
 
 .navbarVertical {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 0 var(--navbar-min-gap);
+  gap: var(--navbar-min-gap);
   background-color: var(--navbar-color-primary);
   color: var(--navbar-font-color);
 
-  @include theme.tablet {
+  @include theme.pc {
     position: sticky;
     top: 0;
     width: var(--navbar-width);
@@ -45,9 +50,8 @@
   align-items: center;
   overflow: auto;
 
-  @include theme.tablet {
+  @include theme.pc {
     width: calc(100% - var(--navbar-width));
-    height: 100vh;
   }
 }
 
@@ -62,12 +66,12 @@
   h1 {
     font-size: 1.2rem;
     text-align: center;
+    cursor: pointer;
   }
 }
 
 .changeNation {
   width: 100%;
-  padding: 4px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -96,18 +100,6 @@
   }
 }
 
-.tabList {
-  width: 100%;
-  padding: 0.5rem;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  overflow-y: auto;
-  scrollbar-width: none;
-}
-
 .addNewTab {
   width: 100%;
   min-height: var(--navbar-height-item);
@@ -125,18 +117,36 @@
   }
 }
 
+.tabList {
+  width: 100%;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--navbar-min-gap);
+  overflow-y: auto;
+  scrollbar-width: none;
+  z-index: 10;
+}
+
 .tabItem {
   width: 100%;
   min-height: var(--navbar-height-item);
   display: flex;
   align-items: center;
+  gap: var(--navbar-min-gap);
+  padding: 0 var(--navbar-min-gap);
   font-size: 0.75rem;
   border-radius: 4px;
-  transition: background 0.2s linear;
+  transition:
+    background 0.2s,
+    transform 0.01s;
   cursor: pointer;
 
-  &:hover {
+  &:hover,
+  &:focus {
     background: rgba(0, 0, 0, 0.1);
+    outline: none;
   }
 }
 
@@ -145,21 +155,54 @@
   background: rgba(255, 255, 255, 0.1);
   cursor: auto;
 
-  &:hover {
+  &:hover,
+  &:focus {
     background: rgba(255, 255, 255, 0.1);
   }
 }
 
-.tabItemClose {
-  min-width: 1.5rem;
+.tabIcon {
+  min-width: 1rem;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
   font-size: 1rem;
+}
+
+.tabIconHoverShow {
+  @extend .tabIcon;
+
+  @include theme.pc {
+    display: none;
+  }
+}
+
+.tabItem:hover,
+.tabItem:focus {
+  // display when parent gets hover/focus
+  @include theme.pc {
+    .tabIconHoverShow {
+      display: flex;
+    }
+  }
+}
+
+.tabIconDnD {
+  @extend .tabIconHoverShow;
+  transition: color 0.2s linear;
+  cursor: grab;
+
+  &:hover {
+    color: var(--black);
+  }
+}
+
+.tabIconClose {
+  @extend .tabIconHoverShow;
   color: rgba(255, 0, 0, 0.5);
   transition: color 0.2s linear;
-  cursor: pointer;
 
   &:hover {
     color: rgba(255, 0, 0, 1);
@@ -168,7 +211,6 @@
 
 .tabItemText {
   width: 100%;
-  padding-right: 4px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -177,7 +219,7 @@
 .menuToggleBtn {
   display: none;
 
-  @include theme.tablet {
+  @include theme.pc {
     width: 100%;
     min-height: var(--navbar-height-main);
     display: flex;
@@ -192,7 +234,7 @@
 .menuOpenBtn {
   @include theme.arrowDown;
 
-  @include theme.tablet {
+  @include theme.pc {
     @include theme.arrowRight;
   }
 }
@@ -200,19 +242,19 @@
 .menuCloseBtn {
   @include theme.arrowUp;
 
-  @include theme.tablet {
+  @include theme.pc {
     @include theme.arrowLeft;
   }
 }
 
 .menusOpened {
   min-height: var(--navbar-height-main);
-  padding: 1rem;
+  padding: var(--navbar-min-gap);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  gap: 1rem;
+  gap: var(--navbar-min-gap);
   background-color: var(--navbar-color-primary);
   z-index: 1;
 
@@ -220,31 +262,44 @@
   transform-origin: center left;
   transition: transform 0.2s ease-in-out;
 
-  @include theme.tablet {
+  @include theme.pc {
     position: fixed;
     bottom: 0;
     left: 0;
     width: calc(100% - var(--navbar-width));
     margin-left: var(--navbar-width);
     flex-direction: row;
+    padding: 1rem;
+    gap: 1rem;
   }
 }
 
 .menusClosed {
   @extend .menusOpened;
-  @include theme.tablet {
+
+  @include theme.pc {
     transform: scaleX(0);
   }
 }
 
 .menuBtn {
-  @include theme.getBtn(var(--white), var(--navbar-color-primary), var(--btn-font-size));
+  @include theme.getBtn(var(--white), var(--navbar-color-primary), var(--font-size));
+  width: 100%;
   padding: 0.5rem;
+
+  @include theme.pc {
+    width: auto;
+  }
 }
 
 .closeAllBtn {
-  @include theme.getBtn(var(--red), var(--navbar-color-primary), var(--btn-font-size));
+  @include theme.getBtn(var(--red), var(--navbar-color-primary), var(--font-size));
+  width: 100%;
   padding: 0.5rem;
+
+  @include theme.pc {
+    width: auto;
+  }
 }
 
 .header {
@@ -253,27 +308,26 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.5rem;
+  gap: 1rem;
   background: rgba(0, 0, 0, 0.3);
   z-index: 1;
 
-  @include theme.tablet {
+  @include theme.pc {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    gap: 0.5rem;
   }
 }
 
 .companyInfo {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  align-items: flex-end;
   flex-wrap: wrap;
   gap: 0.5rem;
 
-  @include theme.tablet {
-    flex-direction: row;
-    align-items: flex-end;
+  h1 {
+    width: 100%;
   }
 
   h1,
@@ -285,6 +339,12 @@
   h3,
   h5 {
     color: var(--font-color-grey);
+  }
+
+  @include theme.pc {
+    h1 {
+      width: auto;
+    }
   }
 }
 
@@ -302,6 +362,7 @@
 
 .miniChartsWrapper {
   display: flex;
+  justify-content: flex-end;
   align-items: center;
   flex-wrap: wrap;
   gap: 1rem;
@@ -315,10 +376,16 @@
 }
 
 .headerBtnWrapper {
+  width: 100%;
   display: flex;
+  justify-content: center;
   align-items: center;
   flex-wrap: wrap;
   gap: 0.5rem;
+
+  @include theme.pc {
+    width: auto;
+  }
 }
 
 .headerBtn {
@@ -333,7 +400,7 @@
 
 .footer {
   position: fixed;
-  bottom: 1rem;
+  bottom: 0.5rem;
   padding: 0 0.5rem;
   display: flex;
   justify-content: center;
