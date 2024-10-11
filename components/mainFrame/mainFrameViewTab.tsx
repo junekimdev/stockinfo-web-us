@@ -15,13 +15,17 @@ const View = (props: { tab: TypeCompanyTab }) => {
       title={tab.company.name}
       className={tab.uuid === currentTab.uuid ? styles.tabItemCurrent : styles.tabItem}
       onClick={onMoveToTabClick}
+      tabIndex={0}
+      data-drag-object
+      data-data={JSON.stringify(tab)}
     >
+      <i title="move" className={`fa-solid fa-grip-vertical ${styles.tabIconDnD}`} draggable></i>
+      <div className={styles.tabItemText}>{tab.company.code}</div>
       <i
         title="close"
-        className={`fa-solid fa-xmark ${styles.tabItemClose}`}
+        className={`fa-solid fa-xmark ${styles.tabIconClose}`}
         onClick={onRemoveTabClick}
       ></i>
-      <div className={styles.tabItemText}>{tab.company.code}</div>
     </li>
   );
 };
