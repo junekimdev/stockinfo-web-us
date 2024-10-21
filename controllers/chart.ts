@@ -1,18 +1,19 @@
 import * as d3 from 'd3';
 import { ChangeEvent, useCallback } from 'react';
 import { useSetRecoilState } from 'recoil';
-import { StateChartOverlays } from './data/states';
+import { StatePriceDisplays } from './data/states';
 import {
   TypeChart,
   TypeChartData,
-  TypeChartOverlay,
   TypeDate,
   TypeIDWeek,
   TypeMovingAvg,
   TypeParabolicSAR,
   TypePrice,
   TypePriceBollingerBands,
+  TypePriceDisplayItem,
   TypePriceVolume,
+  TypeRectCoordi,
 } from './data/types';
 
 export const getCandleColor = (d: TypePrice) => {
@@ -23,6 +24,11 @@ export const getCandleColor = (d: TypePrice) => {
 export const getChangeColor = (d: number) => {
   if (d === 0) return 'gray';
   return d < 0 ? 'blue' : 'red';
+};
+
+export const getHistogramColor = (d: number) => {
+  if (d === 0) return 'gray';
+  return d > 0 ? 'red' : 'blue';
 };
 
 export const getDateString = (d: TypeDate) => {
@@ -53,6 +59,7 @@ interface IChartArgs {
   showYticks?: boolean;
   showXticks?: boolean;
   tickYCount?: number;
+  tickYFormat?: string;
 }
 export const initChart = (
   args: IChartArgs,
@@ -73,10 +80,11 @@ export const initChart = (
     showYticks = true,
     showXticks = false,
     tickYCount = 10,
+    tickYFormat = ',~r',
   } = args;
   const chartWidth = dataWidth * data.length;
   const height = chartHeight + margin.top + margin.bottom;
-  const width = chartWidth + margin.left + margin.left;
+  const width = chartWidth + margin.left + margin.right;
 
   const svg = d3
     .select(`#${id}`)
@@ -102,11 +110,11 @@ export const initChart = (
     chart
       .append('g')
       .attr('transform', `translate(${chartWidth},0)`)
-      .call(d3.axisLeft(y).tickSize(chartWidth).ticks(tickYCount)); // tickSize(chartWidth) makes grid
+      .call(d3.axisLeft(y).tickSize(chartWidth).ticks(tickYCount, tickYFormat)); // tickSize(chartWidth) makes grid
     chart
       .append('g')
       .attr('transform', `translate(${chartWidth},0)`)
-      .call(d3.axisRight(y).ticks(tickYCount));
+      .call(d3.axisRight(y).ticks(tickYCount, tickYFormat));
   }
 
   // Draw the X Axis
@@ -286,24 +294,123 @@ export const drawBollingerBands = (
     );
 };
 
+/**
+ * Adds Up Arrow Symbol to SVG
+ * @param chart d3 Selection object
+ * @param chartId chart ID
+ * @param color fill-color
+ * @returns #ID (id of the symbol prefixed with hash tag)
+ */
+export const addSymbolUpArrow = (
+  chart: d3.Selection<SVGGElement, unknown, HTMLElement, any>,
+  chartId: string,
+  color: string,
+) => {
+  const id = `${chartId}-upArrow`;
+  chart
+    .append('symbol')
+    .attr('id', id)
+    .attr('viewBox', '0 0 4 4')
+    .attr('fill', color)
+    .attr('stroke', 'none')
+    .append('path')
+    .attr(
+      'd',
+      d3.line()([
+        [2, 0],
+        [0, 2],
+        [1, 2],
+        [1, 4],
+        [3, 4],
+        [3, 2],
+        [4, 2],
+        [2, 0],
+      ]),
+    );
+  return `#${id}`;
+};
+
+/**
+ * Adds Down Arrow Symbol to SVG
+ * @param chart d3 Selection object
+ * @param chartId chart ID
+ * @param color fill-color
+ * @returns #ID (id of the symbol prefixed with hash tag)
+ */
+export const addSymbolDownArrow = (
+  chart: d3.Selection<SVGGElement, unknown, HTMLElement, any>,
+  chartId: string,
+  color: string,
+) => {
+  const id = `${chartId}-downArrow`;
+  chart
+    .append('symbol')
+    .attr('id', id)
+    .attr('viewBox', '0 0 4 4')
+    .append('path')
+    .attr('fill', color)
+    .attr('stroke', 'none')
+    .attr(
+      'd',
+      d3.line()([
+        [2, 4],
+        [0, 2],
+        [1, 2],
+        [1, 0],
+        [3, 0],
+        [3, 2],
+        [4, 2],
+        [2, 4],
+      ]),
+    );
+  return `#${id}`;
+};
+
+/**
+ * Adds clipPath to SVG
+ * @param chart d3 Selection object
+ * @param chartId chart ID
+ * @param clipArea coordinate of rect
+ * @param name name of the clipPath
+ * @returns #ID (id of the clipPath prefixed with hash tag)
+ */
+export const addClipPathAsShowWindow = (
+  chart: d3.Selection<SVGGElement, unknown, HTMLElement, any>,
+  chartId: string,
+  clipArea: TypeRectCoordi,
+  name: string,
+) => {
+  const id = `${chartId}-clip-${name}`;
+  const { x, y, w, h } = clipArea;
+  chart
+    .append('clipPath')
+    .attr('id', id)
+    .append('rect')
+    .attr('x', x)
+    .attr('y', y)
+    .attr('width', w)
+    .attr('height', h);
+  return `#${id}`;
+};
+
 export const getMarginLeft = (data: TypePriceVolume[] | undefined) => {
   if (data && data.length) {
     const size = 8;
     const maxChar = data
-      .reduce((p, v) => Math.max(p, v.high, v.volume), -Infinity)
+      .reduce((p, v) => Math.max(p, Math.floor(v.high)), -Infinity)
       .toString().length;
     return (maxChar + Math.floor(maxChar / 3)) * size;
   }
   return 0;
 };
 
-export const useCheckboxChange = (code: string, type: TypeChart, overlay: TypeChartOverlay) => {
-  const setState = useSetRecoilState(StateChartOverlays({ code, type }));
+export const useCheckboxChange = (code: string, type: TypeChart, what: TypePriceDisplayItem) => {
+  const setState = useSetRecoilState(StatePriceDisplays({ code, type }));
 
   return useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      setState((prev) => ({ ...prev, [overlay]: e.currentTarget.checked }));
+      setState((prev) => ({ ...prev, [what]: e.currentTarget.checked }));
     },
-    [code, type, overlay],
+    [code, type, what],
   );
 };

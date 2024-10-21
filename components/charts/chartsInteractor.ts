@@ -1,18 +1,16 @@
 import { MouseEvent, useCallback, useEffect } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { getPriceEMA } from '../../controllers/avg';
+import { useRecoilState } from 'recoil';
+import { emaSnapshotStep, getEMAFactorK } from '../../controllers/avg';
 import {
+  StateChaikin,
   StatePriceBollingerBands,
-  StatePriceHeikinAshi,
-  StatePriceHeikinAshiSmoothed,
-  StatePricePercentChange,
   StatePriceSAR,
 } from '../../controllers/data/states';
 import {
+  TypeChaikin,
   TypeParabolicSAR,
   TypePrice,
   TypePriceBollingerBands,
-  TypePricePercentChange,
   TypePriceRequest,
 } from '../../controllers/data/types';
 import { useGetPrices } from '../../controllers/net/price';
@@ -30,62 +28,11 @@ export const useRulerOnClick = () => {
   }, []);
 };
 
-export const usePricePercentChange = (req: TypePriceRequest) => {
-  const { data } = useGetPrices(req);
-  const [dataPricePercentChange, setState] = useRecoilState(StatePricePercentChange(req));
-
-  useEffect(() => {
-    if (data && data.length && !dataPricePercentChange.length) {
-      // Init the array with the first vlaue
-      const change: TypePricePercentChange[] = [{ date: data[0].date, percent_change: 0 }];
-
-      // Fill the rest of the array
-      for (let i = 1; i < data.length; i++) {
-        const percent_change = (100 * data[i].close) / data[i - 1].close - 100;
-        change.push({ date: data[i].date, percent_change });
-      }
-
-      setState(change);
-    }
-  }, [data, dataPricePercentChange]);
-};
-
-export const useHeikinAshi = (req: TypePriceRequest) => {
-  const { data } = useGetPrices(req);
-  const [dataHeikinAshi, setState] = useRecoilState(StatePriceHeikinAshi(req));
-
-  useEffect(() => {
-    if (data && data.length && !dataHeikinAshi.length) {
-      const bar: TypePrice[] = data.map((v) => ({
-        date: v.date,
-        open: 0,
-        close: (v.open + v.close + v.high + v.low) / 4,
-        high: Math.max(v.open, v.close, v.high),
-        low: Math.min(v.open, v.close, v.low),
-      }));
-
-      for (let i = 0; i < bar.length; i++) {
-        bar[i].open = i ? (bar[i - 1].open + bar[i - 1].close) / 2 : bar[i].close;
-      }
-
-      setState(bar);
-    }
-  }, [data, dataHeikinAshi]);
-};
-
-export const useHeikinAshiSmoothed = (req: TypePriceRequest, p1 = 10, p2 = 10) => {
-  const data = useRecoilValue(StatePriceHeikinAshi(req));
-  const [dataHeikinAshiSmoothed, setState] = useRecoilState(StatePriceHeikinAshiSmoothed(req));
-
-  useEffect(() => {
-    if (data && data.length > 1 && !dataHeikinAshiSmoothed.length) {
-      const smoothed = getPriceEMA(getPriceEMA(data, p1), p2);
-      setState(smoothed);
-    }
-  }, [data, dataHeikinAshiSmoothed]);
-};
-
-export const useBollinger = (req: TypePriceRequest, period = 20, sigma = 2) => {
+export const useBollinger = (
+  req: TypePriceRequest,
+  options?: { period?: number; sigma?: number },
+) => {
+  const { period = 20, sigma = 2 } = options ?? {};
   const { data } = useGetPrices(req);
   const [dataBollingerBands, setState] = useRecoilState(StatePriceBollingerBands(req));
 
@@ -119,7 +66,8 @@ export const useBollinger = (req: TypePriceRequest, period = 20, sigma = 2) => {
   }, [data, dataBollingerBands, period, sigma]);
 };
 
-export const useSAR = (req: TypePriceRequest, max = 0.2, step = 0.01) => {
+export const useSAR = (req: TypePriceRequest, options?: { max?: number; step?: number }) => {
+  const { max = 0.2, step = 0.01 } = options ?? {};
   const { data } = useGetPrices(req);
   const [dataSAR, setState] = useRecoilState(StatePriceSAR(req));
 
@@ -184,3 +132,48 @@ const nextSAR = (prevSAR: number, ep: number, af: number) => prevSAR + af * (ep 
 
 const detectCollision = (price: TypePrice, sar: number, isUpTrend: boolean) =>
   isUpTrend ? sar >= price.low : sar <= price.high;
+
+export const useChaikin = (req: TypePriceRequest, period = [3, 10, 20]) => {
+  const [p1, p2, p3] = period;
+  const { data } = useGetPrices(req);
+  const [dataChainkin, setState] = useRecoilState(StateChaikin(req));
+
+  useEffect(() => {
+    if (data && data.length && !dataChainkin.length) {
+      const k1 = getEMAFactorK(p1);
+      const k2 = getEMAFactorK(p2);
+      const result: TypeChaikin[] = [];
+      const prevADL: number[] = [];
+      const prevADL1: number[] = [];
+      const prevADL2: number[] = [];
+      const prevMFV: number[] = [];
+
+      for (let i = 0; i < data.length; i++) {
+        const { high, low, close, volume } = data[i];
+        const moneyFlowMultiple = (close - low - (high - close)) / (high - low);
+        const moneyFlowVolume = moneyFlowMultiple * volume;
+        const adl = (i ? prevADL[i - 1] : 0) + moneyFlowVolume;
+        const adl1 = emaSnapshotStep(adl, prevADL1, p1, i, k1);
+        const adl2 = emaSnapshotStep(adl, prevADL2, p2, i, k2);
+        const co = adl1 - adl2;
+
+        prevMFV.push(moneyFlowVolume);
+        const cmf = slidingSum(prevMFV, p3, i, (d) => d) / slidingSum(data, p3, i, (d) => d.volume);
+
+        prevADL.push(adl);
+        prevADL1.push(adl1);
+        prevADL2.push(adl2);
+
+        const { date } = data[i];
+        result.push({ date, co, cmf });
+      }
+      setState(result);
+    }
+  }, [p1, p2, p3, data, dataChainkin]);
+};
+
+const slidingSum = <T>(data: T[], period: number, i: number, func: (_d: T) => number) => {
+  if (i === 0) return func(data[i]);
+  if (i < period) return data.slice(0, i + 1).reduce((p, v) => p + func(v), 0);
+  return data.slice(i + 1 - period, i + 1).reduce((p, v) => p + func(v), 0);
+};

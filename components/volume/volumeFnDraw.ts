@@ -10,10 +10,11 @@ const draw = (id: string, data: TypePriceVolume[], marginLeft: number) => {
     top: 10,
     bottom: 80,
     left: marginLeft,
-    right: 0,
+    right: marginLeft + 10,
   };
   const chartHeight = 70;
   const tickYCount = Math.floor(chartHeight / 15);
+  const tickYFormat = '~s';
 
   const { chart, x, y } = initChart({
     id,
@@ -24,6 +25,7 @@ const draw = (id: string, data: TypePriceVolume[], marginLeft: number) => {
     chartHeight,
     showXticks: true,
     tickYCount,
+    tickYFormat,
   });
 
   // Draw bars for high and low

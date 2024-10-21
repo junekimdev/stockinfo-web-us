@@ -20,9 +20,11 @@ const Presenter = (props: { req: TypePriceRequest; marginLeft: number; max?: num
 
   return (
     <div className={styles.chartContainer}>
-      <h5 className={styles.chartTitle}>{chartTitle}</h5>
+      <div className={styles.chartTitle}>
+        <h5>{chartTitle}</h5>
+      </div>
       <svg id={chartID} className={styles.chart}></svg>
-      <div className={styles.overlaySelectorWrapper} onClick={(e) => e.stopPropagation()}></div>
+      <div className={styles.displaySelectorWrapper} onClick={(e) => e.stopPropagation()}></div>
     </div>
   );
 };

@@ -15,11 +15,7 @@ const Page = () => {
 
   return (
     <>
-      <Meta
-        title="JK Stock US | junekimdev"
-        desc="JK Stock US created by junekimdev"
-        url={publicUrl}
-      ></Meta>
+      <Meta title="JK Stock" desc="JK Stock presented by junekimdev" url={publicUrl}></Meta>
       <MainFrame>
         <Search />
       </MainFrame>
