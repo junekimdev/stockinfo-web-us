@@ -5,12 +5,12 @@ import {
   getDateString,
   initChart,
 } from '../../controllers/chart';
-import { TypeChartDisplay, TypePricePercentChange } from '../../controllers/data/types';
+import { TypePriceDisplay, TypePricePercentChange } from '../../controllers/data/types';
 
 const draw = (
   id: string,
   data: TypePricePercentChange[],
-  overlays: TypeChartDisplay,
+  display: TypePriceDisplay,
   marginLeft: number,
   latestChange?: number,
 ) => {
@@ -23,7 +23,7 @@ const draw = (
     top: 10,
     bottom: 10,
     left: marginLeft,
-    right: 0,
+    right: marginLeft + 10,
   };
   const chartHeight = 120;
 
@@ -43,7 +43,7 @@ const draw = (
     .attr('fill', (d) => getChangeColor(d.percent_change));
 
   // Draw latest price line
-  if (overlays.LatestPrice && latestChange !== undefined)
+  if (display.LatestPrice && latestChange !== undefined)
     drawLatestChange(chart, x, y, data[0], data[data.length - 1], latestChange);
 };
 

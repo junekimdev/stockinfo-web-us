@@ -1,19 +1,22 @@
 import { useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import { useCheckboxChange } from '../../controllers/chart';
-import { StateChartOverlays, StatePricePercentChange } from '../../controllers/data/states';
+import { StatePriceDisplays, StatePricePercentChange } from '../../controllers/data/states';
 import { TypeChart, TypePriceRequest } from '../../controllers/data/types';
 import { useGetPrices, useGetPricesLatest } from '../../controllers/net/price';
 import styles from './percentChange.module.scss';
 import draw from './percentChangeFnDraw';
+import { usePricePercentChange } from './percentChangeInteractor';
 
 const Presenter = (props: { req: TypePriceRequest; marginLeft: number; max?: number }) => {
   const { req, marginLeft, max = 120 } = props;
+  usePricePercentChange(req);
+
   const chartType: TypeChart = 'percent-change';
   const { data } = useGetPrices(req);
   const { data: latestPriceData } = useGetPricesLatest({ code: req.code, type: 'latest' });
   const dataPercentChange = useRecoilValue(StatePricePercentChange(req));
-  const overlays = useRecoilValue(StateChartOverlays({ code: req.code, type: chartType }));
+  const display = useRecoilValue(StatePriceDisplays({ code: req.code, type: chartType }));
 
   const chartTitle = `${req.type} price percent change`;
   const chartID = `${styles.chart}-${req.code}-${req.type}`;
@@ -28,9 +31,9 @@ const Presenter = (props: { req: TypePriceRequest; marginLeft: number; max?: num
 
   useEffect(() => {
     if (data?.length) {
-      draw(chartID, dataPercentChange.slice(-max), overlays, marginLeft, lastestPercentChange);
+      draw(chartID, dataPercentChange.slice(-max), display, marginLeft, lastestPercentChange);
     }
-  }, [chartID, marginLeft, max, data, dataPercentChange, overlays, lastestPercentChange]);
+  }, [chartID, marginLeft, max, data, dataPercentChange, display, lastestPercentChange]);
 
   return (
     <div className={styles.chartContainer}>
@@ -44,13 +47,13 @@ const Presenter = (props: { req: TypePriceRequest; marginLeft: number; max?: num
         </span>
       </div>
       <svg id={chartID} className={styles.chart}></svg>
-      <div className={styles.overlaySelectorWrapper} onClick={(e) => e.stopPropagation()}>
-        <div className={styles.overlaySelector} title="Latest Price">
+      <div className={styles.displaySelectorWrapper} onClick={(e) => e.stopPropagation()}>
+        <div className={styles.displaySelector} title="Latest Price">
           <input
             type="checkbox"
             name={latestPriceInputID}
             id={latestPriceInputID}
-            checked={overlays.LatestPrice}
+            checked={display.LatestPrice}
             onChange={onLatestPriceCheckboxChange}
           />
           <label htmlFor={latestPriceInputID}>Latest Price</label>
