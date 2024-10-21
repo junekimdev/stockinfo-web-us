@@ -96,6 +96,7 @@ export type TypePriceDisplay = {
   ParabolicSAR: boolean;
   BollingerBands: boolean;
 };
+
 export type TypeAdxDisplay = {
   ADX: boolean;
   pDI: boolean;
@@ -122,6 +123,17 @@ export type TypeStochasticDisplay = {
   overbought: boolean;
   oversold: boolean;
   trendConfirm: boolean;
+};
+
+export type TypeCompany = {
+  cik: string;
+  code: string;
+  name: string;
+};
+export type TypeCompanyTab = {
+  uuid: string;
+  company: TypeCompany;
+  mainType: TypePriceRequestType;
 };
 
 export type TypeEdgarStatementResRaw = {

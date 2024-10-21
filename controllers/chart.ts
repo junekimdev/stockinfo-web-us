@@ -7,7 +7,6 @@ import {
   TypeChartData,
   TypeDate,
   TypeIDWeek,
-  TypeKRXPrice,
   TypeMovingAvg,
   TypeParabolicSAR,
   TypePrice,
@@ -175,7 +174,7 @@ export const drawLatestPrice = (
   y: d3.ScaleLinear<number, number, never>,
   start: TypeDate,
   end: TypeDate,
-  data: TypeKRXPrice,
+  data: TypePrice,
 ) => {
   const p1: [number, number] = [x(getDateString(start)) ?? 0, y(data.close)];
   const p2: [number, number] = [(x(getDateString(end)) ?? 0) + x.bandwidth(), y(data.close)];
