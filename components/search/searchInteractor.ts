@@ -48,7 +48,7 @@ export const useCompanyClick = (uuid: string, company: TypeCompany) => {
       window.localStorage.setItem(LOCAL_STORAGE_KEY_RECENT_SEARCH_TABS, JSON.stringify(recent));
     }
 
-    router.replace('/chart', '/');
+    router.push('/chart');
   }, [uuid, company, companyTabs, recentSearchTabs]);
 };
 

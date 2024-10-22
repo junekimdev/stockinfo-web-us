@@ -21,7 +21,7 @@ export const useCloseAllClick = () => {
     resetTabs();
     resetCurrent();
     setOpened(false);
-    router.replace('/', '/');
+    router.replace('/');
   }, []);
 };
 
@@ -31,7 +31,7 @@ export const useAddNewTabClick = () => {
 
   return useCallback(() => {
     resetState();
-    router.replace('/', '/');
+    router.replace('/');
   }, []);
 };
 
@@ -41,7 +41,7 @@ export const useMoveToTabClick = (tab: TypeCompanyTab) => {
 
   return useCallback(() => {
     setState(tab);
-    router.replace('/chart', '/');
+    router.replace('/chart');
   }, [tab]);
 };
 
@@ -58,7 +58,7 @@ export const useRemoveTabClick = (tab: TypeCompanyTab) => {
       setTabs(tabs.filter((v) => v.uuid !== tab.uuid));
       if (currentTab.uuid === tab.uuid) {
         resetCurrent();
-        router.replace('/', '/');
+        router.replace('/');
       }
     },
     [tab, tabs, currentTab],
