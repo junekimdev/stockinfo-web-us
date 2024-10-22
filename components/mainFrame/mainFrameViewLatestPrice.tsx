@@ -22,16 +22,16 @@ const View = (props: { code: string }) => {
     <h5>
       <div className={styles.latestPriceWrapper}>
         latest price:
-        {latestPrice.data?.length ? (
+        {latestPrice.data ? (
           <>
-            <span className={styles.latestPrice}>{latestPrice.data[0].close.toLocaleString()}</span>
+            <span className={styles.latestPrice}>{latestPrice.data.close.toLocaleString()}</span>
             USD
           </>
         ) : (
           <div className={styles.spinner}></div>
         )}
       </div>
-      <div>{latestPrice.data?.length ? getDatetimeString(latestPrice.data[0]) : ''}</div>
+      <div>{latestPrice.data ? getDatetimeString(latestPrice.data) : ''}</div>
     </h5>
   );
 };

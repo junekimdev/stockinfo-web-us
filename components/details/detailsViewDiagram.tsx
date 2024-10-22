@@ -15,7 +15,7 @@ const View = () => {
   const req: TypePriceRequest = { code: company.code, type: 'latest' };
   const { data } = useGetEdgarStatement(company.cik);
   const prices = useGetPricesLatest(req);
-  const latestPrice = prices.data?.[0].close ?? 0;
+  const latestPrice = prices.data?.close ?? 0;
   const cap = latestPrice * (data?.outstandingStock[0]?.value ?? 0);
   const net = data?.netIncome[0]?.value ?? 0;
   const equ = data?.equity[0]?.value ?? 0;

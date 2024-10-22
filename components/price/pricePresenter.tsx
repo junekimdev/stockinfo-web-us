@@ -39,7 +39,7 @@ const Presenter = (props: { req: TypePriceRequest; marginLeft: number; max?: num
         dataBands.slice(-max),
         display,
         marginLeft,
-        latestPriceData?.[0],
+        latestPriceData,
       );
     }
   }, [chartID, marginLeft, max, data, dataSar, dataBands, display, latestPriceData]);

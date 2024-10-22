@@ -25,7 +25,7 @@ const Presenter = (props: { req: TypePriceRequest; marginLeft: number; max?: num
 
   useEffect(() => {
     if (dataHeikinAshi.length) {
-      draw(chartID, dataHeikinAshi.slice(-max), display, marginLeft, data?.[0]);
+      draw(chartID, dataHeikinAshi.slice(-max), display, marginLeft, data);
     }
   }, [chartID, marginLeft, max, dataHeikinAshi, display, data]);
 
