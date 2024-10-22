@@ -25,8 +25,8 @@ const Presenter = (props: { req: TypePriceRequest; marginLeft: number; max?: num
   const onLatestPriceCheckboxChange = useCheckboxChange(req.code, chartType, 'LatestPrice');
 
   const lastestPercentChange =
-    data?.length && latestPriceData?.length
-      ? (100 * latestPriceData[0].close) / data[data.length - 1].close - 100
+    data?.length && latestPriceData
+      ? (100 * latestPriceData.close) / data[data.length - 1].close - 100
       : undefined;
 
   useEffect(() => {

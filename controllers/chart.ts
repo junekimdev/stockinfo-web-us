@@ -396,8 +396,9 @@ export const addClipPathAsShowWindow = (
 export const getMarginLeft = (data: TypePriceVolume[] | undefined) => {
   if (data && data.length) {
     const size = 8;
+    const minLen = 5;
     const maxChar = data
-      .reduce((p, v) => Math.max(p, Math.floor(v.high)), -Infinity)
+      .reduce((p, v) => Math.max(p, Math.floor(v.high), minLen), -Infinity)
       .toString().length;
     return (maxChar + Math.floor(maxChar / 3)) * size;
   }

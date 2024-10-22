@@ -3,11 +3,11 @@ import { PRICES_URL } from '../apiURLs';
 import {
   TypeError,
   TypeIDWeek,
-  TypePrice,
   TypePriceRequest,
   TypePriceRequestType,
   TypePriceVolume,
 } from '../data/types';
+import { getTimestamp } from '../datetime';
 
 export const useGetPrices = (req: TypePriceRequest) => {
   const { code, type } = req;
@@ -27,7 +27,6 @@ export const useGetPricesLatest = (req: TypePriceRequest) => {
     queryFn: getPricesLatest,
     enabled: !!code && !!type,
     staleTime: 60000, // 1 minute
-    placeholderData: [],
   });
 };
 
@@ -88,16 +87,18 @@ const getPricesLatest = async ({ queryKey }: QueryFunctionContext<string[]>) => 
   if (typeof pricesRaw !== 'object' || pricesRaw.length === 0)
     throw Error(`failed to parce data from ${url}`);
 
-  const prices: TypePrice[] = [];
+  const prices: TypePriceVolume[] = [];
   for (let i = 0; i < pricesRaw.length; i++) {
-    const date = new Date();
+    const date = new Date(pricesRaw[i].date);
     const open = parseFloat(pricesRaw[i].open);
     const close = parseFloat(pricesRaw[i].close);
     const high = parseFloat(pricesRaw[i].high);
     const low = parseFloat(pricesRaw[i].low);
-    const p: TypePrice = { date, open, high, low, close };
+    const volume = parseFloat(pricesRaw[i].volume);
+    const p: TypePriceVolume = { date, open, high, low, close, volume };
     prices.push(p);
   }
 
-  return prices.reverse(); // reverse() places the latest price at index 0
+  prices.sort((a, b) => getTimestamp(b.date) - getTimestamp(a.date));
+  return prices[0]; // reverse() places the latest price at index 0
 };
