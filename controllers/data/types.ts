@@ -52,6 +52,10 @@ export type TypePrice = TypeDate & {
   low: number;
 };
 export type TypePriceVolume = TypePrice & { volume: number };
+export type TypePriceVolumeRaw = TypePriceVolume & {
+  trading_value: number;
+  base_stock_cnt: number;
+};
 export type TypePricePercentChange = TypeDate & { percent_change: number };
 export type TypeParabolicSAR = TypeDate & { sar: number; isUpTrend: boolean };
 export type TypeMovingAvg = TypeDate & { avg: number };
@@ -67,10 +71,6 @@ export type TypeMacdV = TypeDate & { macdV: number; signal: number; histogram: n
 export type TypeAtrp = TypeDate & { atrp: number };
 export type TypeChaikin = TypeDate & { cmf: number; co: number };
 export type TypeStochastic = TypeDate & { fullK: number; fullD: number };
-export type TypePriceRaw = TypePriceVolume & {
-  trading_value: number;
-  base_stock_cnt: number;
-};
 
 export type TypePriceDisplayItem = 'LatestPrice' | 'ParabolicSAR' | 'BollingerBands';
 export type TypeAdxDisplayItem = 'ADX' | 'pDI' | 'nDI' | 'buy' | 'sell' | 'trendConfirm';
