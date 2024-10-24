@@ -9,6 +9,7 @@ import {
   useDragEnterCapture,
   useDragStart,
   useDrop,
+  useMoveToHome,
   useToggleMenu,
   useTouchEnd,
   useTouchMove,
@@ -24,6 +25,7 @@ const View = () => {
   const ulRef = useRef<HTMLUListElement>(null);
 
   const onToggleMenu = useToggleMenu();
+  const moveToHome = useMoveToHome();
   const onAddNewTabClick = useAddNewTabClick();
   const onDragStart = useDragStart(setDragged);
   const onDragEnd = useDragEnd(dragged, setDragged);
@@ -51,7 +53,7 @@ const View = () => {
   return (
     <nav className={styles.navbarVertical}>
       <div className={styles.brandWrapper}>
-        <h1>
+        <h1 onClick={moveToHome}>
           JK Stock
           <br />
           US
