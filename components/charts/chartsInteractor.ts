@@ -49,11 +49,11 @@ export const useBollinger = (
         const slice = data.slice(i + 1 - period, i + 1);
         const sum = slice.reduce((p, v) => p + v.close, 0);
         const avg = sum / period;
-        const variance = slice.reduce((p, v) => {
+        const sumDiffSq = slice.reduce((p, v) => {
           const diff = v.close - avg;
           return p + diff * diff; // Sum of squres
         }, 0);
-        const stdv = Math.sqrt(variance / period);
+        const stdv = Math.sqrt(sumDiffSq / period); // variance = sumDiffSq / period
         bands.push({
           date: data[i].date,
           middle: avg,
