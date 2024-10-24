@@ -1,8 +1,23 @@
+import { useRouter } from 'next/router';
 import { useCallback, useEffect } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { LOCAL_STORAGE_KEY_COMPANY_TABS } from '../apiURLs';
-import { StateCompanyTabs, StateDetailsOpened, StateTabsInitiated } from './states';
+import {
+  StateCompanyTabs,
+  StateCurrentTab,
+  StateDetailsOpened,
+  StateTabsInitiated,
+} from './states';
 import { TypeCompanyTab } from './types';
+
+export const useCheckCurrentTab = () => {
+  const router = useRouter();
+  const currentTab = useRecoilValue(StateCurrentTab);
+
+  useEffect(() => {
+    if (!currentTab.uuid) router.replace('/');
+  }, [router, currentTab]);
+};
 
 export const useLoadCompanyTabs = () => {
   const [initiated, setInit] = useRecoilState(StateTabsInitiated);
