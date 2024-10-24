@@ -5,11 +5,13 @@ import Details from '../components/details';
 import MainFrame from '../components/mainFrame';
 import Header from '../components/mainFrame/mainFrameViewHeader';
 import Meta from '../components/meta';
+import { useCheckCurrentTab } from '../controllers/data/hooks';
 import { StateDetailsOpened } from '../controllers/data/states';
 
 const Page = () => {
   const publicUrl = process.env.NEXT_PUBLIC_URL ?? 'localhost:3000';
   const detailsOpened = useRecoilValue(StateDetailsOpened);
+  useCheckCurrentTab();
 
   useEffect(() => {
     window.scrollTo(0, 0);

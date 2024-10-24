@@ -11,6 +11,16 @@ export const useToggleMenu = () => {
   return useCallback(() => setState((v) => !v), []);
 };
 
+export const useMoveToHome = () => {
+  const resetCurrent = useResetRecoilState(StateCurrentTab);
+  const router = useRouter();
+
+  return useCallback(() => {
+    resetCurrent();
+    router.push('/');
+  }, []);
+};
+
 export const useCloseAllClick = () => {
   const resetTabs = useResetRecoilState(StateCompanyTabs);
   const resetCurrent = useResetRecoilState(StateCurrentTab);
