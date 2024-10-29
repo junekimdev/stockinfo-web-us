@@ -21,7 +21,7 @@ const Page = () => {
   return (
     <>
       <Meta
-        title={`JK Stock | ${currentTab.company.itmsNm}`}
+        title={`JK Stock | ${currentTab.company.name}`}
         desc="JK Stock presented by junekimdev"
         url={publicUrl}
       ></Meta>
