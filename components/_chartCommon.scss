@@ -7,6 +7,10 @@
     'title title' auto
     'chart selector' auto
     / max-content 1fr;
+
+  @media print {
+    break-inside: avoid;
+  }
 }
 
 .chartTitle {
@@ -43,6 +47,10 @@
   flex-direction: column;
   gap: 0.5rem;
   cursor: default;
+
+  @media print {
+    display: none;
+  }
 }
 
 .displaySelector {

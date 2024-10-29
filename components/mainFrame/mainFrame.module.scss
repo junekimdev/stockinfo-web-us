@@ -39,6 +39,10 @@
     width: var(--navbar-width);
     height: 100vh;
   }
+
+  @media print {
+    display: none;
+  }
 }
 
 .mainFrame {
@@ -272,6 +276,10 @@
     padding: 1rem;
     gap: 1rem;
   }
+
+  @media print {
+    display: none;
+  }
 }
 
 .menusClosed {
@@ -386,6 +394,10 @@
   @include theme.pc {
     width: auto;
   }
+
+  @media print {
+    display: none;
+  }
 }
 
 .headerBtn {
@@ -410,6 +422,17 @@
   z-index: -1;
   border-radius: 0.5rem;
   background: rgba(255, 255, 255, 0.3);
+
+  @media print {
+    bottom: 0;
+    font-size: 0.5rem;
+    z-index: 10;
+
+    img {
+      width: 12px;
+      height: 12px;
+    }
+  }
 }
 
 .author {

@@ -6,11 +6,12 @@ import MainFrame from '../components/mainFrame';
 import Header from '../components/mainFrame/mainFrameViewHeader';
 import Meta from '../components/meta';
 import { useCheckCurrentTab } from '../controllers/data/hooks';
-import { StateDetailsOpened } from '../controllers/data/states';
+import { StateCurrentTab, StateDetailsOpened } from '../controllers/data/states';
 
 const Page = () => {
   const publicUrl = process.env.NEXT_PUBLIC_URL ?? 'localhost:3000';
   const detailsOpened = useRecoilValue(StateDetailsOpened);
+  const currentTab = useRecoilValue(StateCurrentTab);
   useCheckCurrentTab();
 
   useEffect(() => {
@@ -19,7 +20,11 @@ const Page = () => {
 
   return (
     <>
-      <Meta title="JK Stock" desc="JK Stock presented by junekimdev" url={publicUrl}></Meta>
+      <Meta
+        title={`JK Stock | ${currentTab.company.name}`}
+        desc="JK Stock presented by junekimdev"
+        url={publicUrl}
+      ></Meta>
       <MainFrame>
         <Header />
         <Chart />
