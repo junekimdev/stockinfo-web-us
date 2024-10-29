@@ -50,7 +50,7 @@ const Presenter = (props: { req: TypePriceRequest; marginLeft: number; max?: num
         <h5>{chartTitle}</h5>
         <span
           className="material-symbols-outlined"
-          title="price is adjusted to accommodate changes of stock amount"
+          title="price is adjusted only by the number of outstanding stocks; dividend is not considered"
         >
           info
         </span>
