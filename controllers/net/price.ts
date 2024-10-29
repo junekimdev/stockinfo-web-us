@@ -1,5 +1,8 @@
-import { QueryFunctionContext, useQuery } from '@tanstack/react-query';
+import { QueryFunctionContext, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import { useRecoilValue } from 'recoil';
 import { PRICES_URL } from '../apiURLs';
+import { StateCompanyTabs } from '../data/states';
 import {
   TypeError,
   TypeIDWeek,
@@ -18,6 +21,23 @@ export const useGetPrices = (req: TypePriceRequest) => {
     staleTime: Infinity,
     placeholderData: [],
   });
+};
+
+export const usePrefetchPricesTabs = () => {
+  const tabs = useRecoilValue(StateCompanyTabs);
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    for (const tab of tabs) {
+      const code = tab.company.code;
+      const type = tab.mainType;
+      queryClient.prefetchQuery({
+        queryKey: ['prices', code, type],
+        queryFn: getPrices,
+        staleTime: Infinity,
+      });
+    }
+  }, [tabs, queryClient]);
 };
 
 export const useGetPricesLatest = (req: TypePriceRequest) => {
