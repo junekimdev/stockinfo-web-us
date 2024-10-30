@@ -4,16 +4,15 @@ import { getDateString } from '../../controllers/chart';
 import { StateCurrentTab } from '../../controllers/data/states';
 import { TypePriceRequest } from '../../controllers/data/types';
 import { useGetEdgarStatement } from '../../controllers/net/edgar';
-import { useGetPrices } from '../../controllers/net/price';
+import { useGetPricesLatest } from '../../controllers/net/price';
 import styles from './details.module.scss';
 
 const View = () => {
   const { company } = useRecoilValue(StateCurrentTab);
   const { data } = useGetEdgarStatement(company.cik);
-  const latestReq: TypePriceRequest = { code: company.code, type: 'latest' };
-  const prices = useGetPrices(latestReq);
-  const latestPrice = prices.data?.[0];
-  const stockCnt = data?.outstandingStock.length ? data.outstandingStock[0].value : undefined;
+  const req: TypePriceRequest = { code: company.code, type: 'latest' };
+  const { data: latestPrice } = useGetPricesLatest(req);
+  const stockCnt = data?.outstandingStock[0].value;
 
   return (
     <header className={styles.header}>
@@ -34,7 +33,7 @@ const View = () => {
           <span>{latestPrice && getDateString(latestPrice)}</span>
         </div>
         <div className={styles.headerItem}>
-          <h5>Closed At :</h5>
+          <h5>Latest Price :</h5>
           <span>{latestPrice?.close.toLocaleString()}</span>
         </div>
         <div className={styles.headerItem}>

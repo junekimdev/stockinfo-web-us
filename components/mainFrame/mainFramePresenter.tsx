@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { ReactNode } from 'react';
 import { useLoadCompanyTabs } from '../../controllers/data/hooks';
-import { usePrefetchPricesTabs } from '../../controllers/net/price';
+import { useGetPricesPrefetching } from '../../controllers/net/price';
 import logoSrc from '../../public/assets/images/junekim_192x192.png';
 import styles from './mainFrame.module.scss';
 import Menu from './mainFrameViewMenu';
@@ -10,7 +10,7 @@ import Navbar from './mainFrameViewNavbar';
 const Presenter = (props: { children?: ReactNode[] | ReactNode }) => {
   const { children } = props;
   useLoadCompanyTabs();
-  usePrefetchPricesTabs();
+  useGetPricesPrefetching();
   const year = new Date().getFullYear();
 
   return (
