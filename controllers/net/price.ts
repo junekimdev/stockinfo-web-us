@@ -19,11 +19,10 @@ export const useGetPrices = (req: TypePriceRequest) => {
     queryFn: getPrices,
     enabled: !!code && !!type,
     staleTime: Infinity,
-    placeholderData: [],
   });
 };
 
-export const usePrefetchPricesTabs = () => {
+export const useGetPricesPrefetching = () => {
   const tabs = useRecoilValue(StateCompanyTabs);
   const queryClient = useQueryClient();
 
@@ -68,24 +67,24 @@ const getPrices = async ({ queryKey }: QueryFunctionContext<string[]>) => {
 
   // parse numeric string to number
   const data: TypePriceVolume[] = prices.reverse().map((v) => {
-    const date = t === 'daily' ? new Date(v.date) : ({ year: v.year, week: v.week } as TypeIDWeek);
+    const date = t === 'weekly' ? ({ year: v.year, week: v.week } as TypeIDWeek) : new Date(v.date);
     const open = parseFloat(v.open);
     const close = parseFloat(v.close);
     const high = parseFloat(v.high);
     const low = parseFloat(v.low);
     const volume = parseInt(v.volume);
-    const adj_close = t === 'daily' ? parseFloat(v.adj_close) : NaN;
+    const adj_close = t === 'weekly' ? NaN : parseFloat(v.adj_close);
     const scaler = adj_close / close;
-    return t === 'daily'
-      ? {
+    return t === 'weekly'
+      ? { date, open, close, high, low, volume }
+      : {
           date,
           open: open * scaler,
           close: adj_close,
           high: high * scaler,
           low: low * scaler,
           volume,
-        }
-      : { date, open, close, high, low, volume };
+        };
   });
 
   return data;
