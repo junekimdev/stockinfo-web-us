@@ -57,7 +57,7 @@ export type TypePriceVolumeRaw = TypePriceVolume & {
   base_stock_cnt: number;
 };
 export type TypePricePercentChange = TypeDate & { percent_change: number };
-export type TypeParabolicSAR = TypeDate & { sar: number; isUpTrend: boolean };
+export type TypeParabolicSAR = TypeDate & { sar: number; isUpTrend: boolean; distance: number };
 export type TypeMovingAvg = TypeDate & { avg: number };
 export type TypePriceBollingerBands = TypeDate & {
   upper: number;
