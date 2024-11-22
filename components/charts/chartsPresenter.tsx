@@ -14,6 +14,7 @@ import MacdV from '../macdV';
 import PercentChange from '../percentChange';
 import Price from '../price';
 import Rsi from '../rsi';
+import SarGap from '../sarGap';
 import Stochastic from '../stochastic';
 import Volume from '../volume';
 import styles from './charts.module.scss';
@@ -40,6 +41,7 @@ const Presenter = () => {
           <Macd req={req} marginLeft={marginLeft} />
           <MacdV req={req} marginLeft={marginLeft} />
           <Stochastic req={req} marginLeft={marginLeft} />
+          <SarGap req={req} marginLeft={marginLeft} />
           <HeikinAshiSmoothed req={req} marginLeft={marginLeft} />
           <Adx req={req} marginLeft={marginLeft} />
           <PercentChange req={req} marginLeft={marginLeft} />

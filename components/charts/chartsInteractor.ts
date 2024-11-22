@@ -106,7 +106,8 @@ export const useSAR = (req: TypePriceRequest, options?: { max?: number; step?: n
             thisSAR = isUpTrend ? data[i - 2].low : data[i - 2].high;
           }
         }
-        result.push({ date: data[i].date, sar: thisSAR, isUpTrend });
+        const distance = isUpTrend ? data[i].low - thisSAR : data[i].high - thisSAR;
+        result.push({ date: data[i].date, sar: thisSAR, isUpTrend, distance });
       }
       setState(result);
     }
