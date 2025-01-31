@@ -1,24 +1,25 @@
+import { useAtom } from 'jotai';
 import { ChangeEvent, useCallback, useEffect } from 'react';
-import { useRecoilState, useSetRecoilState } from 'recoil';
 import { smaStep } from '../../controllers/avg';
-import { StateStochastic, StateStochasticDisplay } from '../../controllers/data/states';
+import { StateStochastic } from '../../controllers/data/states';
 import {
   TypePrice,
   TypePriceRequest,
   TypePriceValue,
   TypeStochastic,
-  TypeStochasticDisplayItem,
 } from '../../controllers/data/types';
 import { useGetPrices } from '../../controllers/net/price';
+import { StochasticStateDisplay } from './stochasticState';
+import { StochasticTypeDisplayItem } from './stochasticType';
 
-export const useDisplayCheckboxChange = (what: TypeStochasticDisplayItem) => {
-  const setState = useSetRecoilState(StateStochasticDisplay);
+export const useDisplayCheckboxChange = (what: StochasticTypeDisplayItem) => {
+  const [display, setState] = useAtom(StochasticStateDisplay);
 
   return useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      setState((prev) => ({ ...prev, [what]: e.currentTarget.checked }));
+      setState({ ...display, [what]: e.currentTarget.checked });
     },
-    [what],
+    [setState, display, what],
   );
 };
 
@@ -28,7 +29,7 @@ export const useStochastic = (
   over: TypePriceValue = 'close',
 ) => {
   const { data } = useGetPrices(req);
-  const [dataStochastic, setState] = useRecoilState(StateStochastic(req));
+  const [dataStochastic, setState] = useAtom(StateStochastic(req));
   const [p1, p2, p3] = period;
 
   useEffect(() => {
@@ -49,7 +50,7 @@ export const useStochastic = (
       }
       setState(result);
     }
-  }, [p1, p2, p3, over, data, dataStochastic]);
+  }, [setState, p1, p2, p3, over, data, dataStochastic]);
 };
 
 export const getHighestHigh = (data: TypePrice[], period: number, i: number) => {

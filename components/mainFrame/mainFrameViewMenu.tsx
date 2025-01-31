@@ -1,4 +1,4 @@
-import { useRecoilValue } from 'recoil';
+import { useAtomValue } from 'jotai';
 import { useClearTabsClick, useSaveTabsClick } from '../../controllers/data/hooks';
 import { StateCompanyTabs } from '../../controllers/data/states';
 import styles from './mainFrame.module.scss';
@@ -6,8 +6,8 @@ import { useCloseAllClick } from './mainFrameInteractor';
 import { MainFrameStateMenuOpened } from './mainFrameStates';
 
 const View = () => {
-  const menuOpened = useRecoilValue(MainFrameStateMenuOpened);
-  const tabs = useRecoilValue(StateCompanyTabs);
+  const menuOpened = useAtomValue(MainFrameStateMenuOpened);
+  const tabs = useAtomValue(StateCompanyTabs);
   const onCloseAllClick = useCloseAllClick();
   const onSaveTabsClick = useSaveTabsClick();
   const onClearTabsClick = useClearTabsClick();

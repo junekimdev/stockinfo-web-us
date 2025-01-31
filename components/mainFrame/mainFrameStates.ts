@@ -1,6 +1,3 @@
-import { atom } from 'recoil';
+import { atom } from 'jotai';
 
-export const MainFrameStateMenuOpened = atom<boolean>({
-  key: 'MainFrameStateMenuOpened',
-  default: false,
-});
+export const MainFrameStateMenuOpened = atom(false);

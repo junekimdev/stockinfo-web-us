@@ -1,4 +1,4 @@
-import { useRecoilValue } from 'recoil';
+import { useAtomValue } from 'jotai';
 import { StateCurrentTab } from '../../controllers/data/states';
 import { TypeCompanyTab } from '../../controllers/data/types';
 import styles from './mainFrame.module.scss';
@@ -6,7 +6,7 @@ import { useMoveToTabClick, useRemoveTabClick } from './mainFrameInteractor';
 
 const View = (props: { tab: TypeCompanyTab }) => {
   const { tab } = props;
-  const currentTab = useRecoilValue(StateCurrentTab);
+  const currentTab = useAtomValue(StateCurrentTab);
   const onMoveToTabClick = useMoveToTabClick(tab);
   const onRemoveTabClick = useRemoveTabClick(tab);
 

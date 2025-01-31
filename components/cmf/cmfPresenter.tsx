@@ -1,17 +1,18 @@
+import { useAtomValue } from 'jotai';
 import { useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
-import { StateChaikin, StateCMFDisplay } from '../../controllers/data/states';
+import { StateChaikin } from '../../controllers/data/states';
 import { TypePriceRequest } from '../../controllers/data/types';
 import { useGetPrices } from '../../controllers/net/price';
 import styles from './cmf.module.scss';
 import draw from './cmfFnDraw';
 import { useDisplayCheckboxChange } from './cmfInteractor';
+import { CmfStateDisplay } from './cmfState';
 
 const Presenter = (props: { req: TypePriceRequest; marginLeft: number; max?: number }) => {
   const { req, marginLeft, max = 120 } = props;
   const { data } = useGetPrices(req);
-  const dataChaikin = useRecoilValue(StateChaikin(req));
-  const display = useRecoilValue(StateCMFDisplay);
+  const dataChaikin = useAtomValue(StateChaikin(req));
+  const display = useAtomValue(CmfStateDisplay);
 
   const onNoSignalZoneCheckboxChange = useDisplayCheckboxChange('noSignalZone');
 

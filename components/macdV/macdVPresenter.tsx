@@ -1,19 +1,20 @@
+import { useAtomValue } from 'jotai';
 import { useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
-import { StateMacdV, StateMacdVDisplay } from '../../controllers/data/states';
+import { StateMacdV } from '../../controllers/data/states';
 import { TypePriceRequest } from '../../controllers/data/types';
 import { useGetPrices } from '../../controllers/net/price';
 import styles from './macdV.module.scss';
 import draw from './macdVFnDraw';
 import { useDisplayCheckboxChange, useMacdV } from './macdVInteractor';
+import { MacdVStateDisplay } from './macdVState';
 
 const Presenter = (props: { req: TypePriceRequest; marginLeft: number; max?: number }) => {
   const { req, marginLeft, max = 120 } = props;
 
   useMacdV(req);
   const { data } = useGetPrices(req);
-  const dataMacdV = useRecoilValue(StateMacdV(req));
-  const display = useRecoilValue(StateMacdVDisplay);
+  const dataMacdV = useAtomValue(StateMacdV(req));
+  const display = useAtomValue(MacdVStateDisplay);
 
   const onMacdVCheckboxChange = useDisplayCheckboxChange('MACDV');
   const onSignalCheckboxChange = useDisplayCheckboxChange('signal');

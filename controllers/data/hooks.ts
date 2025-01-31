@@ -1,6 +1,6 @@
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect } from 'react';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { LOCAL_STORAGE_KEY_COMPANY_TABS } from '../apiURLs';
 import {
   StateCompanyTabs,
@@ -12,7 +12,7 @@ import { TypeCompanyTab } from './types';
 
 export const useCheckCurrentTab = () => {
   const router = useRouter();
-  const currentTab = useRecoilValue(StateCurrentTab);
+  const currentTab = useAtomValue(StateCurrentTab);
 
   useEffect(() => {
     if (!currentTab.uuid) router.replace('/');
@@ -20,8 +20,8 @@ export const useCheckCurrentTab = () => {
 };
 
 export const useLoadCompanyTabs = () => {
-  const [initiated, setInit] = useRecoilState(StateTabsInitiated);
-  const setTabs = useSetRecoilState(StateCompanyTabs);
+  const [initiated, setInit] = useAtom(StateTabsInitiated);
+  const setTabs = useSetAtom(StateCompanyTabs);
 
   useEffect(() => {
     if (initiated) return;
@@ -36,11 +36,11 @@ export const useLoadCompanyTabs = () => {
         console.error(error);
       }
     }
-  }, [initiated]);
+  }, [setInit, setTabs, initiated]);
 };
 
 export const useSaveTabsClick = () => {
-  const tabs = useRecoilValue(StateCompanyTabs);
+  const tabs = useAtomValue(StateCompanyTabs);
 
   return useCallback(() => {
     window.localStorage.setItem(LOCAL_STORAGE_KEY_COMPANY_TABS, JSON.stringify(tabs));
@@ -56,7 +56,7 @@ export const useClearTabsClick = () => {
 };
 
 export const useToggleDetails = () => {
-  const setState = useSetRecoilState(StateDetailsOpened);
+  const [opened, setOpened] = useAtom(StateDetailsOpened);
 
-  return useCallback(() => setState((v) => !v), []);
+  return useCallback(() => setOpened(!opened), [setOpened, opened]);
 };

@@ -1,8 +1,9 @@
 import * as d3 from 'd3';
 import { getDateString, getXCentered, initChart } from '../../controllers/chart';
-import { TypeChaikin, TypeCMFDisplay } from '../../controllers/data/types';
+import { TypeChaikin } from '../../controllers/data/types';
+import { CmfTypeDisplay } from './cmfType';
 
-const draw = (id: string, data: TypeChaikin[], display: TypeCMFDisplay, marginLeft: number) => {
+const draw = (id: string, data: TypeChaikin[], display: CmfTypeDisplay, marginLeft: number) => {
   if (!data?.length) return;
   const yMin = d3.min(data, (d) => Math.min(d.cmf, -0.05)) ?? 0;
   const yMax = d3.max(data, (d) => Math.max(d.cmf, 0.05)) ?? 0;

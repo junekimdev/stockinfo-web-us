@@ -1,7 +1,7 @@
 import styles from './charts.module.scss';
 
 const View = () => {
-  const bars: JSX.Element[] = [];
+  const bars: React.JSX.Element[] = [];
   for (let i = 0; i < 10; i++) {
     const bar = (
       <div

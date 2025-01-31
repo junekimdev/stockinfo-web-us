@@ -1,12 +1,25 @@
-import { useEffect } from 'react';
-import { useRecoilState } from 'recoil';
+import { useAtom } from 'jotai';
+import { useCallback, useEffect, ChangeEvent } from 'react';
 import { StatePriceHeikinAshi } from '../../controllers/data/states';
 import { TypePrice, TypePriceRequest } from '../../controllers/data/types';
 import { useGetPrices } from '../../controllers/net/price';
+import { HeikinAshiStateDisplay } from './heikinAshiState';
+import { HeikinAshiTypeDisplayItem } from './heikinAshiType';
+
+export const useDisplayCheckboxChange = (what: HeikinAshiTypeDisplayItem) => {
+  const [display, setState] = useAtom(HeikinAshiStateDisplay);
+
+  return useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      setState({ ...display, [what]: e.currentTarget.checked });
+    },
+    [setState, display, what],
+  );
+};
 
 export const useHeikinAshi = (req: TypePriceRequest) => {
   const { data } = useGetPrices(req);
-  const [dataHeikinAshi, setState] = useRecoilState(StatePriceHeikinAshi(req));
+  const [dataHeikinAshi, setState] = useAtom(StatePriceHeikinAshi(req));
 
   useEffect(() => {
     if (data && data.length && !dataHeikinAshi.length) {
@@ -14,8 +27,8 @@ export const useHeikinAshi = (req: TypePriceRequest) => {
         date: v.date,
         open: 0,
         close: (v.open + v.close + v.high + v.low) / 4,
-        high: Math.max(v.open, v.close, v.high),
-        low: Math.min(v.open, v.close, v.low),
+        high: v.high,
+        low: v.low,
       }));
 
       for (let i = 0; i < bar.length; i++) {
@@ -24,5 +37,5 @@ export const useHeikinAshi = (req: TypePriceRequest) => {
 
       setState(bar);
     }
-  }, [data, dataHeikinAshi]);
+  }, [setState, data, dataHeikinAshi]);
 };

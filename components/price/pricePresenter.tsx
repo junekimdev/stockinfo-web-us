@@ -1,24 +1,21 @@
+import { useAtomValue } from 'jotai';
 import { useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
-import { useCheckboxChange } from '../../controllers/chart';
-import {
-  StatePriceBollingerBands,
-  StatePriceDisplays,
-  StatePriceSAR,
-} from '../../controllers/data/states';
-import { TypeChart, TypePriceRequest } from '../../controllers/data/types';
+import { StatePriceBollingerBands, StatePriceSAR } from '../../controllers/data/states';
+import { TypePriceRequest } from '../../controllers/data/types';
 import { useGetPrices, useGetPricesLatest } from '../../controllers/net/price';
 import styles from './price.module.scss';
 import draw from './priceFnDraw';
+import { useDisplayCheckboxChange } from './priceInteractor';
+import { PriceStateDisplay } from './priceState';
 
 const Presenter = (props: { req: TypePriceRequest; marginLeft: number; max?: number }) => {
   const { req, marginLeft, max = 120 } = props;
-  const chartType: TypeChart = 'price';
+
   const { data } = useGetPrices(req);
   const { data: latestPriceData } = useGetPricesLatest({ code: req.code, type: 'latest' });
-  const dataSar = useRecoilValue(StatePriceSAR(req));
-  const dataBands = useRecoilValue(StatePriceBollingerBands(req));
-  const display = useRecoilValue(StatePriceDisplays({ code: req.code, type: chartType }));
+  const dataSar = useAtomValue(StatePriceSAR(req));
+  const dataBands = useAtomValue(StatePriceBollingerBands(req));
+  const display = useAtomValue(PriceStateDisplay);
 
   const chartTitle = `${req.type} price`;
   const chartID = `${styles.chart}-${req.code}-${req.type}`;
@@ -26,9 +23,9 @@ const Presenter = (props: { req: TypePriceRequest; marginLeft: number; max?: num
   const sarInputID = `${chartID}-ParabolicSAR`;
   const bollingerInputID = `${chartID}-BollingerBands`;
 
-  const onLatestPriceCheckboxChange = useCheckboxChange(req.code, chartType, 'LatestPrice');
-  const onSarCheckboxChange = useCheckboxChange(req.code, chartType, 'ParabolicSAR');
-  const onBollingerCheckboxChange = useCheckboxChange(req.code, chartType, 'BollingerBands');
+  const onLatestPriceCheckboxChange = useDisplayCheckboxChange('LatestPrice');
+  const onSarCheckboxChange = useDisplayCheckboxChange('ParabolicSAR');
+  const onBollingerCheckboxChange = useDisplayCheckboxChange('BollingerBands');
 
   useEffect(() => {
     if (data?.length) {

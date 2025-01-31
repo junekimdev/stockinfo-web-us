@@ -27,7 +27,7 @@
   display: flex;
   align-items: center;
 
-  @include theme.tablet {
+  @include theme.pc {
     width: 70%;
   }
 }
@@ -106,7 +106,7 @@
   align-items: center;
   grid-template:
     'name name' 2rem
-    'code cik' 1rem
+    'code mkt' 1rem
     'corp corp' 1rem
     / 1fr 1fr;
   gap: 0.5rem;
@@ -158,8 +158,8 @@
   grid-area: code;
 }
 
-.companyCIK {
-  grid-area: cik;
+.companyMkt {
+  grid-area: mkt;
 }
 
 .companyCorp {

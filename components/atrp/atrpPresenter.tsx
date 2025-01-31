@@ -1,5 +1,5 @@
+import { useAtomValue } from 'jotai';
 import { useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
 import { StateAtrp } from '../../controllers/data/states';
 import { TypePriceRequest } from '../../controllers/data/types';
 import { useGetPrices } from '../../controllers/net/price';
@@ -12,7 +12,7 @@ const Presenter = (props: { req: TypePriceRequest; marginLeft: number; max?: num
 
   useAtrp(req);
   const { data } = useGetPrices(req);
-  const dataAtrp = useRecoilValue(StateAtrp(req));
+  const dataAtrp = useAtomValue(StateAtrp(req));
 
   const chartTitle = `${req.type} ATRP`;
   const chartID = `${styles.chart}-${req.code}-${req.type}`;

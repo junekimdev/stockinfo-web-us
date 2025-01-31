@@ -1,5 +1,5 @@
+import { useAtomValue } from 'jotai';
 import { useState } from 'react';
-import { useRecoilValue } from 'recoil';
 import { StateRecentSearchTabs, StateSearchInput } from '../../controllers/data/states';
 import { useGetCompanies } from '../../controllers/net/company';
 import styles from './search.module.scss';
@@ -18,8 +18,8 @@ const Presenter = () => {
   const onSearchInputChange = useSearchInputChange();
   const onDeleteAllRecentClick = useDeleteAllRecentClick();
 
-  const searchInput = useRecoilValue(StateSearchInput);
-  const recentSearchTabs = useRecoilValue(StateRecentSearchTabs);
+  const searchInput = useAtomValue(StateSearchInput);
+  const recentSearchTabs = useAtomValue(StateRecentSearchTabs);
   const { data } = useGetCompanies();
 
   return (

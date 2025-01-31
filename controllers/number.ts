@@ -1,3 +1,5 @@
+export const to2DigitString = (n: number) => n.toString().padStart(2, '0');
+
 export const getNumString = (n?: string) => {
   if (typeof n === 'undefined') return;
 
@@ -46,6 +48,16 @@ export const shortenNumMillion = (n?: number) => {
   if (typeof n === 'undefined') return;
 
   const num = n / 1000000;
+
+  const r = Math.round((num + Number.EPSILON) * 10) / 10; // Precision of 1st decimal point
+  return `${r.toLocaleString(undefined, { minimumFractionDigits: 1 })} Mn`;
+};
+
+export const shortenNumStringMillion = (n?: string) => {
+  if (typeof n === 'undefined') return;
+
+  const num = Number.parseInt(n) / 1000000;
+  if (isNaN(num)) throw Error(`${n} is not a number`);
 
   const r = Math.round((num + Number.EPSILON) * 10) / 10; // Precision of 1st decimal point
   return `${r.toLocaleString(undefined, { minimumFractionDigits: 1 })} Mn`;

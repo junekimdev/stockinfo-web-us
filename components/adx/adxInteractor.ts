@@ -1,29 +1,26 @@
+import { useAtom } from 'jotai';
 import { ChangeEvent, useCallback, useEffect } from 'react';
-import { useRecoilState, useSetRecoilState } from 'recoil';
 import { getCurrentTR, wilderSmooth, wilderSmoothEMA } from '../../controllers/avg';
-import { StateAdx, StateAdxDisplay } from '../../controllers/data/states';
-import {
-  TypeAdx,
-  TypeAdxDisplayItem,
-  TypePrice,
-  TypePriceRequest,
-} from '../../controllers/data/types';
+import { StateAdx } from '../../controllers/data/states';
+import { TypeAdx, TypePrice, TypePriceRequest } from '../../controllers/data/types';
 import { useGetPrices } from '../../controllers/net/price';
+import { AdxStateDisplay } from './adxState';
+import { AdxTypeDisplayItem } from './adxType';
 
-export const useDisplayCheckboxChange = (what: TypeAdxDisplayItem) => {
-  const setState = useSetRecoilState(StateAdxDisplay);
+export const useDisplayCheckboxChange = (what: AdxTypeDisplayItem) => {
+  const [display, setState] = useAtom(AdxStateDisplay);
 
   return useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      setState((prev) => ({ ...prev, [what]: e.currentTarget.checked }));
+      setState({ ...display, [what]: e.currentTarget.checked });
     },
-    [what],
+    [setState, display, what],
   );
 };
 
 export const useAdx = (req: TypePriceRequest, period = 14) => {
   const { data } = useGetPrices(req);
-  const [dataAdx, setState] = useRecoilState(StateAdx(req));
+  const [dataAdx, setState] = useAtom(StateAdx(req));
 
   useEffect(() => {
     if (data && data.length && !dataAdx.length) {
@@ -63,7 +60,7 @@ export const useAdx = (req: TypePriceRequest, period = 14) => {
       }
       setState(result);
     }
-  }, [period, data, dataAdx]);
+  }, [setState, period, data, dataAdx]);
 };
 
 // Get Directional Movement(DM)

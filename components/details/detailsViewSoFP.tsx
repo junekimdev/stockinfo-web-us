@@ -1,4 +1,4 @@
-import { useRecoilValue } from 'recoil';
+import { useAtomValue } from 'jotai';
 import { StateCurrentTab } from '../../controllers/data/states';
 import { useGetEdgarStatement } from '../../controllers/net/edgar';
 import { shortenNumMillion } from '../../controllers/number';
@@ -11,7 +11,7 @@ const getLiabilitiesRatio = (liabilities?: number, equity?: number) => {
 };
 
 const View = () => {
-  const { company } = useRecoilValue(StateCurrentTab);
+  const { company } = useAtomValue(StateCurrentTab);
   const { data } = useGetEdgarStatement(company.cik);
   const assets = data?.assets ?? [];
   const equity = data?.equity ?? [];

@@ -1,4 +1,4 @@
-import { useRecoilValue } from 'recoil';
+import { useAtomValue } from 'jotai';
 import { EDGAR_VIEWER_LINK } from '../../controllers/apiURLs';
 import { getDateString } from '../../controllers/chart';
 import { StateCurrentTab } from '../../controllers/data/states';
@@ -8,7 +8,7 @@ import { useGetPricesLatest } from '../../controllers/net/price';
 import styles from './details.module.scss';
 
 const View = () => {
-  const { company } = useRecoilValue(StateCurrentTab);
+  const { company } = useAtomValue(StateCurrentTab);
   const { data } = useGetEdgarStatement(company.cik);
   const req: TypePriceRequest = { code: company.code, type: 'latest' };
   const { data: latestPrice } = useGetPricesLatest(req);

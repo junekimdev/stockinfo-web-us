@@ -1,6 +1,6 @@
 import { QueryFunctionContext, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useAtomValue } from 'jotai';
 import { useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
 import { PRICES_URL } from '../apiURLs';
 import { StateCompanyTabs } from '../data/states';
 import {
@@ -23,7 +23,7 @@ export const useGetPrices = (req: TypePriceRequest) => {
 };
 
 export const useGetPricesPrefetching = () => {
-  const tabs = useRecoilValue(StateCompanyTabs);
+  const tabs = useAtomValue(StateCompanyTabs);
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -45,7 +45,7 @@ export const useGetPricesLatest = (req: TypePriceRequest) => {
     queryKey: ['prices', code, type],
     queryFn: getPricesLatest,
     enabled: !!code && !!type,
-    staleTime: 60000, // 1 minute
+    staleTime: 60000, // 60s
   });
 };
 

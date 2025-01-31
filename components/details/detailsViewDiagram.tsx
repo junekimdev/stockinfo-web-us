@@ -1,4 +1,4 @@
-import { useRecoilValue } from 'recoil';
+import { useAtomValue } from 'jotai';
 import { StateCurrentTab } from '../../controllers/data/states';
 import { TypePriceRequest } from '../../controllers/data/types';
 import { useGetEdgarStatement } from '../../controllers/net/edgar';
@@ -11,7 +11,7 @@ const getRatioString = (n: number) => {
 };
 
 const View = () => {
-  const { company } = useRecoilValue(StateCurrentTab);
+  const { company } = useAtomValue(StateCurrentTab);
   const req: TypePriceRequest = { code: company.code, type: 'latest' };
   const { data } = useGetEdgarStatement(company.cik);
   const prices = useGetPricesLatest(req);

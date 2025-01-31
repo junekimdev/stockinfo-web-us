@@ -1,19 +1,20 @@
+import { useAtomValue } from 'jotai';
 import { useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
-import { StateRsi, StateRsiDisplay } from '../../controllers/data/states';
+import { StateRsi } from '../../controllers/data/states';
 import { TypePriceRequest } from '../../controllers/data/types';
 import { useGetPrices } from '../../controllers/net/price';
 import styles from './rsi.module.scss';
 import draw from './rsiFnDraw';
 import { useDisplayCheckboxChange, useRsi } from './rsiInteractor';
+import { RsiStateDisplay } from './rsiState';
 
 const Presenter = (props: { req: TypePriceRequest; marginLeft: number; max?: number }) => {
   const { req, marginLeft, max = 120 } = props;
 
   useRsi(req);
   const { data } = useGetPrices(req);
-  const dataRsi = useRecoilValue(StateRsi(req));
-  const display = useRecoilValue(StateRsiDisplay);
+  const dataRsi = useAtomValue(StateRsi(req));
+  const display = useAtomValue(RsiStateDisplay);
 
   const onOversoldLineCheckboxChange = useDisplayCheckboxChange('oversold');
   const onOverboughtLineCheckboxChange = useDisplayCheckboxChange('overbought');

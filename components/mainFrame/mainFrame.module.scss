@@ -292,8 +292,11 @@
 
 .menuBtn {
   @include theme.getBtn(var(--white), var(--navbar-color-primary), var(--font-size));
-  width: 100%;
-  padding: 0.5rem;
+  // Override button style
+  & {
+    width: 100%;
+    padding: 0.5rem;
+  }
 
   @include theme.pc {
     width: auto;
@@ -302,8 +305,11 @@
 
 .closeAllBtn {
   @include theme.getBtn(var(--red), var(--navbar-color-primary), var(--font-size));
-  width: 100%;
-  padding: 0.5rem;
+  // Override button style
+  & {
+    width: 100%;
+    padding: 0.5rem;
+  }
 
   @include theme.pc {
     width: auto;
@@ -413,8 +419,11 @@
     var(--navbar-font-color),
     var(--header-btn-font-size)
   );
-  width: 20ch;
-  box-shadow: 0 0 2px 2px rgba(12, 7, 34, 0.1);
+  // Override button style
+  & {
+    width: 20ch;
+    box-shadow: 0 0 2px 2px rgba(12, 7, 34, 0.1);
+  }
 }
 
 .footer {

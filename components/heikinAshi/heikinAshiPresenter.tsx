@@ -1,28 +1,26 @@
+import { useAtomValue } from 'jotai';
 import { useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
-import { useCheckboxChange } from '../../controllers/chart';
 import {
   StatePriceBollingerBands,
-  StatePriceDisplays,
   StatePriceHeikinAshi,
   StatePriceSAR,
 } from '../../controllers/data/states';
-import { TypeChart, TypePriceRequest } from '../../controllers/data/types';
+import { TypePriceRequest } from '../../controllers/data/types';
 import { useGetPricesLatest } from '../../controllers/net/price';
 import styles from './heikinAshi.module.scss';
 import draw from './heikinAshiFnDraw';
-import { useHeikinAshi } from './heikinAshiInteractor';
+import { useDisplayCheckboxChange, useHeikinAshi } from './heikinAshiInteractor';
+import { HeikinAshiStateDisplay } from './heikinAshiState';
 
 const Presenter = (props: { req: TypePriceRequest; marginLeft: number; max?: number }) => {
   const { req, marginLeft, max = 120 } = props;
   useHeikinAshi(req);
 
-  const chartType: TypeChart = 'heikin-aski';
   const { data } = useGetPricesLatest({ code: req.code, type: 'latest' });
-  const dataHeikinAshi = useRecoilValue(StatePriceHeikinAshi(req));
-  const dataSar = useRecoilValue(StatePriceSAR(req));
-  const dataBands = useRecoilValue(StatePriceBollingerBands(req));
-  const display = useRecoilValue(StatePriceDisplays({ code: req.code, type: chartType }));
+  const dataHeikinAshi = useAtomValue(StatePriceHeikinAshi(req));
+  const dataSar = useAtomValue(StatePriceSAR(req));
+  const dataBands = useAtomValue(StatePriceBollingerBands(req));
+  const display = useAtomValue(HeikinAshiStateDisplay);
 
   const chartTitle = `${req.type} Heikin-Ashi`;
   const chartID = `${styles.chart}-${req.code}-${req.type}`;
@@ -30,9 +28,9 @@ const Presenter = (props: { req: TypePriceRequest; marginLeft: number; max?: num
   const sarInputID = `${chartID}-ParabolicSAR`;
   const bollingerInputID = `${chartID}-BollingerBands`;
 
-  const onLatestPriceCheckboxChange = useCheckboxChange(req.code, chartType, 'LatestPrice');
-  const onSarCheckboxChange = useCheckboxChange(req.code, chartType, 'ParabolicSAR');
-  const onBollingerCheckboxChange = useCheckboxChange(req.code, chartType, 'BollingerBands');
+  const onLatestPriceCheckboxChange = useDisplayCheckboxChange('LatestPrice');
+  const onSarCheckboxChange = useDisplayCheckboxChange('ParabolicSAR');
+  const onBollingerCheckboxChange = useDisplayCheckboxChange('BollingerBands');
 
   useEffect(() => {
     if (dataHeikinAshi.length) {

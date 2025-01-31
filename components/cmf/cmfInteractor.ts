@@ -1,15 +1,15 @@
+import { useAtom } from 'jotai';
 import { ChangeEvent, useCallback } from 'react';
-import { useSetRecoilState } from 'recoil';
-import { StateCMFDisplay } from '../../controllers/data/states';
-import { TypeCMFDisplayItem } from '../../controllers/data/types';
+import { CmfStateDisplay } from './cmfState';
+import { CmfTypeDisplayItem } from './cmfType';
 
-export const useDisplayCheckboxChange = (what: TypeCMFDisplayItem) => {
-  const setState = useSetRecoilState(StateCMFDisplay);
+export const useDisplayCheckboxChange = (what: CmfTypeDisplayItem) => {
+  const [display, setState] = useAtom(CmfStateDisplay);
 
   return useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      setState((prev) => ({ ...prev, [what]: e.currentTarget.checked }));
+      setState({ ...display, [what]: e.currentTarget.checked });
     },
-    [what],
+    [setState, display, what],
   );
 };
