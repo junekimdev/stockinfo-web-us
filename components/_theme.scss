@@ -12,9 +12,11 @@ $screen-5: 2048px; // pc-wide
   }
 }
 
-// "Mobile portrait" is the base of css stylesheet
+// "Mobile portrait" is default
+// $screen-1 <= width < $screen-2
 
-@mixin mobile-land {
+// Mobile-landscape
+@mixin mobile-wide {
   @media only screen and ($screen-2 <= width) {
     @content;
   }
