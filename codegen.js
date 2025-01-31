@@ -1,5 +1,5 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require('node:fs');
+const path = require('node:path');
 const ejs = require('ejs');
 const { getArgs, askQuestion } = require('./codegen-util');
 
@@ -30,8 +30,9 @@ const main = async () => {
     let { name, v = true, V } = getArgs();
 
     // Make sure name has a value
-    if (!name) {
-      name = await askQuestion('Name of the Component? ');
+    while (!name) {
+      console.log('Component name is NOT found!');
+      name = await askQuestion('Name of the Component?');
     }
 
     // Check if the directory exists
@@ -40,7 +41,7 @@ const main = async () => {
       fs.accessSync(dirPath);
       // If exists, ask to overwrite or not
       console.log('A component with the given name already exists');
-      const ans = await askQuestion('Do you want to overwrite it? [y/n] ');
+      const ans = await askQuestion('Do you want to overwrite it? [y/N]');
       if (ans !== 'y' && ans !== 'Y') process.exit(1);
     } catch (e) {
       // Not existing, create it
@@ -54,16 +55,12 @@ const main = async () => {
     const presenterTemplate = path.join(__dirname, 'templates', 'presenter.ejs');
     const scssTemplate = path.join(__dirname, 'templates', 'scss.ejs');
     const viewTemplate = path.join(__dirname, 'templates', 'view.ejs');
-    const typeTemplate = path.join(__dirname, 'templates', 'type.ejs');
-    const statesTemplate = path.join(__dirname, 'templates', 'states.ejs');
 
     // Output
     renderEjs(indexTemplate, name, 'index.ts');
     renderEjs(interactorTemplate, name, `${name}Interactor.ts`);
     renderEjs(presenterTemplate, name, `${name}Presenter.tsx`);
     renderEjs(scssTemplate, name, `${name}.module.scss`);
-    renderEjs(typeTemplate, name, `${name}Type.ts`);
-    renderEjs(statesTemplate, name, `${name}States.ts`);
     if (v && !V) renderEjs(viewTemplate, name, `${name}View.tsx`);
 
     console.log(`Generated the component: ${name}`);

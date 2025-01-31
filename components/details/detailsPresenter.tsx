@@ -1,4 +1,4 @@
-import { useRecoilValue } from 'recoil';
+import { useAtomValue } from 'jotai';
 import { useToggleDetails } from '../../controllers/data/hooks';
 import { StateCurrentTab } from '../../controllers/data/states';
 import { useGetEdgarStatement } from '../../controllers/net/edgar';
@@ -10,7 +10,7 @@ import Income from './detailsViewIncome';
 import SoFP from './detailsViewSoFP';
 
 const Presenter = () => {
-  const { company } = useRecoilValue(StateCurrentTab);
+  const { company } = useAtomValue(StateCurrentTab);
   const { data } = useGetEdgarStatement(company.cik);
 
   const onToggleDetails = useToggleDetails();

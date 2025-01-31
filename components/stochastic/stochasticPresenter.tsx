@@ -1,19 +1,20 @@
+import { useAtomValue } from 'jotai';
 import { useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
-import { StateStochastic, StateStochasticDisplay } from '../../controllers/data/states';
+import { StateStochastic } from '../../controllers/data/states';
 import { TypePriceRequest } from '../../controllers/data/types';
 import { useGetPrices } from '../../controllers/net/price';
 import styles from './stochastic.module.scss';
 import draw from './stochasticFnDraw';
 import { useDisplayCheckboxChange, useStochastic } from './stochasticInteractor';
+import { StochasticStateDisplay } from './stochasticState';
 
 const Presenter = (props: { req: TypePriceRequest; marginLeft: number; max?: number }) => {
   const { req, marginLeft, max = 120 } = props;
 
   useStochastic(req);
   const { data } = useGetPrices(req);
-  const dataStochastic = useRecoilValue(StateStochastic(req));
-  const display = useRecoilValue(StateStochasticDisplay);
+  const dataStochastic = useAtomValue(StateStochastic(req));
+  const display = useAtomValue(StochasticStateDisplay);
 
   const onFullKCheckboxChange = useDisplayCheckboxChange('fullK');
   const onFullDCheckboxChange = useDisplayCheckboxChange('fullD');

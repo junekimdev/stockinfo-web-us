@@ -1,5 +1,5 @@
+import { useAtomValue } from 'jotai';
 import { useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
 import { StateChaikin } from '../../controllers/data/states';
 import { TypePriceRequest } from '../../controllers/data/types';
 import { useGetPrices } from '../../controllers/net/price';
@@ -9,7 +9,7 @@ import draw from './chaikinFnDraw';
 const Presenter = (props: { req: TypePriceRequest; marginLeft: number; max?: number }) => {
   const { req, marginLeft, max = 120 } = props;
   const { data } = useGetPrices(req);
-  const dataChaikin = useRecoilValue(StateChaikin(req));
+  const dataChaikin = useAtomValue(StateChaikin(req));
 
   const chartTitle = `${req.type} CO`;
   const chartID = `${styles.chart}-${req.code}-${req.type}`;

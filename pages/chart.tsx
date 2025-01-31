@@ -1,5 +1,5 @@
+import { useAtomValue } from 'jotai';
 import { useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
 import Chart from '../components/charts';
 import Details from '../components/details';
 import MainFrame from '../components/mainFrame';
@@ -10,8 +10,8 @@ import { StateCurrentTab, StateDetailsOpened } from '../controllers/data/states'
 
 const Page = () => {
   const publicUrl = process.env.NEXT_PUBLIC_URL ?? 'localhost:3000';
-  const detailsOpened = useRecoilValue(StateDetailsOpened);
-  const currentTab = useRecoilValue(StateCurrentTab);
+  const detailsOpened = useAtomValue(StateDetailsOpened);
+  const currentTab = useAtomValue(StateCurrentTab);
   useCheckCurrentTab();
 
   useEffect(() => {

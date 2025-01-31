@@ -5,15 +5,15 @@ import { useCompanyClick } from './searchInteractor';
 const View = (props: { data: TypeCompany; uuid: string }) => {
   const { data, uuid } = props;
   const { cik, code, name } = data;
-  const onuseCompanyClick = useCompanyClick(uuid, data);
+  const onCompanyClick = useCompanyClick(uuid, data);
 
   return (
-    <li className={styles.companyCard} onClick={onuseCompanyClick}>
+    <li className={styles.companyCard} onClick={onCompanyClick}>
       <div className={styles.companyName} title={name}>
         {name}
       </div>
       <div className={styles.companyCode}>{code}</div>
-      <div className={styles.companyCIK}>{cik}</div>
+      <div className={styles.companyMkt}>{cik}</div>
       <div className={styles.companyCorp} title={name}>
         {name}
       </div>

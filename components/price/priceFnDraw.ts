@@ -6,19 +6,15 @@ import {
   drawSAR,
   initChart,
 } from '../../controllers/chart';
-import {
-  TypeParabolicSAR,
-  TypePrice,
-  TypePriceBollingerBands,
-  TypePriceDisplay,
-} from '../../controllers/data/types';
+import { TypeParabolicSAR, TypePrice, TypePriceBollingerBands } from '../../controllers/data/types';
+import { PriceTypeDisplay } from './priceType';
 
 const draw = (
   id: string,
   data: TypePrice[],
   sarData: TypeParabolicSAR[],
   bandData: TypePriceBollingerBands[],
-  display: TypePriceDisplay,
+  display: PriceTypeDisplay,
   marginLeft: number,
   latestPriceData?: TypePrice,
 ) => {
@@ -41,7 +37,7 @@ const draw = (
 
   // Draw latest price line
   if (display.LatestPrice && latestPriceData)
-    drawLatestPrice(chart, x, y, data[0], data[data.length - 1], latestPriceData);
+    drawLatestPrice(chart, x, y, data[data.length - 1], latestPriceData);
 
   // Draw Parabolic SAR
   if (display.ParabolicSAR && sarData.length) drawSAR(chart, x, y, sarData);

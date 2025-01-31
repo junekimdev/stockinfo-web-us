@@ -1,11 +1,12 @@
 import * as d3 from 'd3';
 import { drawCandle, drawLatestPrice, initChart } from '../../controllers/chart';
-import { TypePrice, TypePriceDisplay } from '../../controllers/data/types';
+import { TypePrice } from '../../controllers/data/types';
+import { HeikinAshiSmoothedTypeDisplay } from './heikinAshiType';
 
 const draw = (
   id: string,
   data: TypePrice[],
-  display: TypePriceDisplay,
+  display: HeikinAshiSmoothedTypeDisplay,
   marginLeft: number,
   latestPriceData?: TypePrice,
 ) => {
@@ -28,7 +29,7 @@ const draw = (
 
   // Draw latest price line
   if (display.LatestPrice && latestPriceData)
-    drawLatestPrice(chart, x, y, data[0], data[data.length - 1], latestPriceData);
+    drawLatestPrice(chart, x, y, data[data.length - 1], latestPriceData);
 };
 
 export default draw;

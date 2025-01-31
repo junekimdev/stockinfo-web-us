@@ -1,11 +1,12 @@
 import * as d3 from 'd3';
 import { getDateString, getXCentered, initChart } from '../../controllers/chart';
-import { TypeStochastic, TypeStochasticDisplay } from '../../controllers/data/types';
+import { TypeStochastic } from '../../controllers/data/types';
+import { StochasticTypeDisplay } from './stochasticType';
 
 const draw = (
   id: string,
   data: TypeStochastic[],
-  display: TypeStochasticDisplay,
+  display: StochasticTypeDisplay,
   marginLeft: number,
 ) => {
   if (!data?.length) return;

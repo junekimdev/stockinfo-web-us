@@ -1,5 +1,5 @@
 import { QueryFunctionContext, useQuery } from '@tanstack/react-query';
-import { useRecoilValue } from 'recoil';
+import { useAtomValue } from 'jotai';
 import { COMPANIES_URL } from '../apiURLs';
 import { StateSearchInput } from '../data/states';
 import { TypeCompany, TypeError } from '../data/types';
@@ -7,7 +7,7 @@ import { useDebounce } from '../debounce';
 
 export const useGetCompanies = () => {
   // use debounced value so that everytime the user types won't fire fetching
-  const search_word = useDebounce(useRecoilValue(StateSearchInput), 300);
+  const search_word = useDebounce(useAtomValue(StateSearchInput), 300);
 
   return useQuery({
     queryKey: ['company', search_word],
@@ -36,9 +36,9 @@ const getCompanies = async ({ queryKey }: QueryFunctionContext<string[]>) => {
   const r: any[] = await res.json();
 
   const data = r.map((v) => {
-    const cik: String = v?.cik_str ?? '';
-    const code: String = v?.ticker ?? '';
-    const name: String = v?.title ?? '';
+    const cik: string = v?.cik_str ?? '';
+    const code: string = v?.ticker ?? '';
+    const name: string = v?.title ?? '';
     return { cik, code, name } as TypeCompany;
   });
 

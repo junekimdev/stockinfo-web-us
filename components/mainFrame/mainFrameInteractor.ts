@@ -1,64 +1,65 @@
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { useResetAtom } from 'jotai/utils';
 import { useRouter } from 'next/router';
 import { Dispatch, DragEvent, MouseEvent, SetStateAction, useCallback } from 'react';
-import { useRecoilState, useRecoilValue, useResetRecoilState, useSetRecoilState } from 'recoil';
 import { StateCompanyTabs, StateCurrentTab } from '../../controllers/data/states';
 import { TypeCompanyTab, TypePriceRequestType } from '../../controllers/data/types';
 import { MainFrameStateMenuOpened } from './mainFrameStates';
 
 export const useToggleMenu = () => {
-  const setState = useSetRecoilState(MainFrameStateMenuOpened);
+  const [opened, setOpened] = useAtom(MainFrameStateMenuOpened);
 
-  return useCallback(() => setState((v) => !v), []);
+  return useCallback(() => setOpened(!opened), [setOpened, opened]);
 };
 
 export const useMoveToHome = () => {
-  const resetCurrent = useResetRecoilState(StateCurrentTab);
+  const resetCurrent = useResetAtom(StateCurrentTab);
   const router = useRouter();
 
   return useCallback(() => {
     resetCurrent();
     router.push('/');
-  }, []);
+  }, [resetCurrent, router]);
 };
 
 export const useCloseAllClick = () => {
-  const resetTabs = useResetRecoilState(StateCompanyTabs);
-  const resetCurrent = useResetRecoilState(StateCurrentTab);
-  const setOpened = useSetRecoilState(MainFrameStateMenuOpened);
+  const resetTabs = useResetAtom(StateCompanyTabs);
+  const resetCurrent = useResetAtom(StateCurrentTab);
+  const setOpened = useSetAtom(MainFrameStateMenuOpened);
   const router = useRouter();
 
   return useCallback(() => {
     resetTabs();
     resetCurrent();
     setOpened(false);
-    router.replace('/');
-  }, []);
+    router.replace('/search');
+  }, [resetTabs, resetCurrent, setOpened, router]);
 };
 
 export const useAddNewTabClick = () => {
-  const resetState = useResetRecoilState(StateCurrentTab);
+  const resetState = useResetAtom(StateCurrentTab);
   const router = useRouter();
 
   return useCallback(() => {
     resetState();
-    router.replace('/');
-  }, []);
+    router.push('/search');
+  }, [resetState, router]);
 };
 
 export const useMoveToTabClick = (tab: TypeCompanyTab) => {
-  const setState = useSetRecoilState(StateCurrentTab);
+  const setState = useSetAtom(StateCurrentTab);
   const router = useRouter();
 
   return useCallback(() => {
     setState(tab);
     router.replace('/chart');
-  }, [tab]);
+  }, [setState, tab, router]);
 };
 
 export const useRemoveTabClick = (tab: TypeCompanyTab) => {
-  const [tabs, setTabs] = useRecoilState(StateCompanyTabs);
-  const currentTab = useRecoilValue(StateCurrentTab);
-  const resetCurrent = useResetRecoilState(StateCurrentTab);
+  const [tabs, setTabs] = useAtom(StateCompanyTabs);
+  const currentTab = useAtomValue(StateCurrentTab);
+  const resetCurrent = useResetAtom(StateCurrentTab);
   const router = useRouter();
 
   return useCallback(
@@ -68,16 +69,16 @@ export const useRemoveTabClick = (tab: TypeCompanyTab) => {
       setTabs(tabs.filter((v) => v.uuid !== tab.uuid));
       if (currentTab.uuid === tab.uuid) {
         resetCurrent();
-        router.replace('/');
+        router.replace('/search');
       }
     },
-    [tab, tabs, currentTab],
+    [setTabs, resetCurrent, tabs, tab, currentTab, router],
   );
 };
 
 export const useSwitchTypeBtnClick = () => {
-  const setTabs = useSetRecoilState(StateCompanyTabs);
-  const [currentTab, setCurrentTab] = useRecoilState(StateCurrentTab);
+  const [prevTabs, setTabs] = useAtom(StateCompanyTabs);
+  const [currentTab, setCurrentTab] = useAtom(StateCurrentTab);
 
   return useCallback(
     (e: MouseEvent<HTMLButtonElement>) => {
@@ -88,9 +89,9 @@ export const useSwitchTypeBtnClick = () => {
 
       setCurrentTab(updatedTab);
 
-      setTabs((prev) => prev.map((v) => (v.uuid === currentTab.uuid ? updatedTab : v)));
+      setTabs(prevTabs.map((v) => (v.uuid === currentTab.uuid ? updatedTab : v)));
     },
-    [currentTab],
+    [setCurrentTab, setTabs, prevTabs, currentTab],
   );
 };
 
@@ -139,21 +140,24 @@ export const useDragEnterCapture = (dragged: HTMLLIElement | undefined) => {
 };
 
 export const useDrop = () => {
-  const setTabs = useSetRecoilState(StateCompanyTabs);
+  const setTabs = useSetAtom(StateCompanyTabs);
 
-  return useCallback((e: DragEvent<HTMLUListElement>) => {
-    e.preventDefault();
-    const tabs: TypeCompanyTab[] = [];
-    const children = e.currentTarget.children;
+  return useCallback(
+    (e: DragEvent<HTMLUListElement>) => {
+      e.preventDefault();
+      const tabs: TypeCompanyTab[] = [];
+      const children = e.currentTarget.children;
 
-    for (let i = 0; i < children.length; i++) {
-      const el = children[i];
-      if (el instanceof HTMLElement && typeof el.dataset.data === 'string')
-        tabs.push(JSON.parse(el.dataset.data) as TypeCompanyTab);
-    }
+      for (let i = 0; i < children.length; i++) {
+        const el = children[i];
+        if (el instanceof HTMLElement && typeof el.dataset.data === 'string')
+          tabs.push(JSON.parse(el.dataset.data) as TypeCompanyTab);
+      }
 
-    setTabs(tabs);
-  }, []);
+      setTabs(tabs);
+    },
+    [setTabs],
+  );
 };
 
 //==================== Touch Event Handlers ====================
@@ -245,7 +249,7 @@ export const useTouchEnd = (
   dragged: HTMLLIElement | undefined,
   setDragged: Dispatch<SetStateAction<HTMLLIElement | undefined>>,
 ) => {
-  const setTabs = useSetRecoilState(StateCompanyTabs);
+  const setTabs = useSetAtom(StateCompanyTabs);
 
   return useCallback(
     (e: React.TouchEvent<HTMLUListElement>) => {
@@ -272,6 +276,6 @@ export const useTouchEnd = (
 
       setTabs(tabs);
     },
-    [dragged, setDragged],
+    [setDragged, setTabs, dragged],
   );
 };

@@ -1,4 +1,4 @@
-import { useRecoilValue } from 'recoil';
+import { useAtomValue } from 'jotai';
 import { getMarginLeft } from '../../controllers/chart';
 import { StateCurrentTab } from '../../controllers/data/states';
 import { TypePriceRequest } from '../../controllers/data/types';
@@ -22,7 +22,7 @@ import { useBollinger, useChaikin, useRulerOnClick, useSAR } from './chartsInter
 import Placeholder from './chartsViewPlaceholder';
 
 const Presenter = () => {
-  const { company, mainType } = useRecoilValue(StateCurrentTab);
+  const { company, mainType } = useAtomValue(StateCurrentTab);
   const req: TypePriceRequest = { code: company.code, type: mainType };
   const { data } = useGetPrices(req);
   const marginLeft = getMarginLeft(data);

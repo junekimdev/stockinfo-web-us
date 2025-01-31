@@ -1,19 +1,20 @@
+import { useAtomValue } from 'jotai';
 import { useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
-import { StateAdx, StateAdxDisplay } from '../../controllers/data/states';
+import { StateAdx } from '../../controllers/data/states';
 import { TypePriceRequest } from '../../controllers/data/types';
 import { useGetPrices } from '../../controllers/net/price';
 import styles from './adx.module.scss';
 import draw from './adxFnDraw';
 import { useAdx, useDisplayCheckboxChange } from './adxInteractor';
+import { AdxStateDisplay } from './adxState';
 
 const Presenter = (props: { req: TypePriceRequest; marginLeft: number; max?: number }) => {
   const { req, marginLeft, max = 120 } = props;
 
   useAdx(req);
   const { data } = useGetPrices(req);
-  const dataAdx = useRecoilValue(StateAdx(req));
-  const display = useRecoilValue(StateAdxDisplay);
+  const dataAdx = useAtomValue(StateAdx(req));
+  const display = useAtomValue(AdxStateDisplay);
 
   const onADXCheckboxChange = useDisplayCheckboxChange('ADX');
   const onPdiCheckboxChange = useDisplayCheckboxChange('pDI');

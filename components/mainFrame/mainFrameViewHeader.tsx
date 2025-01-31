@@ -1,4 +1,4 @@
-import { useRecoilValue } from 'recoil';
+import { useAtomValue } from 'jotai';
 import { useToggleDetails } from '../../controllers/data/hooks';
 import { StateCurrentTab } from '../../controllers/data/states';
 import { TypePriceRequest } from '../../controllers/data/types';
@@ -8,7 +8,7 @@ import { useSwitchTypeBtnClick } from './mainFrameInteractor';
 import LatestPrice from './mainFrameViewLatestPrice';
 
 const View = () => {
-  const { company, mainType } = useRecoilValue(StateCurrentTab);
+  const { company, mainType } = useAtomValue(StateCurrentTab);
   const dailyReq: TypePriceRequest = { code: company.code, type: 'daily' };
   const weeklyReq: TypePriceRequest = { code: company.code, type: 'weekly' };
 

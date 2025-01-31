@@ -1,5 +1,5 @@
+import { useAtom } from 'jotai';
 import { useEffect } from 'react';
-import { useRecoilState } from 'recoil';
 import { getCurrentTR, wilderSmoothEMA } from '../../controllers/avg';
 import { StateAtrp } from '../../controllers/data/states';
 import { TypeAtrp, TypePriceRequest } from '../../controllers/data/types';
@@ -7,7 +7,7 @@ import { useGetPrices } from '../../controllers/net/price';
 
 export const useAtrp = (req: TypePriceRequest, period = 14) => {
   const { data } = useGetPrices(req);
-  const [dataAtrp, setState] = useRecoilState(StateAtrp(req));
+  const [dataAtrp, setState] = useAtom(StateAtrp(req));
 
   useEffect(() => {
     if (data && data.length && !dataAtrp.length) {
@@ -24,5 +24,5 @@ export const useAtrp = (req: TypePriceRequest, period = 14) => {
       }
       setState(result);
     }
-  }, [period, data, dataAtrp]);
+  }, [setState, period, data, dataAtrp]);
 };

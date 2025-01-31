@@ -1,28 +1,27 @@
+import { useAtomValue } from 'jotai';
 import { useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
-import { useCheckboxChange } from '../../controllers/chart';
-import { StatePriceDisplays, StatePricePercentChange } from '../../controllers/data/states';
-import { TypeChart, TypePriceRequest } from '../../controllers/data/types';
+import { StatePricePercentChange } from '../../controllers/data/states';
+import { TypePriceRequest } from '../../controllers/data/types';
 import { useGetPrices, useGetPricesLatest } from '../../controllers/net/price';
 import styles from './percentChange.module.scss';
 import draw from './percentChangeFnDraw';
-import { usePricePercentChange } from './percentChangeInteractor';
+import { useDisplayCheckboxChange, usePricePercentChange } from './percentChangeInteractor';
+import { PercentChangeStateDisplay } from './percentChangeState';
 
 const Presenter = (props: { req: TypePriceRequest; marginLeft: number; max?: number }) => {
   const { req, marginLeft, max = 120 } = props;
   usePricePercentChange(req);
 
-  const chartType: TypeChart = 'percent-change';
   const { data } = useGetPrices(req);
   const { data: latestPriceData } = useGetPricesLatest({ code: req.code, type: 'latest' });
-  const dataPercentChange = useRecoilValue(StatePricePercentChange(req));
-  const display = useRecoilValue(StatePriceDisplays({ code: req.code, type: chartType }));
+  const dataPercentChange = useAtomValue(StatePricePercentChange(req));
+  const display = useAtomValue(PercentChangeStateDisplay);
 
   const chartTitle = `${req.type} price percent change`;
   const chartID = `${styles.chart}-${req.code}-${req.type}`;
   const latestPriceInputID = `${chartID}-LatestPrice`;
 
-  const onLatestPriceCheckboxChange = useCheckboxChange(req.code, chartType, 'LatestPrice');
+  const onLatestPriceCheckboxChange = useDisplayCheckboxChange('LatestPrice');
 
   const lastestPercentChange =
     data?.length && latestPriceData

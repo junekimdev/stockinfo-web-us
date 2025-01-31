@@ -20,15 +20,10 @@ export type TypeChart =
   | 'co'
   | 'cmf'
   | 'so';
-export type TypeDartReportCode = '11011' | '11012' | '11013' | '11014';
-export type TypeDartIndexCode = 'M210000' | 'M220000' | 'M230000' | 'M240000';
-export type TypeDartStatementType = 'OFS' | 'CFS';
 
 export type TypeIDWeek = { year: number; week: number };
 export type TypeDate = { date: Date | TypeIDWeek };
-
 export type TypePriceRequest = { code: string; type: TypePriceRequestType };
-export type TypeChartRequest = { code: string; type: TypeChart };
 export type TypeIDPriceMA = TypePriceRequest & { method: TypeAvgMethod; period: number };
 
 export type TypeChartData =
@@ -71,59 +66,6 @@ export type TypeMacdV = TypeDate & { macdV: number; signal: number; histogram: n
 export type TypeAtrp = TypeDate & { atrp: number };
 export type TypeChaikin = TypeDate & { cmf: number; co: number };
 export type TypeStochastic = TypeDate & { fullK: number; fullD: number };
-
-export type TypePriceDisplayItem = 'LatestPrice' | 'ParabolicSAR' | 'BollingerBands';
-export type TypeAdxDisplayItem = 'ADX' | 'pDI' | 'nDI' | 'buy' | 'sell' | 'trendConfirm';
-export type TypeRsiDisplayItem = 'overbought' | 'oversold';
-export type TypeMacdDisplayItem = 'MACD' | 'signal' | 'histogram';
-export type TypeMacdVDisplayItem =
-  | 'MACDV'
-  | 'signal'
-  | 'histogram'
-  | 'overbought'
-  | 'oversold'
-  | 'upsideMomentum'
-  | 'downsideMomentum';
-export type TypeCMFDisplayItem = 'noSignalZone';
-export type TypeStochasticDisplayItem =
-  | 'fullK'
-  | 'fullD'
-  | 'overbought'
-  | 'oversold'
-  | 'trendConfirm';
-export type TypePriceDisplay = {
-  LatestPrice: boolean;
-  ParabolicSAR: boolean;
-  BollingerBands: boolean;
-};
-
-export type TypeAdxDisplay = {
-  ADX: boolean;
-  pDI: boolean;
-  nDI: boolean;
-  buy: boolean;
-  sell: boolean;
-  trendConfirm: boolean;
-};
-export type TypeRsiDisplay = { overbought: boolean; oversold: boolean };
-export type TypeMacdDisplay = { MACD: boolean; signal: boolean; histogram: boolean };
-export type TypeMacdVDisplay = {
-  MACDV: boolean;
-  signal: boolean;
-  histogram: boolean;
-  overbought: boolean;
-  oversold: boolean;
-  upsideMomentum: boolean;
-  downsideMomentum: boolean;
-};
-export type TypeCMFDisplay = { noSignalZone: boolean };
-export type TypeStochasticDisplay = {
-  fullK: boolean;
-  fullD: boolean;
-  overbought: boolean;
-  oversold: boolean;
-  trendConfirm: boolean;
-};
 
 export type TypeCompany = {
   cik: string;

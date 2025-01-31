@@ -6,9 +6,10 @@ import {
   getXCentered,
   initChart,
 } from '../../controllers/chart';
-import { TypeAdx, TypeAdxDisplay } from '../../controllers/data/types';
+import { TypeAdx } from '../../controllers/data/types';
+import { AdxTypeDisplay } from './adxType';
 
-const draw = (id: string, data: TypeAdx[], display: TypeAdxDisplay, marginLeft: number) => {
+const draw = (id: string, data: TypeAdx[], display: AdxTypeDisplay, marginLeft: number) => {
   if (!data?.length) return;
   const yMin = 0;
   const yMax = 100;

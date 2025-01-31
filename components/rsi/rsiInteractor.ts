@@ -1,22 +1,19 @@
+import { useAtom } from 'jotai';
 import { ChangeEvent, useCallback, useEffect } from 'react';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import { StateRsi, StateRsiDisplay } from '../../controllers/data/states';
-import {
-  TypePriceRequest,
-  TypePriceVolumeValue,
-  TypeRsi,
-  TypeRsiDisplayItem,
-} from '../../controllers/data/types';
+import { StateRsi } from '../../controllers/data/states';
+import { TypePriceRequest, TypePriceVolumeValue, TypeRsi } from '../../controllers/data/types';
 import { useGetPrices } from '../../controllers/net/price';
+import { RsiStateDisplay } from './rsiState';
+import { RsiTypeDisplayItem } from './rsiType';
 
-export const useDisplayCheckboxChange = (what: TypeRsiDisplayItem) => {
-  const setState = useSetRecoilState(StateRsiDisplay);
+export const useDisplayCheckboxChange = (what: RsiTypeDisplayItem) => {
+  const [display, setState] = useAtom(RsiStateDisplay);
 
   return useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      setState((prev) => ({ ...prev, [what]: e.currentTarget.checked }));
+      setState({ ...display, [what]: e.currentTarget.checked });
     },
-    [what],
+    [setState, display, what],
   );
 };
 
@@ -26,7 +23,7 @@ export const useRsi = (
   over: TypePriceVolumeValue = 'close',
 ) => {
   const { data } = useGetPrices(req);
-  const [dataRsi, setState] = useRecoilState(StateRsi(req));
+  const [dataRsi, setState] = useAtom(StateRsi(req));
 
   useEffect(() => {
     if (data && data.length && !dataRsi.length) {
@@ -52,7 +49,7 @@ export const useRsi = (
       }
       setState(result);
     }
-  }, [period, over, data, dataRsi]);
+  }, [setState, period, over, data, dataRsi]);
 };
 
 // Generators

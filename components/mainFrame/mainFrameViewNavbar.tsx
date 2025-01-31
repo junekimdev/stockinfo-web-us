@@ -1,5 +1,5 @@
+import { useAtomValue } from 'jotai';
 import { useEffect, useRef, useState } from 'react';
-import { useRecoilValue } from 'recoil';
 import { DIFF_NATION_URL } from '../../controllers/apiURLs';
 import { StateCompanyTabs } from '../../controllers/data/states';
 import styles from './mainFrame.module.scss';
@@ -19,8 +19,8 @@ import { MainFrameStateMenuOpened } from './mainFrameStates';
 import Tab from './mainFrameViewTab';
 
 const View = () => {
-  const tabs = useRecoilValue(StateCompanyTabs);
-  const menuOpened = useRecoilValue(MainFrameStateMenuOpened);
+  const tabs = useAtomValue(StateCompanyTabs);
+  const menuOpened = useAtomValue(MainFrameStateMenuOpened);
   const [dragged, setDragged] = useState<HTMLLIElement>();
   const ulRef = useRef<HTMLUListElement>(null);
 

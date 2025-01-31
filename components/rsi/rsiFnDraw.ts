@@ -5,9 +5,10 @@ import {
   getXCentered,
   initChart,
 } from '../../controllers/chart';
-import { TypeRectCoordi, TypeRsi, TypeRsiDisplay } from '../../controllers/data/types';
+import { TypeRectCoordi, TypeRsi } from '../../controllers/data/types';
+import { RsiTypeDisplay } from './rsiType';
 
-const draw = (id: string, data: TypeRsi[], display: TypeRsiDisplay, marginLeft: number) => {
+const draw = (id: string, data: TypeRsi[], display: RsiTypeDisplay, marginLeft: number) => {
   if (!data?.length) return;
   const yMin = 0;
   const yMax = 100;

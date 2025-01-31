@@ -1,5 +1,5 @@
+import { useAtom } from 'jotai';
 import { MouseEvent, useCallback, useEffect } from 'react';
-import { useRecoilState } from 'recoil';
 import { emaSnapshotStep, getEMAFactorK } from '../../controllers/avg';
 import {
   StateChaikin,
@@ -34,7 +34,7 @@ export const useBollinger = (
 ) => {
   const { period = 20, sigma = 2 } = options ?? {};
   const { data } = useGetPrices(req);
-  const [dataBollingerBands, setState] = useRecoilState(StatePriceBollingerBands(req));
+  const [dataBollingerBands, setState] = useAtom(StatePriceBollingerBands(req));
 
   useEffect(() => {
     if (data && data.length && !dataBollingerBands.length) {
@@ -63,13 +63,13 @@ export const useBollinger = (
       }
       setState(bands);
     }
-  }, [data, dataBollingerBands, period, sigma]);
+  }, [setState, data, dataBollingerBands, period, sigma]);
 };
 
 export const useSAR = (req: TypePriceRequest, options?: { max?: number; step?: number }) => {
   const { max = 0.2, step = 0.01 } = options ?? {};
   const { data } = useGetPrices(req);
-  const [dataSAR, setState] = useRecoilState(StatePriceSAR(req));
+  const [dataSAR, setState] = useAtom(StatePriceSAR(req));
 
   useEffect(() => {
     if (data && data.length && !dataSAR.length) {
@@ -111,7 +111,7 @@ export const useSAR = (req: TypePriceRequest, options?: { max?: number; step?: n
       }
       setState(result);
     }
-  }, [data, dataSAR, max, step]);
+  }, [setState, data, dataSAR, max, step]);
 };
 
 const nextEP = (price: TypePrice, prevEP: number, isUpTrend: boolean) => {
@@ -137,7 +137,7 @@ const detectCollision = (price: TypePrice, sar: number, isUpTrend: boolean) =>
 export const useChaikin = (req: TypePriceRequest, period = [3, 10, 20]) => {
   const [p1, p2, p3] = period;
   const { data } = useGetPrices(req);
-  const [dataChainkin, setState] = useRecoilState(StateChaikin(req));
+  const [dataChainkin, setState] = useAtom(StateChaikin(req));
 
   useEffect(() => {
     if (data && data.length && !dataChainkin.length) {
@@ -170,7 +170,7 @@ export const useChaikin = (req: TypePriceRequest, period = [3, 10, 20]) => {
       }
       setState(result);
     }
-  }, [p1, p2, p3, data, dataChainkin]);
+  }, [setState, p1, p2, p3, data, dataChainkin]);
 };
 
 const slidingSum = <T>(data: T[], period: number, i: number, func: (_d: T) => number) => {

@@ -1,24 +1,25 @@
+import { useAtom } from 'jotai';
 import { ChangeEvent, useCallback, useEffect } from 'react';
-import { useRecoilState, useSetRecoilState } from 'recoil';
 import { emaSnapshotStep, emaStep, getEMAFactorK } from '../../controllers/avg';
-import { StateMacd, StateMacdDisplay } from '../../controllers/data/states';
+import { StateMacd } from '../../controllers/data/states';
 import {
   TypeMacd,
-  TypeMacdDisplayItem,
   TypePriceRequest,
   TypePriceVolume,
   TypePriceVolumeValue,
 } from '../../controllers/data/types';
 import { useGetPrices } from '../../controllers/net/price';
+import { MacdStateDisplay } from './macdState';
+import { MacdTypeDisplayItem } from './macdType';
 
-export const useDisplayCheckboxChange = (what: TypeMacdDisplayItem) => {
-  const setState = useSetRecoilState(StateMacdDisplay);
+export const useDisplayCheckboxChange = (what: MacdTypeDisplayItem) => {
+  const [display, setState] = useAtom(MacdStateDisplay);
 
   return useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      setState((prev) => ({ ...prev, [what]: e.currentTarget.checked }));
+      setState({ ...display, [what]: e.currentTarget.checked });
     },
-    [what],
+    [setState, display, what],
   );
 };
 
@@ -29,7 +30,7 @@ export const useMacd = (
   const { period = [12, 26, 9], over = 'close', smoothing = 2 } = options ?? {};
   const [p1, p2, p3] = period;
   const { data } = useGetPrices(req);
-  const [dataMacd, setState] = useRecoilState(StateMacd(req));
+  const [dataMacd, setState] = useAtom(StateMacd(req));
 
   useEffect(() => {
     if (data && data.length && !dataMacd.length) {
@@ -59,5 +60,5 @@ export const useMacd = (
       }
       setState(result);
     }
-  }, [p1, p2, p3, over, smoothing, data, dataMacd]);
+  }, [setState, p1, p2, p3, over, smoothing, data, dataMacd]);
 };

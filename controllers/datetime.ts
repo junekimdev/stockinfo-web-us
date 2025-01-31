@@ -1,8 +1,32 @@
 import { TypeIDWeek } from './data/types';
+import { to2DigitString } from './number';
+
+export const getDatetimeString = (date?: Date | TypeIDWeek) => {
+  if (!date) return '';
+  const { year, month, day, hour, minute, second } = stringfyDatetime(date);
+  return `at ${year}-${month}-${day} ${hour}:${minute}:${second}`;
+};
+
+export const getDatetimeStringForFilename = (date?: Date | TypeIDWeek) => {
+  if (!date) return '';
+  const { year, month, day, hour, minute, second } = stringfyDatetime(date);
+  return `${year}${month}${day}_${hour}${minute}${second}`;
+};
 
 export const getTimestamp = (date: Date | TypeIDWeek) => {
   if (date instanceof Date) return date.getTime();
   return toDate(date).getTime();
+};
+
+const stringfyDatetime = (date: Date | TypeIDWeek) => {
+  if (!(date instanceof Date)) date = toDate(date);
+  const year = date.getFullYear().toString();
+  const month = to2DigitString(date.getMonth() + 1);
+  const day = to2DigitString(date.getDate());
+  const hour = to2DigitString(date.getHours());
+  const minute = to2DigitString(date.getMinutes());
+  const second = to2DigitString(date.getSeconds());
+  return { year, month, day, hour, minute, second };
 };
 
 const toDate = (date: TypeIDWeek) => {
