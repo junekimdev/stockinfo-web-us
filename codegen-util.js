@@ -16,19 +16,19 @@ const snakeCaseCap = (string) => {
 /********************
  * User Input Inquirer
  ********************/
-const readline = require('readline');
+const readline = require('node:readline');
 /**
  * @param {string} query
  * @returns {Promise<string>}
  */
 const askQuestion = (query) => {
-  const rl = readline.createInterface({
+  const interface = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
   });
   return new Promise((resolve) =>
-    rl.question(query, (ans) => {
-      rl.close();
+    interface.question(`${query} `, (ans) => {
+      interface.close();
       resolve(ans);
     }),
   );
