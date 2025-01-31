@@ -1,8 +1,8 @@
 # JK Stock Web Frontend
 
-![release-version](https://img.shields.io/github/v/release/junekimdev/stockinfo-web?display_name=tag)
-![last-commit](https://img.shields.io/github/last-commit/junekimdev/stockinfo-web)
-![license](https://img.shields.io/github/license/junekimdev/stockinfo-web)
+![release-version](https://img.shields.io/github/v/release/junekimdev/stockinfo-web-us?display_name=tag)
+![last-commit](https://img.shields.io/github/last-commit/junekimdev/stockinfo-web-us)
+![license](https://img.shields.io/github/license/junekimdev/stockinfo-web-us)
 
 This is the web frontend written in Typescript, React.JS, Next.JS for JK Stock website
 
@@ -79,8 +79,8 @@ NEXT_PUBLIC_API_URL=http://api.domain.com
 - Website server-side rendering framework: NextJS
 - Package management: Webpack (included in NextJS)
 - Transpiler: Speedy Web Compiler (included in NextJS)
-- State management (client): Recoil
-- State management (server): TanStack Query
+- State management (client): Jotai
+- State management (data-fetch): TanStack Query
 - HTTP interface: fetch API (part of WHATWG Web Standard)
 - JavaScript Testing Framework: Jest
 - React Testing Library: @testing-library/react
@@ -106,13 +106,15 @@ Root
         ├── index.ts  
         ├── eachComponent.module.scss  
         ├── eachComponentInteractor.tsx  
-        ├── eachComponentStates.ts  
         ├── eachComponentPresenter.tsx  
-        ├── eachComponentViewName.tsx  
-        └── eachComponentType.ts  
+        └── eachComponentViewName.tsx  
 ├── controllers  
     ├── index.ts  
     ├── apiURLs.ts  
+    ├── data  
+        ├── states.ts  
+        ├── types.ts  
+        └── staticQuery.ts  
     ├── net  
         └── staticQuery.ts  
     └── moreControllers.ts
