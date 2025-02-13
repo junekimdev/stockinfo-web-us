@@ -1,2 +1,2 @@
-export type PercentChangeTypeDisplayItem = 'LatestPrice';
-export type PercentChangeTypeDisplay = Record<PercentChangeTypeDisplayItem, boolean>;
+export type DisplayItem = 'LatestPrice';
+export type Display = Record<DisplayItem, boolean>;

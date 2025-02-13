@@ -1,11 +1,11 @@
-import { TypePriceRequest } from '../../controllers/data/types';
+import * as gType from '../../controllers/data/types';
 import { getDatetimeString } from '../../controllers/datetime';
 import { useGetPricesLatest } from '../../controllers/net/price';
 import styles from './mainFrame.module.scss';
 
 const View = (props: { code: string }) => {
   const { code } = props;
-  const latestReq: TypePriceRequest = { code, type: 'latest' };
+  const latestReq: gType.PriceRequest = { code, type: 'latest' };
   const { data } = useGetPricesLatest(latestReq);
 
   return (
@@ -21,7 +21,7 @@ const View = (props: { code: string }) => {
           <div className={styles.spinner}></div>
         )}
       </div>
-      <div>{data ? getDatetimeString(data.date) : ''}</div>
+      <div>{getDatetimeString(data?.date)}</div>
     </h5>
   );
 };

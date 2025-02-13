@@ -1,5 +1,5 @@
 import { useAtom } from 'jotai';
-import { ChangeEvent, useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 import {
   emaSnapshotStep,
   emaStep,
@@ -7,45 +7,31 @@ import {
   getEMAFactorK,
   wilderSmoothEMA,
 } from '../../controllers/avg';
-import { StateMacdV } from '../../controllers/data/states';
-import {
-  TypeMacdV,
-  TypePriceRequest,
-  TypePriceVolume,
-  TypePriceVolumeValue,
-} from '../../controllers/data/types';
+import * as gState from '../../controllers/data/states';
+import * as gType from '../../controllers/data/types';
 import { useGetPrices } from '../../controllers/net/price';
-import { MacdVStateDisplay } from './macdVState';
-import { MacdVTypeDisplayItem } from './macdVType';
-
-export const useDisplayCheckboxChange = (what: MacdVTypeDisplayItem) => {
-  const [display, setState] = useAtom(MacdVStateDisplay);
-
-  return useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      setState({ ...display, [what]: e.currentTarget.checked });
-    },
-    [setState, display, what],
-  );
-};
 
 export const useMacdV = (
-  req: TypePriceRequest,
-  options?: { period?: [number, number, number]; over?: TypePriceVolumeValue; smoothing?: number },
+  req: gType.PriceRequest,
+  options?: {
+    period?: [number, number, number];
+    over?: gType.PriceVolumeValue;
+    smoothing?: number;
+  },
 ) => {
   const { period = [12, 26, 9], over = 'close', smoothing = 2 } = options ?? {};
   const [p1, p2, p3] = period;
   const { data } = useGetPrices(req);
-  const [dataMacdV, setState] = useAtom(StateMacdV(req));
+  const [dataMacdV, setState] = useAtom(gState.macdV(req));
 
   useEffect(() => {
     if (data && data.length && !dataMacdV.length) {
-      const f1 = (over: TypePriceVolumeValue) => (d: TypePriceVolume) => d[over];
+      const f1 = (over: gType.PriceVolumeValue) => (d: gType.PriceVolume) => d[over];
       const f2 = (d: number) => d;
       const k1 = getEMAFactorK(p1, smoothing);
       const k2 = getEMAFactorK(p2, smoothing);
       const k3 = getEMAFactorK(p3, smoothing);
-      const result: TypeMacdV[] = [];
+      const result: gType.MacdV[] = [];
       const prevShortEMA: number[] = [];
       const prevLongEMA: number[] = [];
       const prevAtr: number[] = [];

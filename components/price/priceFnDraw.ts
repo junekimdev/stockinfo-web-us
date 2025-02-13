@@ -6,17 +6,17 @@ import {
   drawSAR,
   initChart,
 } from '../../controllers/chart';
-import { TypeParabolicSAR, TypePrice, TypePriceBollingerBands } from '../../controllers/data/types';
-import { PriceTypeDisplay } from './priceType';
+import * as gType from '../../controllers/data/types';
+import * as mType from './priceType';
 
 const draw = (
   id: string,
-  data: TypePrice[],
-  sarData: TypeParabolicSAR[],
-  bandData: TypePriceBollingerBands[],
-  display: PriceTypeDisplay,
+  data: gType.Price[],
+  sarData: gType.ParabolicSAR[],
+  bandData: gType.PriceBollingerBands[],
+  display: mType.Display,
   marginLeft: number,
-  latestPriceData?: TypePrice,
+  latestPriceData?: gType.Price,
 ) => {
   if (!data?.length) return;
   const minData = d3.min(data, (d) => d.low) ?? 0;

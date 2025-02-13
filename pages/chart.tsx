@@ -6,12 +6,12 @@ import MainFrame from '../components/mainFrame';
 import Header from '../components/mainFrame/mainFrameViewHeader';
 import Meta from '../components/meta';
 import { useCheckCurrentTab } from '../controllers/data/hooks';
-import { StateCurrentTab, StateDetailsOpened } from '../controllers/data/states';
+import * as gState from '../controllers/data/states';
 
 const Page = () => {
   const publicUrl = process.env.NEXT_PUBLIC_URL ?? 'localhost:3000';
-  const detailsOpened = useAtomValue(StateDetailsOpened);
-  const currentTab = useAtomValue(StateCurrentTab);
+  const detailsOpened = useAtomValue(gState.detailsOpened);
+  const currentTab = useAtomValue(gState.currentTab);
   useCheckCurrentTab();
 
   useEffect(() => {

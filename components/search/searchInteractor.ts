@@ -3,16 +3,11 @@ import { useResetAtom } from 'jotai/utils';
 import { useRouter } from 'next/router';
 import { ChangeEvent, useCallback, useEffect } from 'react';
 import { LOCAL_STORAGE_KEY_RECENT_SEARCH_TABS } from '../../controllers/apiURLs';
-import {
-  StateCompanyTabs,
-  StateCurrentTab,
-  StateRecentSearchTabs,
-  StateSearchInput,
-} from '../../controllers/data/states';
-import { TypeCompany, TypeCompanyTab } from '../../controllers/data/types';
+import * as gState from '../../controllers/data/states';
+import * as gType from '../../controllers/data/types';
 
 export const useSearchInputChange = () => {
-  const setState = useSetAtom(StateSearchInput);
+  const setState = useSetAtom(gState.searchInput);
 
   return useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -22,21 +17,21 @@ export const useSearchInputChange = () => {
   );
 };
 
-export const useCompanyClick = (uuid: string, company: TypeCompany) => {
-  const [companyTabs, setCompanyTabs] = useAtom(StateCompanyTabs);
-  const [recentSearchTabs, setRecentSearchTabs] = useAtom(StateRecentSearchTabs);
-  const setCurrentTab = useSetAtom(StateCurrentTab);
-  const resetSearchInput = useResetAtom(StateSearchInput);
+export const useCompanyClick = (uuid: string, company: gType.Company) => {
+  const [companyTabs, setCompanyTabs] = useAtom(gState.companyTabs);
+  const [recentSearchTabs, setRecentSearchTabs] = useAtom(gState.recentSearchTabs);
+  const setCurrentTab = useSetAtom(gState.currentTab);
+  const resetSearchInput = useResetAtom(gState.searchInput);
   const router = useRouter();
 
   return useCallback(() => {
-    const tabExists: TypeCompanyTab = companyTabs.reduce(
+    const tabExists: gType.CompanyTab = companyTabs.reduce(
       (p, v) => (v.company.code === company.code ? v : p),
       { uuid: '', company, mainType: 'daily' },
     );
 
     // Add to tabs and set it as current
-    const tab: TypeCompanyTab = tabExists.uuid ? tabExists : { uuid, company, mainType: 'daily' };
+    const tab: gType.CompanyTab = tabExists.uuid ? tabExists : { uuid, company, mainType: 'daily' };
     if (!tabExists.uuid) setCompanyTabs([tab, ...companyTabs]);
     setCurrentTab(tab);
     resetSearchInput();
@@ -67,19 +62,19 @@ export const useCompanyClick = (uuid: string, company: TypeCompany) => {
 };
 
 export const useLoadRecentSearchTabs = () => {
-  const setState = useSetAtom(StateRecentSearchTabs);
+  const setState = useSetAtom(gState.recentSearchTabs);
 
   useEffect(() => {
     const saved = window.localStorage.getItem(LOCAL_STORAGE_KEY_RECENT_SEARCH_TABS);
     if (saved) {
-      const tabs: TypeCompanyTab[] = JSON.parse(saved);
+      const tabs: gType.CompanyTab[] = JSON.parse(saved);
       setState(tabs);
     }
   }, [setState]);
 };
 
 export const useDeleteAllRecentClick = () => {
-  const resetState = useResetAtom(StateRecentSearchTabs);
+  const resetState = useResetAtom(gState.recentSearchTabs);
 
   return useCallback(() => {
     resetState();

@@ -1,14 +1,9 @@
 import * as d3 from 'd3';
 import { getDateString, getXCentered, initChart } from '../../controllers/chart';
-import { TypeStochastic } from '../../controllers/data/types';
-import { StochasticTypeDisplay } from './stochasticType';
+import * as gType from '../../controllers/data/types';
+import * as mType from './stochasticType';
 
-const draw = (
-  id: string,
-  data: TypeStochastic[],
-  display: StochasticTypeDisplay,
-  marginLeft: number,
-) => {
+const draw = (id: string, data: gType.Stochastic[], display: mType.Display, marginLeft: number) => {
   if (!data?.length) return;
   const yMin = 0;
   const yMax = 100;
@@ -85,7 +80,7 @@ const draw = (
       .attr(
         'd',
         d3
-          .line<TypeStochastic>()
+          .line<gType.Stochastic>()
           .x((d) => getXCentered(d, x))
           .y((d) => y(d.fullK)),
       );
@@ -101,7 +96,7 @@ const draw = (
       .attr(
         'd',
         d3
-          .line<TypeStochastic>()
+          .line<gType.Stochastic>()
           .x((d) => getXCentered(d, x))
           .y((d) => y(d.fullD)),
       );

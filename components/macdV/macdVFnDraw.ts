@@ -1,9 +1,9 @@
 import * as d3 from 'd3';
 import { getDateString, getHistogramColor, getXCentered, initChart } from '../../controllers/chart';
-import { TypeMacdV } from '../../controllers/data/types';
-import { MacdVTypeDisplay } from './macdVType';
+import * as gType from '../../controllers/data/types';
+import * as mType from './macdVType';
 
-const draw = (id: string, data: TypeMacdV[], display: MacdVTypeDisplay, marginLeft: number) => {
+const draw = (id: string, data: gType.MacdV[], display: mType.Display, marginLeft: number) => {
   if (!data?.length) return;
   const yMin = d3.min(data, (d) => Math.min(d.macdV, d.signal, d.histogram, -150)) ?? 0;
   const yMax = d3.max(data, (d) => Math.max(d.macdV, d.signal, d.histogram, 150)) ?? 0;
@@ -107,7 +107,7 @@ const draw = (id: string, data: TypeMacdV[], display: MacdVTypeDisplay, marginLe
       .attr(
         'd',
         d3
-          .line<TypeMacdV>()
+          .line<gType.MacdV>()
           .x((d) => getXCentered(d, x))
           .y((d) => y(d.signal)),
       );
@@ -123,7 +123,7 @@ const draw = (id: string, data: TypeMacdV[], display: MacdVTypeDisplay, marginLe
       .attr(
         'd',
         d3
-          .line<TypeMacdV>()
+          .line<gType.MacdV>()
           .x((d) => getXCentered(d, x))
           .y((d) => y(d.macdV)),
       );

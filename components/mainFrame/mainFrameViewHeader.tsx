@@ -1,16 +1,16 @@
 import { useAtomValue } from 'jotai';
 import { useToggleDetails } from '../../controllers/data/hooks';
-import { StateCurrentTab } from '../../controllers/data/states';
-import { TypePriceRequest } from '../../controllers/data/types';
+import * as gState from '../../controllers/data/states';
+import * as gType from '../../controllers/data/types';
 import MiniPrice from '../miniPrice';
 import styles from './mainFrame.module.scss';
 import { useSwitchTypeBtnClick } from './mainFrameInteractor';
 import LatestPrice from './mainFrameViewLatestPrice';
 
 const View = () => {
-  const { company, mainType } = useAtomValue(StateCurrentTab);
-  const dailyReq: TypePriceRequest = { code: company.code, type: 'daily' };
-  const weeklyReq: TypePriceRequest = { code: company.code, type: 'weekly' };
+  const { company, mainType } = useAtomValue(gState.currentTab);
+  const dailyReq: gType.PriceRequest = { code: company.code, type: 'daily' };
+  const weeklyReq: gType.PriceRequest = { code: company.code, type: 'weekly' };
 
   const onSwitchTypeBtnClick = useSwitchTypeBtnClick();
   const onToggleDetails = useToggleDetails();

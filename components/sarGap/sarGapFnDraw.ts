@@ -1,8 +1,8 @@
 import * as d3 from 'd3';
 import { getXCentered, initChart } from '../../controllers/chart';
-import { TypeParabolicSAR } from '../../controllers/data/types';
+import * as gType from '../../controllers/data/types';
 
-const draw = (id: string, data: TypeParabolicSAR[], marginLeft: number) => {
+const draw = (id: string, data: gType.ParabolicSAR[], marginLeft: number) => {
   if (!data?.length) return;
   const yMin = d3.min(data, (d) => d.distance) ?? 0;
   const yMax = d3.max(data, (d) => d.distance) ?? 0;
@@ -35,7 +35,7 @@ const draw = (id: string, data: TypeParabolicSAR[], marginLeft: number) => {
     .attr(
       'd',
       d3
-        .area<TypeParabolicSAR>()
+        .area<gType.ParabolicSAR>()
         .x((d) => getXCentered(d, x))
         .y1((d) => y(d.distance))
         .y0(y(0)),
@@ -51,7 +51,7 @@ const draw = (id: string, data: TypeParabolicSAR[], marginLeft: number) => {
     .attr(
       'd',
       d3
-        .line<TypeParabolicSAR>()
+        .line<gType.ParabolicSAR>()
         .x((d) => getXCentered(d, x))
         .y((d) => y(d.distance)),
     );

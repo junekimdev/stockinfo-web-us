@@ -1,27 +1,28 @@
 import { useAtomValue } from 'jotai';
 import { useEffect } from 'react';
-import { StateAdx } from '../../controllers/data/states';
-import { TypePriceRequest } from '../../controllers/data/types';
+import { useInputChange } from '../../controllers/data/hooks';
+import * as gState from '../../controllers/data/states';
+import * as gType from '../../controllers/data/types';
 import { useGetPrices } from '../../controllers/net/price';
 import styles from './adx.module.scss';
 import draw from './adxFnDraw';
-import { useAdx, useDisplayCheckboxChange } from './adxInteractor';
-import { AdxStateDisplay } from './adxState';
+import { useAdx } from './adxInteractor';
+import * as mState from './adxState';
 
-const Presenter = (props: { req: TypePriceRequest; marginLeft: number; max?: number }) => {
+const Presenter = (props: { req: gType.PriceRequest; marginLeft: number; max?: number }) => {
   const { req, marginLeft, max = 120 } = props;
 
   useAdx(req);
   const { data } = useGetPrices(req);
-  const dataAdx = useAtomValue(StateAdx(req));
-  const display = useAtomValue(AdxStateDisplay);
+  const dataAdx = useAtomValue(gState.adx(req));
+  const display = useAtomValue(mState.display);
 
-  const onADXCheckboxChange = useDisplayCheckboxChange('ADX');
-  const onPdiCheckboxChange = useDisplayCheckboxChange('pDI');
-  const onNdiCheckboxChange = useDisplayCheckboxChange('nDI');
-  const onBuyCheckboxChange = useDisplayCheckboxChange('buy');
-  const onSellCheckboxChange = useDisplayCheckboxChange('sell');
-  const onConfirmCheckboxChange = useDisplayCheckboxChange('trendConfirm');
+  const onADXCheckboxChange = useInputChange(mState.display, 'ADX');
+  const onPdiCheckboxChange = useInputChange(mState.display, 'pDI');
+  const onNdiCheckboxChange = useInputChange(mState.display, 'nDI');
+  const onBuyCheckboxChange = useInputChange(mState.display, 'buy');
+  const onSellCheckboxChange = useInputChange(mState.display, 'sell');
+  const onConfirmCheckboxChange = useInputChange(mState.display, 'trendConfirm');
 
   const chartTitle = `${req.type} ADX`;
   const chartID = `${styles.chart}-${req.code}-${req.type}`;

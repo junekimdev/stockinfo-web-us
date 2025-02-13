@@ -1,11 +1,11 @@
 import { atom } from 'jotai';
-import { StochasticTypeDisplay } from './stochasticType';
+import * as mType from './stochasticType';
 
-const displayInit: StochasticTypeDisplay = {
+const initDisplay: mType.Display = {
   fullK: true,
   fullD: true,
   overbought: true,
   oversold: true,
   trendConfirm: true,
 };
-export const StochasticStateDisplay = atom(displayInit);
+export const display = atom(initDisplay);

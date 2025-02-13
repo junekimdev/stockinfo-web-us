@@ -1,14 +1,14 @@
 import * as d3 from 'd3';
 import { drawCandle, drawLatestPrice, initChart } from '../../controllers/chart';
-import { TypePrice } from '../../controllers/data/types';
-import { HeikinAshiSmoothedTypeDisplay } from './heikinAshiType';
+import * as gType from '../../controllers/data/types';
+import * as mType from './heikinAshiType';
 
 const draw = (
   id: string,
-  data: TypePrice[],
-  display: HeikinAshiSmoothedTypeDisplay,
+  data: gType.Price[],
+  display: mType.Display,
   marginLeft: number,
-  latestPriceData?: TypePrice,
+  latestPriceData?: gType.Price,
 ) => {
   if (!data?.length) return;
   const minData = d3.min(data, (d) => d.low) ?? 0;

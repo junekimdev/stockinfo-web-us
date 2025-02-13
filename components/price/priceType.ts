@@ -1,2 +1,2 @@
-export type PriceTypeDisplayItem = 'LatestPrice' | 'ParabolicSAR' | 'BollingerBands';
-export type PriceTypeDisplay = Record<PriceTypeDisplayItem, boolean>;
+export type DisplayItem = 'LatestPrice' | 'ParabolicSAR' | 'BollingerBands';
+export type Display = Record<DisplayItem, boolean>;

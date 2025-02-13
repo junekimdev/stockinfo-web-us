@@ -1,5 +1,5 @@
 import { atom } from 'jotai';
-import { RsiTypeDisplay } from './rsiType';
+import * as mType from './rsiType';
 
-const displayInit: RsiTypeDisplay = { overbought: true, oversold: true };
-export const RsiStateDisplay = atom(displayInit);
+const initDisplay: mType.Display = { overbought: true, oversold: true };
+export const display = atom(initDisplay);

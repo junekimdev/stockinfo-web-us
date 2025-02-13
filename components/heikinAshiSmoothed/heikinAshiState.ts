@@ -1,6 +1,7 @@
 import { atom } from 'jotai';
-import { HeikinAshiSmoothedTypeDisplay } from './heikinAshiType';
-const displayInit: HeikinAshiSmoothedTypeDisplay = {
+import * as mType from './heikinAshiType';
+
+const initDisplay: mType.Display = {
   LatestPrice: true,
 };
-export const HeikinAshiSmoothedStateDisplay = atom(displayInit);
+export const display = atom(initDisplay);

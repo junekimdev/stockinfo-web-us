@@ -1,11 +1,6 @@
 import { QueryFunctionContext, useQuery } from '@tanstack/react-query';
-import {
-  TypeEdgarStatementItem,
-  TypeEdgarStatementItemRaw,
-  TypeEdgarStatementRes,
-  TypeEdgarStatementResRaw,
-} from '../../controllers/data/types';
 import { EDGAR_URL } from '../apiURLs';
+import * as gType from '../data/types';
 
 export const useGetEdgarStatement = (cik: string) => {
   return useQuery({
@@ -26,7 +21,7 @@ export const useGetEdgarStatement = (cik: string) => {
       operatingCashFlow: [],
       investingCashFlow: [],
       financingCashFlow: [],
-    } as TypeEdgarStatementRes,
+    } as gType.EdgarStatementRes,
   });
 };
 
@@ -41,7 +36,7 @@ const getEdgarStatement = async ({ queryKey }: QueryFunctionContext<string[]>) =
     throw Error(err.message);
   }
 
-  const data: TypeEdgarStatementResRaw = await res.json();
+  const data: gType.EdgarStatementResRaw = await res.json();
 
   const outstandingStock = parseItemArray(data.outstandingStock);
   const assets = parseItemArray(data.assets);
@@ -54,7 +49,7 @@ const getEdgarStatement = async ({ queryKey }: QueryFunctionContext<string[]>) =
   const operatingCashFlow = parseItemArray(data.operatingCashFlow);
   const investingCashFlow = parseItemArray(data.investingCashFlow);
   const financingCashFlow = parseItemArray(data.financingCashFlow);
-  const r: TypeEdgarStatementRes = {
+  const r: gType.EdgarStatementRes = {
     cik,
     outstandingStock,
     assets,
@@ -72,8 +67,8 @@ const getEdgarStatement = async ({ queryKey }: QueryFunctionContext<string[]>) =
   return r;
 };
 
-const parseItemArray = (data: TypeEdgarStatementItemRaw[]) => {
-  const r: TypeEdgarStatementItem[] = [];
+const parseItemArray = (data: gType.EdgarStatementItemRaw[]) => {
+  const r: gType.EdgarStatementItem[] = [];
   for (const item of data) {
     const dateStr = item.date ? item.date : item.end_date;
     const date = dateStr ? new Date(dateStr) : new Date();

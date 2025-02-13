@@ -1,13 +1,13 @@
 import { useAtomValue } from 'jotai';
 import { useEffect } from 'react';
-import { StatePriceSAR } from '../../controllers/data/states';
-import { TypePriceRequest } from '../../controllers/data/types';
+import * as gState from '../../controllers/data/states';
+import * as gType from '../../controllers/data/types';
 import styles from './sarGap.module.scss';
 import draw from './sarGapFnDraw';
 
-const Presenter = (props: { req: TypePriceRequest; marginLeft: number; max?: number }) => {
+const Presenter = (props: { req: gType.PriceRequest; marginLeft: number; max?: number }) => {
   const { req, marginLeft, max = 120 } = props;
-  const dataSar = useAtomValue(StatePriceSAR(req));
+  const dataSar = useAtomValue(gState.priceSAR(req));
 
   const chartTitle = `${req.type} Parabolic SAR Gap`;
   const chartID = `${styles.chart}-${req.code}-${req.type}`;

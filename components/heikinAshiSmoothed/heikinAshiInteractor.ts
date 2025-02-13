@@ -1,29 +1,16 @@
 import { useAtom, useAtomValue } from 'jotai';
-import { ChangeEvent, useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 import { getPriceEMAOverAll } from '../../controllers/avg';
-import { StatePriceHeikinAshi, StatePriceHeikinAshiSmoothed } from '../../controllers/data/states';
-import { TypePriceRequest } from '../../controllers/data/types';
-import { HeikinAshiSmoothedStateDisplay } from './heikinAshiState';
-import { HeikinAshiSmoothedTypeDisplayItem } from './heikinAshiType';
-
-export const useDisplayCheckboxChange = (what: HeikinAshiSmoothedTypeDisplayItem) => {
-  const [display, setState] = useAtom(HeikinAshiSmoothedStateDisplay);
-
-  return useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      setState({ ...display, [what]: e.currentTarget.checked });
-    },
-    [setState, display, what],
-  );
-};
+import * as gState from '../../controllers/data/states';
+import * as gType from '../../controllers/data/types';
 
 export const useHeikinAshiSmoothed = (
-  req: TypePriceRequest,
+  req: gType.PriceRequest,
   options?: { period1?: number; period2?: number },
 ) => {
   const { period1 = 10, period2 = 10 } = options ?? {};
-  const data = useAtomValue(StatePriceHeikinAshi(req));
-  const [dataHeikinAshiSmoothed, setState] = useAtom(StatePriceHeikinAshiSmoothed(req));
+  const data = useAtomValue(gState.priceHeikinAshi(req));
+  const [dataHeikinAshiSmoothed, setState] = useAtom(gState.priceHeikinAshiSmoothed(req));
 
   useEffect(() => {
     if (data && data.length > 1 && !dataHeikinAshiSmoothed.length) {

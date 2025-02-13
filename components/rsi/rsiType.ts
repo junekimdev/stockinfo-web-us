@@ -1,2 +1,2 @@
-export type RsiTypeDisplayItem = 'overbought' | 'oversold';
-export type RsiTypeDisplay = Record<RsiTypeDisplayItem, boolean>;
+export type DisplayItem = 'overbought' | 'oversold';
+export type Display = Record<DisplayItem, boolean>;

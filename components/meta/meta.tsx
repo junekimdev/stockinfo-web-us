@@ -1,13 +1,13 @@
 import Head from 'next/head';
 import { useGTM } from './gtm';
-import { TMPropsMeta } from './metaType';
+import * as mType from './metaType';
 
-const Meta = (props: TMPropsMeta) => {
+const Meta = (props: mType.Props) => {
   const authorName = 'junekimdev';
   const siteName = "another junekimdev's website";
   const homeUrl = process.env.NEXT_PUBLIC_URL ?? 'localhost:3000';
   const {
-    image = `${homeUrl}/assets/images/JKstock_1200x627.png`,
+    image = `${homeUrl}/assets/images/LogoPlace_Extended_1200x627.png`,
     imageWidth = '1200',
     imageHeight = '627',
   } = props;
@@ -43,7 +43,7 @@ const Meta = (props: TMPropsMeta) => {
       <link rel="manifest" href="/site.webmanifest" />
       <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
       <meta name="msapplication-TileColor" content="#ffc40d" />
-      <meta name="theme-color" content="#42423e" />
+      <meta name="theme-color" content="#ffffff" />
       {props.children}
     </Head>
   );

@@ -1,18 +1,13 @@
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { PrimitiveAtom, useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect } from 'react';
+import { ChangeEvent, useCallback, useEffect } from 'react';
 import { LOCAL_STORAGE_KEY_COMPANY_TABS } from '../apiURLs';
-import {
-  StateCompanyTabs,
-  StateCurrentTab,
-  StateDetailsOpened,
-  StateTabsInitiated,
-} from './states';
-import { TypeCompanyTab } from './types';
+import * as gState from './states';
+import * as gType from './types';
 
 export const useCheckCurrentTab = () => {
   const router = useRouter();
-  const currentTab = useAtomValue(StateCurrentTab);
+  const currentTab = useAtomValue(gState.currentTab);
 
   useEffect(() => {
     if (!currentTab.uuid) router.replace('/');
@@ -20,8 +15,8 @@ export const useCheckCurrentTab = () => {
 };
 
 export const useLoadCompanyTabs = () => {
-  const [initiated, setInit] = useAtom(StateTabsInitiated);
-  const setTabs = useSetAtom(StateCompanyTabs);
+  const [initiated, setInit] = useAtom(gState.tabsInitiated);
+  const setTabs = useSetAtom(gState.companyTabs);
 
   useEffect(() => {
     if (initiated) return;
@@ -30,7 +25,7 @@ export const useLoadCompanyTabs = () => {
     const tabsString = window.localStorage.getItem(LOCAL_STORAGE_KEY_COMPANY_TABS);
     if (tabsString) {
       try {
-        const savedTabs: TypeCompanyTab[] = JSON.parse(tabsString);
+        const savedTabs: gType.CompanyTab[] = JSON.parse(tabsString);
         setTabs(savedTabs);
       } catch (error) {
         console.error(error);
@@ -40,7 +35,7 @@ export const useLoadCompanyTabs = () => {
 };
 
 export const useSaveTabsClick = () => {
-  const tabs = useAtomValue(StateCompanyTabs);
+  const tabs = useAtomValue(gState.companyTabs);
 
   return useCallback(() => {
     window.localStorage.setItem(LOCAL_STORAGE_KEY_COMPANY_TABS, JSON.stringify(tabs));
@@ -56,7 +51,19 @@ export const useClearTabsClick = () => {
 };
 
 export const useToggleDetails = () => {
-  const [opened, setOpened] = useAtom(StateDetailsOpened);
+  const [opened, setOpened] = useAtom(gState.detailsOpened);
 
   return useCallback(() => setOpened(!opened), [setOpened, opened]);
+};
+
+export const useInputChange = <T>(atom: PrimitiveAtom<T>, what: keyof T) => {
+  const [values, setState] = useAtom(atom);
+
+  return useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      const v = typeof values[what] === 'boolean' ? e.currentTarget.checked : e.currentTarget.value;
+      setState({ ...values, [what]: v });
+    },
+    [what, setState, values],
+  );
 };

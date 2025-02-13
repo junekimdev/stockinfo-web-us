@@ -1,5 +1,5 @@
 import { useAtomValue } from 'jotai';
-import { StateCurrentTab } from '../../controllers/data/states';
+import * as gState from '../../controllers/data/states';
 import { useGetEdgarStatement } from '../../controllers/net/edgar';
 import { shortenNumMillion } from '../../controllers/number';
 import styles from './details.module.scss';
@@ -11,7 +11,7 @@ const getLiabilitiesRatio = (liabilities?: number, equity?: number) => {
 };
 
 const View = () => {
-  const { company } = useAtomValue(StateCurrentTab);
+  const { company } = useAtomValue(gState.currentTab);
   const { data } = useGetEdgarStatement(company.cik);
   const assets = data?.assets ?? [];
   const equity = data?.equity ?? [];

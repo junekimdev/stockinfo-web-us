@@ -1,17 +1,8 @@
 import * as d3 from 'd3';
-import {
-  TypeChartData,
-  TypeDate,
-  TypeMovingAvg,
-  TypeParabolicSAR,
-  TypePrice,
-  TypePriceBollingerBands,
-  TypePriceVolume,
-  TypeRectCoordi,
-} from './data/types';
+import * as gType from './data/types';
 import { to2DigitString } from './number';
 
-export const getCandleColor = (d: TypePrice) => {
+export const getCandleColor = (d: gType.Price) => {
   if (d.open === d.close) return 'gray';
   return d.open > d.close ? 'blue' : 'red';
 };
@@ -26,7 +17,7 @@ export const getHistogramColor = (d: number) => {
   return d > 0 ? 'red' : 'blue';
 };
 
-export const getDateString = (d: TypeDate) => {
+export const getDateString = (d: gType.MyDate) => {
   if (d.date instanceof Date) {
     const year = d.date.getFullYear();
     const month = to2DigitString(d.date.getMonth() + 1);
@@ -37,14 +28,14 @@ export const getDateString = (d: TypeDate) => {
   return `${year}-w${to2DigitString(week + 1)}`;
 };
 
-export const getXCentered = (d: TypeDate, x: d3.ScaleBand<string>) =>
+export const getXCentered = (d: gType.MyDate, x: d3.ScaleBand<string>) =>
   (x(getDateString(d)) ?? 0) + x.bandwidth() / 2;
 
 interface IChartArgs {
   id: string;
   yMin: number;
   yMax: number;
-  data: TypeChartData[];
+  data: gType.ChartData[];
   margin?: { top: number; bottom: number; left: number; right: number };
   chartHeight?: number;
   dataWidth?: number;
@@ -131,7 +122,7 @@ export const drawCandle = (
   chart: d3.Selection<SVGGElement, unknown, HTMLElement, any>,
   x: d3.ScaleBand<string>,
   y: d3.ScaleLinear<number, number, never>,
-  data: TypePrice[],
+  data: gType.Price[],
 ) => {
   const candleGroup = chart.append('g').attr('class', 'candle');
 
@@ -165,8 +156,8 @@ export const drawLatestPrice = (
   chart: d3.Selection<SVGGElement, unknown, HTMLElement, any>,
   x: d3.ScaleBand<string>,
   y: d3.ScaleLinear<number, number, never>,
-  end: TypeDate,
-  data: TypePrice,
+  end: gType.MyDate,
+  data: gType.Price,
 ) => {
   const w = (x(getDateString(end)) ?? 0) + x.bandwidth();
   const p1: [number, number] = [0, y(data.close)];
@@ -184,7 +175,7 @@ export const drawLatestChange = (
   chart: d3.Selection<SVGGElement, unknown, HTMLElement, any>,
   x: d3.ScaleBand<string>,
   y: d3.ScaleLinear<number, number, never>,
-  end: TypeDate,
+  end: gType.MyDate,
   data: number,
 ) => {
   const w = (x(getDateString(end)) ?? 0) + x.bandwidth();
@@ -203,7 +194,7 @@ export const drawSAR = (
   chart: d3.Selection<SVGGElement, unknown, HTMLElement, any>,
   x: d3.ScaleBand<string>,
   y: d3.ScaleLinear<number, number, never>,
-  data: TypeParabolicSAR[],
+  data: gType.ParabolicSAR[],
 ) => {
   chart
     .append('g')
@@ -222,7 +213,7 @@ export const drawMA = (
   chart: d3.Selection<SVGGElement, unknown, HTMLElement, any>,
   x: d3.ScaleBand<string>,
   y: d3.ScaleLinear<number, number, never>,
-  data: TypeMovingAvg[],
+  data: gType.MovingAvg[],
   color: string,
 ) => {
   const group = chart
@@ -237,7 +228,7 @@ export const drawMA = (
     .attr(
       'd',
       d3
-        .line<TypeMovingAvg>()
+        .line<gType.MovingAvg>()
         .x((d) => getXCentered(d, x))
         .y((d) => y(d.avg)),
     );
@@ -247,7 +238,7 @@ export const drawBollingerBands = (
   chart: d3.Selection<SVGGElement, unknown, HTMLElement, any>,
   x: d3.ScaleBand<string>,
   y: d3.ScaleLinear<number, number, never>,
-  data: TypePriceBollingerBands[],
+  data: gType.PriceBollingerBands[],
 ) => {
   const bbGroup = chart
     .append('g')
@@ -261,7 +252,7 @@ export const drawBollingerBands = (
     .attr(
       'd',
       d3
-        .line<TypePriceBollingerBands>()
+        .line<gType.PriceBollingerBands>()
         .x((d) => getXCentered(d, x))
         .y((d) => y(d.middle)),
     );
@@ -271,7 +262,7 @@ export const drawBollingerBands = (
     .attr(
       'd',
       d3
-        .line<TypePriceBollingerBands>()
+        .line<gType.PriceBollingerBands>()
         .x((d) => getXCentered(d, x))
         .y((d) => y(d.upper)),
     );
@@ -281,7 +272,7 @@ export const drawBollingerBands = (
     .attr(
       'd',
       d3
-        .line<TypePriceBollingerBands>()
+        .line<gType.PriceBollingerBands>()
         .x((d) => getXCentered(d, x))
         .y((d) => y(d.lower)),
     );
@@ -370,7 +361,7 @@ export const addSymbolDownArrow = (
 export const addClipPathAsShowWindow = (
   chart: d3.Selection<SVGGElement, unknown, HTMLElement, any>,
   chartId: string,
-  clipArea: TypeRectCoordi,
+  clipArea: gType.RectCoordi,
   name: string,
 ) => {
   const id = `${chartId}-clip-${name}`;
@@ -386,7 +377,7 @@ export const addClipPathAsShowWindow = (
   return `#${id}`;
 };
 
-export const getMarginLeft = (data: TypePriceVolume[] | undefined) => {
+export const getMarginLeft = (data: gType.PriceVolume[] | undefined) => {
   if (data && data.length) {
     const size = 8;
     const minLen = 5;

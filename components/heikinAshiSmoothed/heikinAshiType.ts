@@ -1,2 +1,2 @@
-export type HeikinAshiSmoothedTypeDisplayItem = 'LatestPrice';
-export type HeikinAshiSmoothedTypeDisplay = Record<HeikinAshiSmoothedTypeDisplayItem, boolean>;
+export type DisplayItem = 'LatestPrice';
+export type Display = Record<DisplayItem, boolean>;

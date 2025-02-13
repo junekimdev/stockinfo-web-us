@@ -1,26 +1,27 @@
 import { useAtomValue } from 'jotai';
 import { useEffect } from 'react';
-import { StateStochastic } from '../../controllers/data/states';
-import { TypePriceRequest } from '../../controllers/data/types';
+import { useInputChange } from '../../controllers/data/hooks';
+import * as gState from '../../controllers/data/states';
+import * as gType from '../../controllers/data/types';
 import { useGetPrices } from '../../controllers/net/price';
 import styles from './stochastic.module.scss';
 import draw from './stochasticFnDraw';
-import { useDisplayCheckboxChange, useStochastic } from './stochasticInteractor';
-import { StochasticStateDisplay } from './stochasticState';
+import { useStochastic } from './stochasticInteractor';
+import * as mState from './stochasticState';
 
-const Presenter = (props: { req: TypePriceRequest; marginLeft: number; max?: number }) => {
+const Presenter = (props: { req: gType.PriceRequest; marginLeft: number; max?: number }) => {
   const { req, marginLeft, max = 120 } = props;
 
   useStochastic(req);
   const { data } = useGetPrices(req);
-  const dataStochastic = useAtomValue(StateStochastic(req));
-  const display = useAtomValue(StochasticStateDisplay);
+  const dataStochastic = useAtomValue(gState.stochastic(req));
+  const display = useAtomValue(mState.display);
 
-  const onFullKCheckboxChange = useDisplayCheckboxChange('fullK');
-  const onFullDCheckboxChange = useDisplayCheckboxChange('fullD');
-  const onOversoldCheckboxChange = useDisplayCheckboxChange('oversold');
-  const onOverboughtCheckboxChange = useDisplayCheckboxChange('overbought');
-  const onConfirmCheckboxChange = useDisplayCheckboxChange('trendConfirm');
+  const onFullKCheckboxChange = useInputChange(mState.display, 'fullK');
+  const onFullDCheckboxChange = useInputChange(mState.display, 'fullD');
+  const onOversoldCheckboxChange = useInputChange(mState.display, 'oversold');
+  const onOverboughtCheckboxChange = useInputChange(mState.display, 'overbought');
+  const onConfirmCheckboxChange = useInputChange(mState.display, 'trendConfirm');
 
   const chartTitle = `${req.type} SO`;
   const chartID = `${styles.chart}-${req.code}-${req.type}`;

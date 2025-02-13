@@ -2,18 +2,18 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useResetAtom } from 'jotai/utils';
 import { useRouter } from 'next/router';
 import { Dispatch, DragEvent, MouseEvent, SetStateAction, useCallback } from 'react';
-import { StateCompanyTabs, StateCurrentTab } from '../../controllers/data/states';
-import { TypeCompanyTab, TypePriceRequestType } from '../../controllers/data/types';
-import { MainFrameStateMenuOpened } from './mainFrameStates';
+import * as gState from '../../controllers/data/states';
+import * as gType from '../../controllers/data/types';
+import * as mState from './mainFrameState';
 
 export const useToggleMenu = () => {
-  const [opened, setOpened] = useAtom(MainFrameStateMenuOpened);
+  const [opened, setOpened] = useAtom(mState.menuOpened);
 
   return useCallback(() => setOpened(!opened), [setOpened, opened]);
 };
 
 export const useMoveToHome = () => {
-  const resetCurrent = useResetAtom(StateCurrentTab);
+  const resetCurrent = useResetAtom(gState.currentTab);
   const router = useRouter();
 
   return useCallback(() => {
@@ -23,9 +23,9 @@ export const useMoveToHome = () => {
 };
 
 export const useCloseAllClick = () => {
-  const resetTabs = useResetAtom(StateCompanyTabs);
-  const resetCurrent = useResetAtom(StateCurrentTab);
-  const setOpened = useSetAtom(MainFrameStateMenuOpened);
+  const resetTabs = useResetAtom(gState.companyTabs);
+  const resetCurrent = useResetAtom(gState.currentTab);
+  const setOpened = useSetAtom(mState.menuOpened);
   const router = useRouter();
 
   return useCallback(() => {
@@ -37,7 +37,7 @@ export const useCloseAllClick = () => {
 };
 
 export const useAddNewTabClick = () => {
-  const resetState = useResetAtom(StateCurrentTab);
+  const resetState = useResetAtom(gState.currentTab);
   const router = useRouter();
 
   return useCallback(() => {
@@ -46,8 +46,8 @@ export const useAddNewTabClick = () => {
   }, [resetState, router]);
 };
 
-export const useMoveToTabClick = (tab: TypeCompanyTab) => {
-  const setState = useSetAtom(StateCurrentTab);
+export const useMoveToTabClick = (tab: gType.CompanyTab) => {
+  const setState = useSetAtom(gState.currentTab);
   const router = useRouter();
 
   return useCallback(() => {
@@ -56,10 +56,10 @@ export const useMoveToTabClick = (tab: TypeCompanyTab) => {
   }, [setState, tab, router]);
 };
 
-export const useRemoveTabClick = (tab: TypeCompanyTab) => {
-  const [tabs, setTabs] = useAtom(StateCompanyTabs);
-  const currentTab = useAtomValue(StateCurrentTab);
-  const resetCurrent = useResetAtom(StateCurrentTab);
+export const useRemoveTabClick = (tab: gType.CompanyTab) => {
+  const [tabs, setTabs] = useAtom(gState.companyTabs);
+  const currentTab = useAtomValue(gState.currentTab);
+  const resetCurrent = useResetAtom(gState.currentTab);
   const router = useRouter();
 
   return useCallback(
@@ -77,14 +77,14 @@ export const useRemoveTabClick = (tab: TypeCompanyTab) => {
 };
 
 export const useSwitchTypeBtnClick = () => {
-  const [prevTabs, setTabs] = useAtom(StateCompanyTabs);
-  const [currentTab, setCurrentTab] = useAtom(StateCurrentTab);
+  const [prevTabs, setTabs] = useAtom(gState.companyTabs);
+  const [currentTab, setCurrentTab] = useAtom(gState.currentTab);
 
   return useCallback(
     (e: MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation();
 
-      const mainType: TypePriceRequestType = currentTab.mainType === 'daily' ? 'weekly' : 'daily';
+      const mainType: gType.PriceRequestType = currentTab.mainType === 'daily' ? 'weekly' : 'daily';
       const updatedTab = { ...currentTab, mainType };
 
       setCurrentTab(updatedTab);
@@ -140,18 +140,18 @@ export const useDragEnterCapture = (dragged: HTMLLIElement | undefined) => {
 };
 
 export const useDrop = () => {
-  const setTabs = useSetAtom(StateCompanyTabs);
+  const setTabs = useSetAtom(gState.companyTabs);
 
   return useCallback(
     (e: DragEvent<HTMLUListElement>) => {
       e.preventDefault();
-      const tabs: TypeCompanyTab[] = [];
+      const tabs: gType.CompanyTab[] = [];
       const children = e.currentTarget.children;
 
       for (let i = 0; i < children.length; i++) {
         const el = children[i];
         if (el instanceof HTMLElement && typeof el.dataset.data === 'string')
-          tabs.push(JSON.parse(el.dataset.data) as TypeCompanyTab);
+          tabs.push(JSON.parse(el.dataset.data) as gType.CompanyTab);
       }
 
       setTabs(tabs);
@@ -249,7 +249,7 @@ export const useTouchEnd = (
   dragged: HTMLLIElement | undefined,
   setDragged: Dispatch<SetStateAction<HTMLLIElement | undefined>>,
 ) => {
-  const setTabs = useSetAtom(StateCompanyTabs);
+  const setTabs = useSetAtom(gState.companyTabs);
 
   return useCallback(
     (e: React.TouchEvent<HTMLUListElement>) => {
@@ -265,13 +265,13 @@ export const useTouchEnd = (
       setDragged(undefined);
 
       // Update list state
-      const tabs: TypeCompanyTab[] = [];
+      const tabs: gType.CompanyTab[] = [];
       const children = e.currentTarget.children;
 
       for (let i = 0; i < children.length; i++) {
         const el = children[i];
         if (el instanceof HTMLElement && typeof el.dataset.data === 'string')
-          tabs.push(JSON.parse(el.dataset.data) as TypeCompanyTab);
+          tabs.push(JSON.parse(el.dataset.data) as gType.CompanyTab);
       }
 
       setTabs(tabs);

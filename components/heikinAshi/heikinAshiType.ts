@@ -1,2 +1,2 @@
-export type HeikinAshiTypeDisplayItem = 'LatestPrice' | 'ParabolicSAR' | 'BollingerBands';
-export type HeikinAshiTypeDisplay = Record<HeikinAshiTypeDisplayItem, boolean>;
+export type DisplayItem = 'LatestPrice' | 'ParabolicSAR' | 'BollingerBands';
+export type Display = Record<DisplayItem, boolean>;
