@@ -1,2 +1,2 @@
-export type MacdTypeDisplayItem = 'MACD' | 'signal' | 'histogram';
-export type MacdTypeDisplay = Record<MacdTypeDisplayItem, boolean>;
+export type DisplayItem = 'MACD' | 'signal' | 'histogram';
+export type Display = Record<DisplayItem, boolean>;

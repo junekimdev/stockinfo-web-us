@@ -1,18 +1,18 @@
 import { useAtomValue } from 'jotai';
 import { useEffect } from 'react';
-import { StateAtrp } from '../../controllers/data/states';
-import { TypePriceRequest } from '../../controllers/data/types';
+import * as gState from '../../controllers/data/states';
+import * as gType from '../../controllers/data/types';
 import { useGetPrices } from '../../controllers/net/price';
 import styles from './atrp.module.scss';
 import draw from './atrpFnDraw';
 import { useAtrp } from './atrpInteractor';
 
-const Presenter = (props: { req: TypePriceRequest; marginLeft: number; max?: number }) => {
+const Presenter = (props: { req: gType.PriceRequest; marginLeft: number; max?: number }) => {
   const { req, marginLeft, max = 120 } = props;
 
   useAtrp(req);
   const { data } = useGetPrices(req);
-  const dataAtrp = useAtomValue(StateAtrp(req));
+  const dataAtrp = useAtomValue(gState.atrp(req));
 
   const chartTitle = `${req.type} ATRP`;
   const chartID = `${styles.chart}-${req.code}-${req.type}`;

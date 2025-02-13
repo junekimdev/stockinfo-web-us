@@ -1,6 +1,6 @@
 import { useAtomValue } from 'jotai';
-import { StateCurrentTab } from '../../controllers/data/states';
-import { TypePriceRequest } from '../../controllers/data/types';
+import * as gState from '../../controllers/data/states';
+import * as gType from '../../controllers/data/types';
 import { useGetEdgarStatement } from '../../controllers/net/edgar';
 import { useGetPricesLatest } from '../../controllers/net/price';
 import { shortenNumMillion } from '../../controllers/number';
@@ -11,8 +11,8 @@ const getRatioString = (n: number) => {
 };
 
 const View = () => {
-  const { company } = useAtomValue(StateCurrentTab);
-  const req: TypePriceRequest = { code: company.code, type: 'latest' };
+  const { company } = useAtomValue(gState.currentTab);
+  const req: gType.PriceRequest = { code: company.code, type: 'latest' };
   const { data } = useGetEdgarStatement(company.cik);
   const prices = useGetPricesLatest(req);
   const latestPrice = prices.data?.close ?? 0;

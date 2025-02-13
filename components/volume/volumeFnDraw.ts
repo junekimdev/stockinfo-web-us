@@ -1,8 +1,8 @@
 import * as d3 from 'd3';
 import { getCandleColor, getDateString, initChart } from '../../controllers/chart';
-import { TypePriceVolume } from '../../controllers/data/types';
+import * as gType from '../../controllers/data/types';
 
-const draw = (id: string, data: TypePriceVolume[], marginLeft: number) => {
+const draw = (id: string, data: gType.PriceVolume[], marginLeft: number) => {
   if (!data?.length) return;
   const yMin = 0;
   const yMax = d3.max(data, (d) => d.volume) ?? 1;

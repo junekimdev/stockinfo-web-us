@@ -1,11 +1,11 @@
 import { useAtomValue } from 'jotai';
-import { StateCurrentTab } from '../../controllers/data/states';
+import * as gState from '../../controllers/data/states';
 import { useGetEdgarStatement } from '../../controllers/net/edgar';
 import { shortenNumMillion } from '../../controllers/number';
 import styles from './details.module.scss';
 
 const View = () => {
-  const { company } = useAtomValue(StateCurrentTab);
+  const { company } = useAtomValue(gState.currentTab);
   const { data } = useGetEdgarStatement(company.cik);
   const cashflowOperating = data?.operatingCashFlow ?? [];
   const cashflowInvesting = data?.investingCashFlow ?? [];

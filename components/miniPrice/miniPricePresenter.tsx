@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
-import { TypePriceRequest } from '../../controllers/data/types';
+import * as gType from '../../controllers/data/types';
 import { useGetPrices } from '../../controllers/net/price';
 import styles from './miniPrice.module.scss';
 import draw from './miniPriceFnDraw';
 import Placeholder from './miniPriceViewPlaceholder';
 
-const Presenter = (props: { req: TypePriceRequest; max?: number }) => {
+const Presenter = (props: { req: gType.PriceRequest; max?: number }) => {
   const { req, max = 50 } = props;
   const { data } = useGetPrices(req);
   const chartID = `${styles.chart}-${req.code}-${req.type}`;

@@ -1,12 +1,12 @@
 import { useAtomValue } from 'jotai';
-import { StateCurrentTab } from '../../controllers/data/states';
-import { TypeCompanyTab } from '../../controllers/data/types';
+import * as gState from '../../controllers/data/states';
+import * as gType from '../../controllers/data/types';
 import styles from './mainFrame.module.scss';
 import { useMoveToTabClick, useRemoveTabClick } from './mainFrameInteractor';
 
-const View = (props: { tab: TypeCompanyTab }) => {
+const View = (props: { tab: gType.CompanyTab }) => {
   const { tab } = props;
-  const currentTab = useAtomValue(StateCurrentTab);
+  const currentTab = useAtomValue(gState.currentTab);
   const onMoveToTabClick = useMoveToTabClick(tab);
   const onRemoveTabClick = useRemoveTabClick(tab);
 

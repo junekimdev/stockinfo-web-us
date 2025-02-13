@@ -1,20 +1,20 @@
 import { useAtomValue } from 'jotai';
 import { useEffect } from 'react';
-import { StateChaikin } from '../../controllers/data/states';
-import { TypePriceRequest } from '../../controllers/data/types';
+import { useInputChange } from '../../controllers/data/hooks';
+import * as gState from '../../controllers/data/states';
+import * as gType from '../../controllers/data/types';
 import { useGetPrices } from '../../controllers/net/price';
 import styles from './cmf.module.scss';
 import draw from './cmfFnDraw';
-import { useDisplayCheckboxChange } from './cmfInteractor';
-import { CmfStateDisplay } from './cmfState';
+import * as mState from './cmfState';
 
-const Presenter = (props: { req: TypePriceRequest; marginLeft: number; max?: number }) => {
+const Presenter = (props: { req: gType.PriceRequest; marginLeft: number; max?: number }) => {
   const { req, marginLeft, max = 120 } = props;
   const { data } = useGetPrices(req);
-  const dataChaikin = useAtomValue(StateChaikin(req));
-  const display = useAtomValue(CmfStateDisplay);
+  const dataChaikin = useAtomValue(gState.chaikin(req));
+  const display = useAtomValue(mState.display);
 
-  const onNoSignalZoneCheckboxChange = useDisplayCheckboxChange('noSignalZone');
+  const onNoSignalZoneCheckboxChange = useInputChange(mState.display, 'noSignalZone');
 
   const chartTitle = `${req.type} CMF`;
   const chartID = `${styles.chart}-${req.code}-${req.type}`;

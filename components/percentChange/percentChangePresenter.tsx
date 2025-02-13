@@ -1,27 +1,28 @@
 import { useAtomValue } from 'jotai';
 import { useEffect } from 'react';
-import { StatePricePercentChange } from '../../controllers/data/states';
-import { TypePriceRequest } from '../../controllers/data/types';
+import { useInputChange } from '../../controllers/data/hooks';
+import * as gState from '../../controllers/data/states';
+import * as gType from '../../controllers/data/types';
 import { useGetPrices, useGetPricesLatest } from '../../controllers/net/price';
 import styles from './percentChange.module.scss';
 import draw from './percentChangeFnDraw';
-import { useDisplayCheckboxChange, usePricePercentChange } from './percentChangeInteractor';
-import { PercentChangeStateDisplay } from './percentChangeState';
+import { usePricePercentChange } from './percentChangeInteractor';
+import * as mState from './percentChangeState';
 
-const Presenter = (props: { req: TypePriceRequest; marginLeft: number; max?: number }) => {
+const Presenter = (props: { req: gType.PriceRequest; marginLeft: number; max?: number }) => {
   const { req, marginLeft, max = 120 } = props;
   usePricePercentChange(req);
 
   const { data } = useGetPrices(req);
   const { data: latestPriceData } = useGetPricesLatest({ code: req.code, type: 'latest' });
-  const dataPercentChange = useAtomValue(StatePricePercentChange(req));
-  const display = useAtomValue(PercentChangeStateDisplay);
+  const dataPercentChange = useAtomValue(gState.pricePercentChange(req));
+  const display = useAtomValue(mState.display);
 
   const chartTitle = `${req.type} price percent change`;
   const chartID = `${styles.chart}-${req.code}-${req.type}`;
   const latestPriceInputID = `${chartID}-LatestPrice`;
 
-  const onLatestPriceCheckboxChange = useDisplayCheckboxChange('LatestPrice');
+  const onLatestPriceCheckboxChange = useInputChange(mState.display, 'LatestPrice');
 
   const lastestPercentChange =
     data?.length && latestPriceData

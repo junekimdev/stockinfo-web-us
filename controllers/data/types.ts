@@ -1,11 +1,11 @@
-export type TypeError = { code: number; message: string };
-export type TypeRectCoordi = { x: number; y: number; w: number; h: number };
+export type MyError = { code: number; message: string };
+export type RectCoordi = { x: number; y: number; w: number; h: number };
 
-export type TypePriceRequestType = 'daily' | 'weekly' | 'latest';
-export type TypeAvgMethod = 'simple' | 'exponential' | 'weighted';
-export type TypePriceValue = 'close' | 'open' | 'high' | 'low';
-export type TypePriceVolumeValue = TypePriceValue | 'volume';
-export type TypeChart =
+export type PriceRequestType = 'daily' | 'weekly' | 'latest';
+export type AvgMethod = 'simple' | 'exponential' | 'weighted';
+export type PriceValue = 'close' | 'open' | 'high' | 'low';
+export type PriceVolumeValue = PriceValue | 'volume';
+export type Chart =
   | 'price'
   | 'mini-price'
   | 'volume'
@@ -21,98 +21,98 @@ export type TypeChart =
   | 'cmf'
   | 'so';
 
-export type TypeIDWeek = { year: number; week: number };
-export type TypeDate = { date: Date | TypeIDWeek };
-export type TypePriceRequest = { code: string; type: TypePriceRequestType };
-export type TypeIDPriceMA = TypePriceRequest & { method: TypeAvgMethod; period: number };
+export type IDWeek = { year: number; week: number };
+export type MyDate = { date: Date | IDWeek };
+export type PriceRequest = { code: string; type: PriceRequestType };
+export type IDPriceMA = PriceRequest & { method: AvgMethod; period: number };
 
-export type TypeChartData =
-  | TypePrice
-  | TypePriceVolume
-  | TypePricePercentChange
-  | TypeParabolicSAR
-  | TypeMovingAvg
-  | TypePriceBollingerBands
-  | TypeAdx
-  | TypeRsi
-  | TypeMacd
-  | TypeMacdV
-  | TypeAtrp
-  | TypeChaikin
-  | TypeStochastic;
-export type TypePrice = TypeDate & {
+export type ChartData =
+  | Price
+  | PriceVolume
+  | PricePercentChange
+  | ParabolicSAR
+  | MovingAvg
+  | PriceBollingerBands
+  | Adx
+  | Rsi
+  | Macd
+  | MacdV
+  | Atrp
+  | Chaikin
+  | Stochastic;
+export type Price = MyDate & {
   open: number;
   close: number;
   high: number;
   low: number;
 };
-export type TypePriceVolume = TypePrice & { volume: number };
-export type TypePriceVolumeRaw = TypePriceVolume & {
+export type PriceVolume = Price & { volume: number };
+export type PriceVolumeRaw = PriceVolume & {
   trading_value: number;
   base_stock_cnt: number;
 };
-export type TypePricePercentChange = TypeDate & { percent_change: number };
-export type TypeParabolicSAR = TypeDate & { sar: number; isUpTrend: boolean; distance: number };
-export type TypeMovingAvg = TypeDate & { avg: number };
-export type TypePriceBollingerBands = TypeDate & {
+export type PricePercentChange = MyDate & { percent_change: number };
+export type ParabolicSAR = MyDate & { sar: number; isUpTrend: boolean; distance: number };
+export type MovingAvg = MyDate & { avg: number };
+export type PriceBollingerBands = MyDate & {
   upper: number;
   middle: number;
   lower: number;
 };
-export type TypeAdx = TypeDate & { posDI: number; negDI: number; adx: number };
-export type TypeRsi = TypeDate & { rsi: number };
-export type TypeMacd = TypeDate & { macd: number; signal: number; histogram: number };
-export type TypeMacdV = TypeDate & { macdV: number; signal: number; histogram: number };
-export type TypeAtrp = TypeDate & { atrp: number };
-export type TypeChaikin = TypeDate & { cmf: number; co: number };
-export type TypeStochastic = TypeDate & { fullK: number; fullD: number };
+export type Adx = MyDate & { posDI: number; negDI: number; adx: number };
+export type Rsi = MyDate & { rsi: number };
+export type Macd = MyDate & { macd: number; signal: number; histogram: number };
+export type MacdV = MyDate & { macdV: number; signal: number; histogram: number };
+export type Atrp = MyDate & { atrp: number };
+export type Chaikin = MyDate & { cmf: number; co: number };
+export type Stochastic = MyDate & { fullK: number; fullD: number };
 
-export type TypeCompany = {
+export type Company = {
   cik: string;
   code: string;
   name: string;
 };
-export type TypeCompanyTab = {
+export type CompanyTab = {
   uuid: string;
-  company: TypeCompany;
-  mainType: TypePriceRequestType;
+  company: Company;
+  mainType: PriceRequestType;
 };
 
-export type TypeEdgarStatementResRaw = {
+export type EdgarStatementResRaw = {
   cik: string;
-  outstandingStock: TypeEdgarStatementItemRaw[];
-  assets: TypeEdgarStatementItemRaw[];
-  equity: TypeEdgarStatementItemRaw[];
-  liabilities: TypeEdgarStatementItemRaw[];
-  revenue: TypeEdgarStatementItemRaw[];
-  operatingIncome: TypeEdgarStatementItemRaw[];
-  netIncome: TypeEdgarStatementItemRaw[];
-  comprehensiveIncome: TypeEdgarStatementItemRaw[];
-  operatingCashFlow: TypeEdgarStatementItemRaw[];
-  investingCashFlow: TypeEdgarStatementItemRaw[];
-  financingCashFlow: TypeEdgarStatementItemRaw[];
+  outstandingStock: EdgarStatementItemRaw[];
+  assets: EdgarStatementItemRaw[];
+  equity: EdgarStatementItemRaw[];
+  liabilities: EdgarStatementItemRaw[];
+  revenue: EdgarStatementItemRaw[];
+  operatingIncome: EdgarStatementItemRaw[];
+  netIncome: EdgarStatementItemRaw[];
+  comprehensiveIncome: EdgarStatementItemRaw[];
+  operatingCashFlow: EdgarStatementItemRaw[];
+  investingCashFlow: EdgarStatementItemRaw[];
+  financingCashFlow: EdgarStatementItemRaw[];
 };
-export type TypeEdgarStatementItemRaw = {
+export type EdgarStatementItemRaw = {
   date?: string;
   start_date?: string;
   end_date?: string;
   value: string;
 };
-export type TypeEdgarStatementRes = {
+export type EdgarStatementRes = {
   cik: string;
-  outstandingStock: TypeEdgarStatementItem[];
-  assets: TypeEdgarStatementItem[];
-  equity: TypeEdgarStatementItem[];
-  liabilities: TypeEdgarStatementItem[];
-  revenue: TypeEdgarStatementItem[];
-  operatingIncome: TypeEdgarStatementItem[];
-  netIncome: TypeEdgarStatementItem[];
-  comprehensiveIncome: TypeEdgarStatementItem[];
-  operatingCashFlow: TypeEdgarStatementItem[];
-  investingCashFlow: TypeEdgarStatementItem[];
-  financingCashFlow: TypeEdgarStatementItem[];
+  outstandingStock: EdgarStatementItem[];
+  assets: EdgarStatementItem[];
+  equity: EdgarStatementItem[];
+  liabilities: EdgarStatementItem[];
+  revenue: EdgarStatementItem[];
+  operatingIncome: EdgarStatementItem[];
+  netIncome: EdgarStatementItem[];
+  comprehensiveIncome: EdgarStatementItem[];
+  operatingCashFlow: EdgarStatementItem[];
+  investingCashFlow: EdgarStatementItem[];
+  financingCashFlow: EdgarStatementItem[];
 };
-export type TypeEdgarStatementItem = {
+export type EdgarStatementItem = {
   date: Date;
   value: number;
 };

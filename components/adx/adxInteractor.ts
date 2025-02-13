@@ -1,30 +1,17 @@
 import { useAtom } from 'jotai';
-import { ChangeEvent, useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 import { getCurrentTR, wilderSmooth, wilderSmoothEMA } from '../../controllers/avg';
-import { StateAdx } from '../../controllers/data/states';
-import { TypeAdx, TypePrice, TypePriceRequest } from '../../controllers/data/types';
+import * as gState from '../../controllers/data/states';
+import * as gType from '../../controllers/data/types';
 import { useGetPrices } from '../../controllers/net/price';
-import { AdxStateDisplay } from './adxState';
-import { AdxTypeDisplayItem } from './adxType';
 
-export const useDisplayCheckboxChange = (what: AdxTypeDisplayItem) => {
-  const [display, setState] = useAtom(AdxStateDisplay);
-
-  return useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      setState({ ...display, [what]: e.currentTarget.checked });
-    },
-    [setState, display, what],
-  );
-};
-
-export const useAdx = (req: TypePriceRequest, period = 14) => {
+export const useAdx = (req: gType.PriceRequest, period = 14) => {
   const { data } = useGetPrices(req);
-  const [dataAdx, setState] = useAtom(StateAdx(req));
+  const [dataAdx, setState] = useAtom(gState.adx(req));
 
   useEffect(() => {
     if (data && data.length && !dataAdx.length) {
-      const result: TypeAdx[] = [];
+      const result: gType.Adx[] = [];
       const prevSmoothedTR: number[] = [];
       const prevSmoothedPDM: number[] = [];
       const prevSmoothedNDM: number[] = [];
@@ -64,7 +51,7 @@ export const useAdx = (req: TypePriceRequest, period = 14) => {
 };
 
 // Get Directional Movement(DM)
-const getDMs = (data: TypePrice[], i: number) => {
+const getDMs = (data: gType.Price[], i: number) => {
   const up = i ? data[i].high - data[i - 1].high : data[i].high;
   const down = i ? data[i - 1].low - data[i].low : data[i].low;
   const positiveDM = up > down && up > 0 ? up : 0;

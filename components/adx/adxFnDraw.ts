@@ -6,10 +6,10 @@ import {
   getXCentered,
   initChart,
 } from '../../controllers/chart';
-import { TypeAdx } from '../../controllers/data/types';
-import { AdxTypeDisplay } from './adxType';
+import * as gType from '../../controllers/data/types';
+import * as mType from './adxType';
 
-const draw = (id: string, data: TypeAdx[], display: AdxTypeDisplay, marginLeft: number) => {
+const draw = (id: string, data: gType.Adx[], display: mType.Display, marginLeft: number) => {
   if (!data?.length) return;
   const yMin = 0;
   const yMax = 100;
@@ -67,7 +67,7 @@ const draw = (id: string, data: TypeAdx[], display: AdxTypeDisplay, marginLeft: 
       .attr(
         'd',
         d3
-          .line<TypeAdx>()
+          .line<gType.Adx>()
           .x((d) => getXCentered(d, x))
           .y((d) => y(d.posDI)),
       );
@@ -83,7 +83,7 @@ const draw = (id: string, data: TypeAdx[], display: AdxTypeDisplay, marginLeft: 
       .attr(
         'd',
         d3
-          .line<TypeAdx>()
+          .line<gType.Adx>()
           .x((d) => getXCentered(d, x))
           .y((d) => y(d.negDI)),
       );
@@ -99,7 +99,7 @@ const draw = (id: string, data: TypeAdx[], display: AdxTypeDisplay, marginLeft: 
       .attr(
         'd',
         d3
-          .line<TypeAdx>()
+          .line<gType.Adx>()
           .x((d) => getXCentered(d, x))
           .y((d) => y(d.adx)),
       );

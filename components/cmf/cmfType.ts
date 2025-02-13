@@ -1,2 +1,2 @@
-export type CmfTypeDisplayItem = 'noSignalZone';
-export type CmfTypeDisplay = Record<CmfTypeDisplayItem, boolean>;
+export type DisplayItem = 'noSignalZone';
+export type Display = Record<DisplayItem, boolean>;

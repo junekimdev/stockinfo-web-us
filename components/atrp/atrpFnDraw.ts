@@ -1,8 +1,8 @@
 import * as d3 from 'd3';
 import { getXCentered, initChart } from '../../controllers/chart';
-import { TypeAtrp } from '../../controllers/data/types';
+import * as gType from '../../controllers/data/types';
 
-const draw = (id: string, data: TypeAtrp[], marginLeft: number) => {
+const draw = (id: string, data: gType.Atrp[], marginLeft: number) => {
   if (!data?.length) return;
   const yMin = d3.min(data, (d) => Math.min(d.atrp)) ?? 0;
   const yMax = d3.max(data, (d) => Math.max(d.atrp)) ?? 0;
@@ -35,7 +35,7 @@ const draw = (id: string, data: TypeAtrp[], marginLeft: number) => {
     .attr(
       'd',
       d3
-        .line<TypeAtrp>()
+        .line<gType.Atrp>()
         .x((d) => getXCentered(d, x))
         .y((d) => y(d.atrp)),
     );

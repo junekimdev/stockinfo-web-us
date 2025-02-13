@@ -1,96 +1,80 @@
 import { atom } from 'jotai';
 import { atomFamily, atomWithReset } from 'jotai/utils';
-import {
-  TypeAdx,
-  TypeAtrp,
-  TypeChaikin,
-  TypeCompanyTab,
-  TypeIDPriceMA,
-  TypeMacd,
-  TypeMacdV,
-  TypeMovingAvg,
-  TypeParabolicSAR,
-  TypePrice,
-  TypePriceBollingerBands,
-  TypePricePercentChange,
-  TypePriceRequest,
-  TypeRsi,
-  TypeStochastic,
-} from './types';
+import * as gType from './types';
 
-export const stateErrorCode = atom(500);
-export const StateTabsInitiated = atom(false);
+export const errorCode = atom(500);
+export const tabsInitiated = atom(false);
 
-export const StatePricePercentChange = atomFamily(
-  (_req: TypePriceRequest) => atom<TypePricePercentChange[]>([]),
+export const pricePercentChange = atomFamily(
+  (_req: gType.PriceRequest) => atom<gType.PricePercentChange[]>([]),
   (a, b) => a.code === b.code && a.type === b.type,
 );
 
-export const StatePriceHeikinAshi = atomFamily(
-  (_req: TypePriceRequest) => atom<TypePrice[]>([]),
+export const priceHeikinAshi = atomFamily(
+  (_req: gType.PriceRequest) => atom<gType.Price[]>([]),
   (a, b) => a.code === b.code && a.type === b.type,
 );
 
-export const StatePriceHeikinAshiSmoothed = atomFamily(
-  (_req: TypePriceRequest) => atom<TypePrice[]>([]),
+export const priceHeikinAshiSmoothed = atomFamily(
+  (_req: gType.PriceRequest) => atom<gType.Price[]>([]),
   (a, b) => a.code === b.code && a.type === b.type,
 );
 
-export const StatePriceSAR = atomFamily(
-  (_req: TypePriceRequest) => atom<TypeParabolicSAR[]>([]),
+export const priceSAR = atomFamily(
+  (_req: gType.PriceRequest) => atom<gType.ParabolicSAR[]>([]),
   (a, b) => a.code === b.code && a.type === b.type,
 );
 
-export const StatePriceBollingerBands = atomFamily(
-  (_req: TypePriceRequest) => atom<TypePriceBollingerBands[]>([]),
+export const priceBollingerBands = atomFamily(
+  (_req: gType.PriceRequest) => atom<gType.PriceBollingerBands[]>([]),
   (a, b) => a.code === b.code && a.type === b.type,
 );
 
-export const StateAdx = atomFamily(
-  (_req: TypePriceRequest) => atom<TypeAdx[]>([]),
+export const adx = atomFamily(
+  (_req: gType.PriceRequest) => atom<gType.Adx[]>([]),
   (a, b) => a.code === b.code && a.type === b.type,
 );
-export const StateRsi = atomFamily(
-  (_req: TypePriceRequest) => atom<TypeRsi[]>([]),
+export const rsi = atomFamily(
+  (_req: gType.PriceRequest) => atom<gType.Rsi[]>([]),
   (a, b) => a.code === b.code && a.type === b.type,
 );
-export const StateMacd = atomFamily(
-  (_req: TypePriceRequest) => atom<TypeMacd[]>([]),
+export const macd = atomFamily(
+  (_req: gType.PriceRequest) => atom<gType.Macd[]>([]),
   (a, b) => a.code === b.code && a.type === b.type,
 );
-export const StateMacdV = atomFamily(
-  (_req: TypePriceRequest) => atom<TypeMacdV[]>([]),
+export const macdV = atomFamily(
+  (_req: gType.PriceRequest) => atom<gType.MacdV[]>([]),
   (a, b) => a.code === b.code && a.type === b.type,
 );
-export const StateAtrp = atomFamily(
-  (_req: TypePriceRequest) => atom<TypeAtrp[]>([]),
+export const atrp = atomFamily(
+  (_req: gType.PriceRequest) => atom<gType.Atrp[]>([]),
   (a, b) => a.code === b.code && a.type === b.type,
 );
-export const StateChaikin = atomFamily(
-  (_req: TypePriceRequest) => atom<TypeChaikin[]>([]),
+export const chaikin = atomFamily(
+  (_req: gType.PriceRequest) => atom<gType.Chaikin[]>([]),
   (a, b) => a.code === b.code && a.type === b.type,
 );
-export const StateStochastic = atomFamily(
-  (_req: TypePriceRequest) => atom<TypeStochastic[]>([]),
+export const stochastic = atomFamily(
+  (_req: gType.PriceRequest) => atom<gType.Stochastic[]>([]),
   (a, b) => a.code === b.code && a.type === b.type,
 );
 
-export const StatePriceMA = atomFamily(
-  (_req: TypeIDPriceMA) => atom<TypeMovingAvg[]>([]),
+export const priceMA = atomFamily(
+  (_req: gType.IDPriceMA) => atom<gType.MovingAvg[]>([]),
   (a, b) =>
     a.code === b.code && a.type === b.type && a.method === b.method && a.period === b.period,
 );
 
-export const StateSearchInput = atomWithReset('');
+export const searchInput = atomWithReset('');
 
-export const StateCompanyTabs = atomWithReset<TypeCompanyTab[]>([]);
+export const companyTabs = atomWithReset<gType.CompanyTab[]>([]);
 
-export const StateCurrentTab = atomWithReset<TypeCompanyTab>({
+export const currentTab = atomWithReset<gType.CompanyTab>({
   uuid: '',
   company: { cik: '', code: '', name: '' },
   mainType: 'daily',
 });
 
-export const StateRecentSearchTabs = atomWithReset<TypeCompanyTab[]>([]);
+export const recentSearchTabs = atomWithReset<gType.CompanyTab[]>([]);
 
-export const StateDetailsOpened = atom(false);
+export const detailsOpened = atom(false);

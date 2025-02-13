@@ -1,45 +1,31 @@
 import { useAtom } from 'jotai';
-import { ChangeEvent, useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 import { emaSnapshotStep, emaStep, getEMAFactorK } from '../../controllers/avg';
-import { StateMacd } from '../../controllers/data/states';
-import {
-  TypeMacd,
-  TypePriceRequest,
-  TypePriceVolume,
-  TypePriceVolumeValue,
-} from '../../controllers/data/types';
+import * as gState from '../../controllers/data/states';
+import * as gType from '../../controllers/data/types';
 import { useGetPrices } from '../../controllers/net/price';
-import { MacdStateDisplay } from './macdState';
-import { MacdTypeDisplayItem } from './macdType';
-
-export const useDisplayCheckboxChange = (what: MacdTypeDisplayItem) => {
-  const [display, setState] = useAtom(MacdStateDisplay);
-
-  return useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      setState({ ...display, [what]: e.currentTarget.checked });
-    },
-    [setState, display, what],
-  );
-};
 
 export const useMacd = (
-  req: TypePriceRequest,
-  options?: { period?: [number, number, number]; over?: TypePriceVolumeValue; smoothing?: number },
+  req: gType.PriceRequest,
+  options?: {
+    period?: [number, number, number];
+    over?: gType.PriceVolumeValue;
+    smoothing?: number;
+  },
 ) => {
   const { period = [12, 26, 9], over = 'close', smoothing = 2 } = options ?? {};
   const [p1, p2, p3] = period;
   const { data } = useGetPrices(req);
-  const [dataMacd, setState] = useAtom(StateMacd(req));
+  const [dataMacd, setState] = useAtom(gState.macd(req));
 
   useEffect(() => {
     if (data && data.length && !dataMacd.length) {
-      const f1 = (over: TypePriceVolumeValue) => (d: TypePriceVolume) => d[over];
+      const f1 = (over: gType.PriceVolumeValue) => (d: gType.PriceVolume) => d[over];
       const f2 = (d: number) => d;
       const k1 = getEMAFactorK(p1, smoothing);
       const k2 = getEMAFactorK(p2, smoothing);
       const k3 = getEMAFactorK(p3, smoothing);
-      const result: TypeMacd[] = [];
+      const result: gType.Macd[] = [];
       const prevShortEMA: number[] = [];
       const prevLongEMA: number[] = [];
       const prevMacd: number[] = [];

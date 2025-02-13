@@ -1,7 +1,7 @@
 import { atom } from 'jotai';
-import { PercentChangeTypeDisplay } from './percentChangeType';
+import * as mType from './percentChangeType';
 
-const displayInit: PercentChangeTypeDisplay = {
+const initDisplay: mType.Display = {
   LatestPrice: true,
 };
-export const PercentChangeStateDisplay = atom(displayInit);
+export const display = atom(initDisplay);

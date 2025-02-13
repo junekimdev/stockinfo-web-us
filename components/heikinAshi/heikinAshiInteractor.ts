@@ -1,29 +1,16 @@
 import { useAtom } from 'jotai';
-import { useCallback, useEffect, ChangeEvent } from 'react';
-import { StatePriceHeikinAshi } from '../../controllers/data/states';
-import { TypePrice, TypePriceRequest } from '../../controllers/data/types';
+import { useEffect } from 'react';
+import * as gState from '../../controllers/data/states';
+import * as gType from '../../controllers/data/types';
 import { useGetPrices } from '../../controllers/net/price';
-import { HeikinAshiStateDisplay } from './heikinAshiState';
-import { HeikinAshiTypeDisplayItem } from './heikinAshiType';
 
-export const useDisplayCheckboxChange = (what: HeikinAshiTypeDisplayItem) => {
-  const [display, setState] = useAtom(HeikinAshiStateDisplay);
-
-  return useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      setState({ ...display, [what]: e.currentTarget.checked });
-    },
-    [setState, display, what],
-  );
-};
-
-export const useHeikinAshi = (req: TypePriceRequest) => {
+export const useHeikinAshi = (req: gType.PriceRequest) => {
   const { data } = useGetPrices(req);
-  const [dataHeikinAshi, setState] = useAtom(StatePriceHeikinAshi(req));
+  const [dataHeikinAshi, setState] = useAtom(gState.priceHeikinAshi(req));
 
   useEffect(() => {
     if (data && data.length && !dataHeikinAshi.length) {
-      const bar: TypePrice[] = data.map((v) => ({
+      const bar: gType.Price[] = data.map((v) => ({
         date: v.date,
         open: 0,
         close: (v.open + v.close + v.high + v.low) / 4,

@@ -1,7 +1,2 @@
-export type StochasticTypeDisplayItem =
-  | 'fullK'
-  | 'fullD'
-  | 'overbought'
-  | 'oversold'
-  | 'trendConfirm';
-export type StochasticTypeDisplay = Record<StochasticTypeDisplayItem, boolean>;
+export type DisplayItem = 'fullK' | 'fullD' | 'overbought' | 'oversold' | 'trendConfirm';
+export type Display = Record<DisplayItem, boolean>;

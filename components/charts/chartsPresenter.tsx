@@ -1,7 +1,7 @@
 import { useAtomValue } from 'jotai';
 import { getMarginLeft } from '../../controllers/chart';
-import { StateCurrentTab } from '../../controllers/data/states';
-import { TypePriceRequest } from '../../controllers/data/types';
+import { currentTab } from '../../controllers/data/states';
+import { PriceRequest } from '../../controllers/data/types';
 import { useGetPrices } from '../../controllers/net/price';
 import Adx from '../adx';
 import Atrp from '../atrp';
@@ -22,8 +22,8 @@ import { useBollinger, useChaikin, useRulerOnClick, useSAR } from './chartsInter
 import Placeholder from './chartsViewPlaceholder';
 
 const Presenter = () => {
-  const { company, mainType } = useAtomValue(StateCurrentTab);
-  const req: TypePriceRequest = { code: company.code, type: mainType };
+  const { company, mainType } = useAtomValue(currentTab);
+  const req: PriceRequest = { code: company.code, type: mainType };
   const { data } = useGetPrices(req);
   const marginLeft = getMarginLeft(data);
   const rulerOnClick = useRulerOnClick();

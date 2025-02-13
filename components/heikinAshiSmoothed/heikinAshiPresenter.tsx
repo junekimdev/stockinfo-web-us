@@ -1,26 +1,27 @@
 import { useAtomValue } from 'jotai';
 import { useEffect } from 'react';
-import { StatePriceHeikinAshiSmoothed } from '../../controllers/data/states';
-import { TypePriceRequest } from '../../controllers/data/types';
+import { useInputChange } from '../../controllers/data/hooks';
+import * as gState from '../../controllers/data/states';
+import * as gType from '../../controllers/data/types';
 import { useGetPricesLatest } from '../../controllers/net/price';
 import styles from './heikinAshi.module.scss';
 import draw from './heikinAshiFnDraw';
-import { useDisplayCheckboxChange, useHeikinAshiSmoothed } from './heikinAshiInteractor';
-import { HeikinAshiSmoothedStateDisplay } from './heikinAshiState';
+import { useHeikinAshiSmoothed } from './heikinAshiInteractor';
+import * as mState from './heikinAshiState';
 
-const Presenter = (props: { req: TypePriceRequest; marginLeft: number; max?: number }) => {
+const Presenter = (props: { req: gType.PriceRequest; marginLeft: number; max?: number }) => {
   const { req, marginLeft, max = 120 } = props;
   useHeikinAshiSmoothed(req);
 
   const { data } = useGetPricesLatest({ code: req.code, type: 'latest' });
-  const dataHeikinAshi = useAtomValue(StatePriceHeikinAshiSmoothed(req));
-  const display = useAtomValue(HeikinAshiSmoothedStateDisplay);
+  const dataHeikinAshi = useAtomValue(gState.priceHeikinAshiSmoothed(req));
+  const display = useAtomValue(mState.display);
 
   const chartTitle = `${req.type} Heikin-Ashi Smoothed`;
   const chartID = `${styles.chart}-${req.code}-${req.type}`;
   const latestPriceInputID = `${chartID}-LatestPrice`;
 
-  const onLatestPriceCheckboxChange = useDisplayCheckboxChange('LatestPrice');
+  const onLatestPriceCheckboxChange = useInputChange(mState.display, 'LatestPrice');
 
   useEffect(() => {
     if (dataHeikinAshi.length) {

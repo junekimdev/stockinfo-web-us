@@ -1,4 +1,4 @@
-export type MacdVTypeDisplayItem =
+export type DisplayItem =
   | 'MACDV'
   | 'signal'
   | 'histogram'
@@ -6,4 +6,4 @@ export type MacdVTypeDisplayItem =
   | 'oversold'
   | 'upsideMomentum'
   | 'downsideMomentum';
-export type MacdVTypeDisplay = Record<MacdVTypeDisplayItem, boolean>;
+export type Display = Record<DisplayItem, boolean>;

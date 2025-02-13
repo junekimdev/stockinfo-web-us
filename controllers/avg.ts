@@ -1,10 +1,4 @@
-import {
-  TypeMovingAvg,
-  TypePrice,
-  TypePriceValue,
-  TypePriceVolume,
-  TypePriceVolumeValue,
-} from './data/types';
+import * as gType from './data/types';
 
 export const getEMAFactorK = (period: number, smoothing = 2) => smoothing / (period + 1);
 
@@ -44,13 +38,13 @@ export const emaStep = <T, P>(
 };
 
 export const getPriceSMA = (
-  data: TypePriceVolume[] | undefined,
+  data: gType.PriceVolume[] | undefined,
   period: number,
-  options?: { over?: TypePriceVolumeValue },
+  options?: { over?: gType.PriceVolumeValue },
 ) => {
   const { over = 'close' } = options ?? {};
-  const func = (over: TypePriceVolumeValue) => (d: TypePriceVolume) => d[over];
-  const result: TypeMovingAvg[] = [];
+  const func = (over: gType.PriceVolumeValue) => (d: gType.PriceVolume) => d[over];
+  const result: gType.MovingAvg[] = [];
 
   if (data && data.length >= period) {
     for (let i = 0; i < data.length; i++) {
@@ -63,16 +57,16 @@ export const getPriceSMA = (
 };
 
 export const getPriceEMA = (
-  data: TypePriceVolume[] | undefined,
+  data: gType.PriceVolume[] | undefined,
   period: number,
-  options?: { over?: TypePriceVolumeValue; smoothing?: number },
+  options?: { over?: gType.PriceVolumeValue; smoothing?: number },
 ) => {
   const { over = 'close', smoothing = 2 } = options ?? {};
-  const result: TypeMovingAvg[] = [];
+  const result: gType.MovingAvg[] = [];
 
   if (data && data.length > 1) {
-    const f1 = (over: TypePriceVolumeValue) => (d: TypePriceVolume) => d[over];
-    const f2 = (d: TypeMovingAvg) => d.avg;
+    const f1 = (over: gType.PriceVolumeValue) => (d: gType.PriceVolume) => d[over];
+    const f2 = (d: gType.MovingAvg) => d.avg;
     const k = getEMAFactorK(period, smoothing);
 
     for (let i = 0; i < data.length; i++) {
@@ -85,15 +79,15 @@ export const getPriceEMA = (
 };
 
 export const getPriceEMAOverAll = (
-  data: TypePrice[] | undefined,
+  data: gType.Price[] | undefined,
   period: number,
   options?: { smoothing?: number },
 ) => {
   const { smoothing = 2 } = options ?? {};
-  const result: TypePrice[] = [];
+  const result: gType.Price[] = [];
 
   if (data && data.length > 0) {
-    const func = (over: TypePriceValue) => (d: TypePrice) => d[over];
+    const func = (over: gType.PriceValue) => (d: gType.Price) => d[over];
     const k = getEMAFactorK(period, smoothing);
 
     for (let i = 0; i < data.length; i++) {
@@ -125,7 +119,7 @@ export const wilderSmoothEMA = (value: number, prev: number[], i: number, period
 };
 
 // Get True Range(TR)
-export const getCurrentTR = (data: TypePrice[], i: number) => {
+export const getCurrentTR = (data: gType.Price[], i: number) => {
   const { high, low } = data[i];
   if (i === 0) return high - low;
   const { close: prevClose } = data[i - 1];

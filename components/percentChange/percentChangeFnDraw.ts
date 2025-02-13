@@ -5,13 +5,13 @@ import {
   getDateString,
   initChart,
 } from '../../controllers/chart';
-import { TypePricePercentChange } from '../../controllers/data/types';
-import { PercentChangeTypeDisplay } from './percentChangeType';
+import * as gType from '../../controllers/data/types';
+import * as mType from './percentChangeType';
 
 const draw = (
   id: string,
-  data: TypePricePercentChange[],
-  display: PercentChangeTypeDisplay,
+  data: gType.PricePercentChange[],
+  display: mType.Display,
   marginLeft: number,
   latestChange?: number,
 ) => {

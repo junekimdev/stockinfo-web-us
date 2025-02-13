@@ -1,8 +1,8 @@
 import * as d3 from 'd3';
 import { getXCentered, initChart } from '../../controllers/chart';
-import { TypeChaikin } from '../../controllers/data/types';
+import * as gType from '../../controllers/data/types';
 
-const draw = (id: string, data: TypeChaikin[], marginLeft: number) => {
+const draw = (id: string, data: gType.Chaikin[], marginLeft: number) => {
   if (!data?.length) return;
   const yMin = d3.min(data, (d) => d.co) ?? 0;
   const yMax = d3.max(data, (d) => d.co) ?? 0;
@@ -36,7 +36,7 @@ const draw = (id: string, data: TypeChaikin[], marginLeft: number) => {
     .attr(
       'd',
       d3
-        .area<TypeChaikin>()
+        .area<gType.Chaikin>()
         .x((d) => getXCentered(d, x))
         .y1((d) => y(d.co))
         .y0(y(0)),
@@ -52,7 +52,7 @@ const draw = (id: string, data: TypeChaikin[], marginLeft: number) => {
     .attr(
       'd',
       d3
-        .line<TypeChaikin>()
+        .line<gType.Chaikin>()
         .x((d) => getXCentered(d, x))
         .y((d) => y(d.co)),
     );

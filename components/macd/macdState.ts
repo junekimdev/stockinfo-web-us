@@ -1,5 +1,5 @@
 import { atom } from 'jotai';
-import { MacdTypeDisplay } from './macdType';
+import * as mType from './macdType';
 
-const displayInit: MacdTypeDisplay = { MACD: true, signal: true, histogram: true };
-export const MacdStateDisplay = atom(displayInit);
+const initDisplay: mType.Display = { MACD: true, signal: true, histogram: true };
+export const display = atom(initDisplay);

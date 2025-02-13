@@ -1,7 +1,7 @@
 import { atom } from 'jotai';
-import { AdxTypeDisplay } from './adxType';
+import * as mType from './adxType';
 
-const displayInit: AdxTypeDisplay = {
+const initDisplay: mType.Display = {
   ADX: true,
   pDI: true,
   nDI: true,
@@ -9,4 +9,5 @@ const displayInit: AdxTypeDisplay = {
   sell: true,
   trendConfirm: false,
 };
-export const AdxStateDisplay = atom(displayInit);
+
+export const display = atom(initDisplay);

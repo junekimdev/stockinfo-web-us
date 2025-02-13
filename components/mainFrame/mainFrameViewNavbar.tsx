@@ -1,7 +1,7 @@
 import { useAtomValue } from 'jotai';
 import { useEffect, useRef, useState } from 'react';
 import { DIFF_NATION_URL } from '../../controllers/apiURLs';
-import { StateCompanyTabs } from '../../controllers/data/states';
+import * as gState from '../../controllers/data/states';
 import styles from './mainFrame.module.scss';
 import {
   useAddNewTabClick,
@@ -15,12 +15,12 @@ import {
   useTouchMove,
   useTouchStart,
 } from './mainFrameInteractor';
-import { MainFrameStateMenuOpened } from './mainFrameStates';
+import * as mState from './mainFrameState';
 import Tab from './mainFrameViewTab';
 
 const View = () => {
-  const tabs = useAtomValue(StateCompanyTabs);
-  const menuOpened = useAtomValue(MainFrameStateMenuOpened);
+  const tabs = useAtomValue(gState.companyTabs);
+  const menuOpened = useAtomValue(mState.menuOpened);
   const [dragged, setDragged] = useState<HTMLLIElement>();
   const ulRef = useRef<HTMLUListElement>(null);
 

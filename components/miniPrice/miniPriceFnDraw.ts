@@ -1,8 +1,8 @@
 import * as d3 from 'd3';
 import { getXCentered, initChart } from '../../controllers/chart';
-import { TypePrice } from '../../controllers/data/types';
+import * as gType from '../../controllers/data/types';
 
-const draw = (id: string, data: TypePrice[]) => {
+const draw = (id: string, data: gType.Price[]) => {
   if (!data?.length) return;
   const yMin = d3.min(data, (d) => d.low) ?? 0;
   const yMax = d3.max(data, (d) => d.high) ?? 1;
@@ -36,7 +36,7 @@ const draw = (id: string, data: TypePrice[]) => {
     .attr(
       'd',
       d3
-        .line<TypePrice>()
+        .line<gType.Price>()
         .x((d) => getXCentered(d, x))
         .y((d) => y(d.close)),
     );

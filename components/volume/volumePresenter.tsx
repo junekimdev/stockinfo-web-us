@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
-import { TypePriceRequest } from '../../controllers/data/types';
+import * as gType from '../../controllers/data/types';
 import { useGetPrices } from '../../controllers/net/price';
 import styles from './volume.module.scss';
 import draw from './volumeFnDraw';
 
-const Presenter = (props: { req: TypePriceRequest; marginLeft: number; max?: number }) => {
+const Presenter = (props: { req: gType.PriceRequest; marginLeft: number; max?: number }) => {
   const { req, marginLeft, max = 120 } = props;
   const { data } = useGetPrices(req);
 

@@ -1,23 +1,24 @@
 import { useAtomValue } from 'jotai';
 import { useEffect } from 'react';
-import { StateRsi } from '../../controllers/data/states';
-import { TypePriceRequest } from '../../controllers/data/types';
+import { useInputChange } from '../../controllers/data/hooks';
+import * as gState from '../../controllers/data/states';
+import * as gType from '../../controllers/data/types';
 import { useGetPrices } from '../../controllers/net/price';
 import styles from './rsi.module.scss';
 import draw from './rsiFnDraw';
-import { useDisplayCheckboxChange, useRsi } from './rsiInteractor';
-import { RsiStateDisplay } from './rsiState';
+import { useRsi } from './rsiInteractor';
+import * as mType from './rsiState';
 
-const Presenter = (props: { req: TypePriceRequest; marginLeft: number; max?: number }) => {
+const Presenter = (props: { req: gType.PriceRequest; marginLeft: number; max?: number }) => {
   const { req, marginLeft, max = 120 } = props;
 
   useRsi(req);
   const { data } = useGetPrices(req);
-  const dataRsi = useAtomValue(StateRsi(req));
-  const display = useAtomValue(RsiStateDisplay);
+  const dataRsi = useAtomValue(gState.rsi(req));
+  const display = useAtomValue(mType.display);
 
-  const onOversoldLineCheckboxChange = useDisplayCheckboxChange('oversold');
-  const onOverboughtLineCheckboxChange = useDisplayCheckboxChange('overbought');
+  const onOversoldLineCheckboxChange = useInputChange(mType.display, 'oversold');
+  const onOverboughtLineCheckboxChange = useInputChange(mType.display, 'overbought');
 
   const chartTitle = `${req.type} RSI`;
   const chartID = `${styles.chart}-${req.code}-${req.type}`;

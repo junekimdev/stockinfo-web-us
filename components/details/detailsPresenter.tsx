@@ -1,6 +1,6 @@
 import { useAtomValue } from 'jotai';
 import { useToggleDetails } from '../../controllers/data/hooks';
-import { StateCurrentTab } from '../../controllers/data/states';
+import * as gState from '../../controllers/data/states';
 import { useGetEdgarStatement } from '../../controllers/net/edgar';
 import styles from './details.module.scss';
 import CashFlow from './detailsViewCashFlow';
@@ -10,7 +10,7 @@ import Income from './detailsViewIncome';
 import SoFP from './detailsViewSoFP';
 
 const Presenter = () => {
-  const { company } = useAtomValue(StateCurrentTab);
+  const { company } = useAtomValue(gState.currentTab);
   const { data } = useGetEdgarStatement(company.cik);
 
   const onToggleDetails = useToggleDetails();

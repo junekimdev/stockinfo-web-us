@@ -1,9 +1,9 @@
 import { atom } from 'jotai';
-import { PriceTypeDisplay } from './priceType';
+import * as mType from './priceType';
 
-const displayInit: PriceTypeDisplay = {
+const initDisplay: mType.Display = {
   LatestPrice: true,
   ParabolicSAR: true,
   BollingerBands: true,
 };
-export const PriceStateDisplay = atom(displayInit);
+export const display = atom(initDisplay);

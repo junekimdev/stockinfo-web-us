@@ -1,28 +1,29 @@
 import { useAtomValue } from 'jotai';
 import { useEffect } from 'react';
-import { StateMacdV } from '../../controllers/data/states';
-import { TypePriceRequest } from '../../controllers/data/types';
+import { useInputChange } from '../../controllers/data/hooks';
+import * as gState from '../../controllers/data/states';
+import * as gType from '../../controllers/data/types';
 import { useGetPrices } from '../../controllers/net/price';
 import styles from './macdV.module.scss';
 import draw from './macdVFnDraw';
-import { useDisplayCheckboxChange, useMacdV } from './macdVInteractor';
-import { MacdVStateDisplay } from './macdVState';
+import { useMacdV } from './macdVInteractor';
+import * as mState from './macdVState';
 
-const Presenter = (props: { req: TypePriceRequest; marginLeft: number; max?: number }) => {
+const Presenter = (props: { req: gType.PriceRequest; marginLeft: number; max?: number }) => {
   const { req, marginLeft, max = 120 } = props;
 
   useMacdV(req);
   const { data } = useGetPrices(req);
-  const dataMacdV = useAtomValue(StateMacdV(req));
-  const display = useAtomValue(MacdVStateDisplay);
+  const dataMacdV = useAtomValue(gState.macdV(req));
+  const display = useAtomValue(mState.display);
 
-  const onMacdVCheckboxChange = useDisplayCheckboxChange('MACDV');
-  const onSignalCheckboxChange = useDisplayCheckboxChange('signal');
-  const onHistogramCheckboxChange = useDisplayCheckboxChange('histogram');
-  const onOverboughtCheckboxChange = useDisplayCheckboxChange('overbought');
-  const onOversoldCheckboxChange = useDisplayCheckboxChange('oversold');
-  const onUpsideMomentumCheckboxChange = useDisplayCheckboxChange('upsideMomentum');
-  const onDownsideMomentumCheckboxChange = useDisplayCheckboxChange('downsideMomentum');
+  const onMacdVCheckboxChange = useInputChange(mState.display, 'MACDV');
+  const onSignalCheckboxChange = useInputChange(mState.display, 'signal');
+  const onHistogramCheckboxChange = useInputChange(mState.display, 'histogram');
+  const onOverboughtCheckboxChange = useInputChange(mState.display, 'overbought');
+  const onOversoldCheckboxChange = useInputChange(mState.display, 'oversold');
+  const onUpsideMomentumCheckboxChange = useInputChange(mState.display, 'upsideMomentum');
+  const onDownsideMomentumCheckboxChange = useInputChange(mState.display, 'downsideMomentum');
 
   const chartTitle = `${req.type} MACD-V`;
   const chartID = `${styles.chart}-${req.code}-${req.type}`;

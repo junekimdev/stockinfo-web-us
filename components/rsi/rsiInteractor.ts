@@ -1,33 +1,20 @@
 import { useAtom } from 'jotai';
-import { ChangeEvent, useCallback, useEffect } from 'react';
-import { StateRsi } from '../../controllers/data/states';
-import { TypePriceRequest, TypePriceVolumeValue, TypeRsi } from '../../controllers/data/types';
+import { useEffect } from 'react';
+import * as gState from '../../controllers/data/states';
+import * as gType from '../../controllers/data/types';
 import { useGetPrices } from '../../controllers/net/price';
-import { RsiStateDisplay } from './rsiState';
-import { RsiTypeDisplayItem } from './rsiType';
-
-export const useDisplayCheckboxChange = (what: RsiTypeDisplayItem) => {
-  const [display, setState] = useAtom(RsiStateDisplay);
-
-  return useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      setState({ ...display, [what]: e.currentTarget.checked });
-    },
-    [setState, display, what],
-  );
-};
 
 export const useRsi = (
-  req: TypePriceRequest,
+  req: gType.PriceRequest,
   period = 14,
-  over: TypePriceVolumeValue = 'close',
+  over: gType.PriceVolumeValue = 'close',
 ) => {
   const { data } = useGetPrices(req);
-  const [dataRsi, setState] = useAtom(StateRsi(req));
+  const [dataRsi, setState] = useAtom(gState.rsi(req));
 
   useEffect(() => {
     if (data && data.length && !dataRsi.length) {
-      const result: TypeRsi[] = [];
+      const result: gType.Rsi[] = [];
       const changes = data.map((_v, i) => (i ? data[i][over] - data[i - 1][over] : 0));
       const genGain = generateGain(changes);
       const genLoss = generateLoss(changes);

@@ -2,17 +2,11 @@ import { QueryFunctionContext, useQuery, useQueryClient } from '@tanstack/react-
 import { useAtomValue } from 'jotai';
 import { useEffect } from 'react';
 import { PRICES_URL } from '../apiURLs';
-import { StateCompanyTabs } from '../data/states';
-import {
-  TypeError,
-  TypeIDWeek,
-  TypePriceRequest,
-  TypePriceRequestType,
-  TypePriceVolume,
-} from '../data/types';
+import * as gState from '../data/states';
+import * as gType from '../data/types';
 import { getTimestamp } from '../datetime';
 
-export const useGetPrices = (req: TypePriceRequest) => {
+export const useGetPrices = (req: gType.PriceRequest) => {
   const { code, type } = req;
   return useQuery({
     queryKey: ['prices', code, type],
@@ -23,7 +17,7 @@ export const useGetPrices = (req: TypePriceRequest) => {
 };
 
 export const useGetPricesPrefetching = () => {
-  const tabs = useAtomValue(StateCompanyTabs);
+  const tabs = useAtomValue(gState.companyTabs);
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -39,7 +33,7 @@ export const useGetPricesPrefetching = () => {
   }, [tabs, queryClient]);
 };
 
-export const useGetPricesLatest = (req: TypePriceRequest) => {
+export const useGetPricesLatest = (req: gType.PriceRequest) => {
   const { code, type } = req;
   return useQuery({
     queryKey: ['prices', code, type],
@@ -51,13 +45,13 @@ export const useGetPricesLatest = (req: TypePriceRequest) => {
 
 const getPrices = async ({ queryKey }: QueryFunctionContext<string[]>) => {
   const [_key, code, _t] = queryKey;
-  const t = _t as TypePriceRequestType;
+  const t = _t as gType.PriceRequestType;
 
   const url = `${PRICES_URL}/${code}/${t}`;
   const res = await fetch(url, { method: 'GET' });
 
   if (res.status >= 400) {
-    const err: TypeError = await res.json();
+    const err: gType.MyError = await res.json();
     throw Error(err.message);
   }
 
@@ -66,8 +60,9 @@ const getPrices = async ({ queryKey }: QueryFunctionContext<string[]>) => {
   if (!prices.length) throw Error(`received an empty response for GET ${url}`);
 
   // parse numeric string to number
-  const data: TypePriceVolume[] = prices.reverse().map((v) => {
-    const date = t === 'weekly' ? ({ year: v.year, week: v.week } as TypeIDWeek) : new Date(v.date);
+  const data: gType.PriceVolume[] = prices.reverse().map((v) => {
+    const date =
+      t === 'weekly' ? ({ year: v.year, week: v.week } as gType.IDWeek) : new Date(v.date);
     const open = parseFloat(v.open);
     const close = parseFloat(v.close);
     const high = parseFloat(v.high);
@@ -92,13 +87,13 @@ const getPrices = async ({ queryKey }: QueryFunctionContext<string[]>) => {
 
 const getPricesLatest = async ({ queryKey }: QueryFunctionContext<string[]>) => {
   const [_key, code, _t] = queryKey;
-  const t = _t as TypePriceRequestType;
+  const t = _t as gType.PriceRequestType;
 
   const url = `${PRICES_URL}/${code}/${t}`;
   const res = await fetch(url, { method: 'GET' });
 
   if (res.status >= 400) {
-    const err: TypeError = await res.json();
+    const err: gType.MyError = await res.json();
     throw Error(err.message);
   }
 
@@ -106,7 +101,7 @@ const getPricesLatest = async ({ queryKey }: QueryFunctionContext<string[]>) => 
   if (typeof pricesRaw !== 'object' || pricesRaw.length === 0)
     throw Error(`failed to parce data from ${url}`);
 
-  const prices: TypePriceVolume[] = [];
+  const prices: gType.PriceVolume[] = [];
   for (let i = 0; i < pricesRaw.length; i++) {
     const date = new Date(pricesRaw[i].date);
     const open = parseFloat(pricesRaw[i].open);
@@ -114,7 +109,7 @@ const getPricesLatest = async ({ queryKey }: QueryFunctionContext<string[]>) => 
     const high = parseFloat(pricesRaw[i].high);
     const low = parseFloat(pricesRaw[i].low);
     const volume = parseFloat(pricesRaw[i].volume);
-    const p: TypePriceVolume = { date, open, high, low, close, volume };
+    const p: gType.PriceVolume = { date, open, high, low, close, volume };
     prices.push(p);
   }
 

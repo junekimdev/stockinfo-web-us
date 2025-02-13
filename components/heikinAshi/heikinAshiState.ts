@@ -1,9 +1,9 @@
 import { atom } from 'jotai';
-import { HeikinAshiTypeDisplay } from './heikinAshiType';
+import * as mType from './heikinAshiType';
 
-const displayInit: HeikinAshiTypeDisplay = {
+const initDisplay: mType.Display = {
   LatestPrice: true,
   ParabolicSAR: true,
   BollingerBands: true,
 };
-export const HeikinAshiStateDisplay = atom(displayInit);
+export const display = atom(initDisplay);

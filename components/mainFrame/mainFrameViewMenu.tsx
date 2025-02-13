@@ -1,13 +1,13 @@
 import { useAtomValue } from 'jotai';
 import { useClearTabsClick, useSaveTabsClick } from '../../controllers/data/hooks';
-import { StateCompanyTabs } from '../../controllers/data/states';
+import * as gState from '../../controllers/data/states';
 import styles from './mainFrame.module.scss';
 import { useCloseAllClick } from './mainFrameInteractor';
-import { MainFrameStateMenuOpened } from './mainFrameStates';
+import * as mState from './mainFrameState';
 
 const View = () => {
-  const menuOpened = useAtomValue(MainFrameStateMenuOpened);
-  const tabs = useAtomValue(StateCompanyTabs);
+  const menuOpened = useAtomValue(mState.menuOpened);
+  const tabs = useAtomValue(gState.companyTabs);
   const onCloseAllClick = useCloseAllClick();
   const onSaveTabsClick = useSaveTabsClick();
   const onClearTabsClick = useClearTabsClick();

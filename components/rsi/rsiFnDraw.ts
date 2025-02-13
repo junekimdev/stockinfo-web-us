@@ -5,10 +5,10 @@ import {
   getXCentered,
   initChart,
 } from '../../controllers/chart';
-import { TypeRectCoordi, TypeRsi } from '../../controllers/data/types';
-import { RsiTypeDisplay } from './rsiType';
+import * as gType from '../../controllers/data/types';
+import * as mType from './rsiType';
 
-const draw = (id: string, data: TypeRsi[], display: RsiTypeDisplay, marginLeft: number) => {
+const draw = (id: string, data: gType.Rsi[], display: mType.Display, marginLeft: number) => {
   if (!data?.length) return;
   const yMin = 0;
   const yMax = 100;
@@ -41,8 +41,8 @@ const draw = (id: string, data: TypeRsi[], display: RsiTypeDisplay, marginLeft: 
   const w = (x(getDateString(data[data.length - 1])) ?? 0) + x.bandwidth();
 
   // Add clip path
-  const coordiOverbought: TypeRectCoordi = { x: 0, y: 0, w, h: y(overboughtValue) };
-  const coordiOversold: TypeRectCoordi = {
+  const coordiOverbought: gType.RectCoordi = { x: 0, y: 0, w, h: y(overboughtValue) };
+  const coordiOversold: gType.RectCoordi = {
     x: 0,
     y: y(oversoldValue),
     w,
@@ -62,7 +62,7 @@ const draw = (id: string, data: TypeRsi[], display: RsiTypeDisplay, marginLeft: 
       .attr(
         'd',
         d3
-          .area<TypeRsi>()
+          .area<gType.Rsi>()
           .x((d) => getXCentered(d, x))
           .y1((d) => y(d.rsi))
           .y0(y(yMin)),
@@ -88,7 +88,7 @@ const draw = (id: string, data: TypeRsi[], display: RsiTypeDisplay, marginLeft: 
       .attr(
         'd',
         d3
-          .area<TypeRsi>()
+          .area<gType.Rsi>()
           .x((d) => getXCentered(d, x))
           .y1((d) => y(d.rsi))
           .y0(y(yMax)),
@@ -113,7 +113,7 @@ const draw = (id: string, data: TypeRsi[], display: RsiTypeDisplay, marginLeft: 
     .attr(
       'd',
       d3
-        .line<TypeRsi>()
+        .line<gType.Rsi>()
         .x((d) => getXCentered(d, x))
         .y((d) => y(d.rsi)),
     );

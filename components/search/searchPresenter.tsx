@@ -1,6 +1,6 @@
 import { useAtomValue } from 'jotai';
 import { useState } from 'react';
-import { StateRecentSearchTabs, StateSearchInput } from '../../controllers/data/states';
+import * as gState from '../../controllers/data/states';
 import { useGetCompanies } from '../../controllers/net/company';
 import styles from './search.module.scss';
 import {
@@ -18,8 +18,8 @@ const Presenter = () => {
   const onSearchInputChange = useSearchInputChange();
   const onDeleteAllRecentClick = useDeleteAllRecentClick();
 
-  const searchInput = useAtomValue(StateSearchInput);
-  const recentSearchTabs = useAtomValue(StateRecentSearchTabs);
+  const searchInput = useAtomValue(gState.searchInput);
+  const recentSearchTabs = useAtomValue(gState.recentSearchTabs);
   const { data } = useGetCompanies();
 
   return (

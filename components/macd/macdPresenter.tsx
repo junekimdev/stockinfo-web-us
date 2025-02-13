@@ -1,24 +1,25 @@
 import { useAtomValue } from 'jotai';
 import { useEffect } from 'react';
-import { StateMacd } from '../../controllers/data/states';
-import { TypePriceRequest } from '../../controllers/data/types';
+import { useInputChange } from '../../controllers/data/hooks';
+import * as gState from '../../controllers/data/states';
+import * as gType from '../../controllers/data/types';
 import { useGetPrices } from '../../controllers/net/price';
 import styles from './macd.module.scss';
 import draw from './macdFnDraw';
-import { useDisplayCheckboxChange, useMacd } from './macdInteractor';
-import { MacdStateDisplay } from './macdState';
+import { useMacd } from './macdInteractor';
+import * as mState from './macdState';
 
-const Presenter = (props: { req: TypePriceRequest; marginLeft: number; max?: number }) => {
+const Presenter = (props: { req: gType.PriceRequest; marginLeft: number; max?: number }) => {
   const { req, marginLeft, max = 120 } = props;
 
   useMacd(req);
   const { data } = useGetPrices(req);
-  const dataMacd = useAtomValue(StateMacd(req));
-  const display = useAtomValue(MacdStateDisplay);
+  const dataMacd = useAtomValue(gState.macd(req));
+  const display = useAtomValue(mState.display);
 
-  const onMacdCheckboxChange = useDisplayCheckboxChange('MACD');
-  const onSignalCheckboxChange = useDisplayCheckboxChange('signal');
-  const onHistogramCheckboxChange = useDisplayCheckboxChange('histogram');
+  const onMacdCheckboxChange = useInputChange(mState.display, 'MACD');
+  const onSignalCheckboxChange = useInputChange(mState.display, 'signal');
+  const onHistogramCheckboxChange = useInputChange(mState.display, 'histogram');
 
   const chartTitle = `${req.type} MACD`;
   const chartID = `${styles.chart}-${req.code}-${req.type}`;

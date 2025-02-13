@@ -1,18 +1,8 @@
 import { useAtom } from 'jotai';
 import { MouseEvent, useCallback, useEffect } from 'react';
 import { emaSnapshotStep, getEMAFactorK } from '../../controllers/avg';
-import {
-  StateChaikin,
-  StatePriceBollingerBands,
-  StatePriceSAR,
-} from '../../controllers/data/states';
-import {
-  TypeChaikin,
-  TypeParabolicSAR,
-  TypePrice,
-  TypePriceBollingerBands,
-  TypePriceRequest,
-} from '../../controllers/data/types';
+import * as gState from '../../controllers/data/states';
+import * as gType from '../../controllers/data/types';
 import { useGetPrices } from '../../controllers/net/price';
 import styles from './charts.module.scss';
 
@@ -29,12 +19,12 @@ export const useRulerOnClick = () => {
 };
 
 export const useBollinger = (
-  req: TypePriceRequest,
+  req: gType.PriceRequest,
   options?: { period?: number; sigma?: number },
 ) => {
   const { period = 20, sigma = 2 } = options ?? {};
   const { data } = useGetPrices(req);
-  const [dataBollingerBands, setState] = useAtom(StatePriceBollingerBands(req));
+  const [dataBollingerBands, setState] = useAtom(gState.priceBollingerBands(req));
 
   useEffect(() => {
     if (data && data.length && !dataBollingerBands.length) {
@@ -44,7 +34,7 @@ export const useBollinger = (
       }
 
       // Create Bollinger Bands
-      const bands: TypePriceBollingerBands[] = [];
+      const bands: gType.PriceBollingerBands[] = [];
       for (let i = period - 1; i < data.length; i++) {
         const slice = data.slice(i + 1 - period, i + 1);
         const sum = slice.reduce((p, v) => p + v.close, 0);
@@ -66,14 +56,14 @@ export const useBollinger = (
   }, [setState, data, dataBollingerBands, period, sigma]);
 };
 
-export const useSAR = (req: TypePriceRequest, options?: { max?: number; step?: number }) => {
+export const useSAR = (req: gType.PriceRequest, options?: { max?: number; step?: number }) => {
   const { max = 0.2, step = 0.01 } = options ?? {};
   const { data } = useGetPrices(req);
-  const [dataSAR, setState] = useAtom(StatePriceSAR(req));
+  const [dataSAR, setState] = useAtom(gState.priceSAR(req));
 
   useEffect(() => {
     if (data && data.length && !dataSAR.length) {
-      const result: TypeParabolicSAR[] = [];
+      const result: gType.ParabolicSAR[] = [];
       let isUpTrend = false;
       let foundNewEP = false;
       let ep = 0;
@@ -114,7 +104,7 @@ export const useSAR = (req: TypePriceRequest, options?: { max?: number; step?: n
   }, [setState, data, dataSAR, max, step]);
 };
 
-const nextEP = (price: TypePrice, prevEP: number, isUpTrend: boolean) => {
+const nextEP = (price: gType.Price, prevEP: number, isUpTrend: boolean) => {
   const found = true;
   if (isUpTrend) {
     if (price.high > prevEP) return { newEp: price.high, found };
@@ -131,19 +121,19 @@ const nextAF = (prevAF: number, step: number, max: number) => {
 
 const nextSAR = (prevSAR: number, ep: number, af: number) => prevSAR + af * (ep - prevSAR);
 
-const detectCollision = (price: TypePrice, sar: number, isUpTrend: boolean) =>
+const detectCollision = (price: gType.Price, sar: number, isUpTrend: boolean) =>
   isUpTrend ? sar >= price.low : sar <= price.high;
 
-export const useChaikin = (req: TypePriceRequest, period = [3, 10, 20]) => {
+export const useChaikin = (req: gType.PriceRequest, period = [3, 10, 20]) => {
   const [p1, p2, p3] = period;
   const { data } = useGetPrices(req);
-  const [dataChainkin, setState] = useAtom(StateChaikin(req));
+  const [dataChainkin, setState] = useAtom(gState.chaikin(req));
 
   useEffect(() => {
     if (data && data.length && !dataChainkin.length) {
       const k1 = getEMAFactorK(p1);
       const k2 = getEMAFactorK(p2);
-      const result: TypeChaikin[] = [];
+      const result: gType.Chaikin[] = [];
       const prevADL: number[] = [];
       const prevADL1: number[] = [];
       const prevADL2: number[] = [];

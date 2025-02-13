@@ -1,5 +1,5 @@
 import { atom } from 'jotai';
-import { CmfTypeDisplay } from './cmfType';
+import * as mType from './cmfType';
 
-const displayInit: CmfTypeDisplay = { noSignalZone: true };
-export const CmfStateDisplay = atom(displayInit);
+const initDisplay: mType.Display = { noSignalZone: true };
+export const display = atom(initDisplay);

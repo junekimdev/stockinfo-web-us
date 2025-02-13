@@ -1,2 +1,2 @@
-export type AdxTypeDisplayItem = 'ADX' | 'pDI' | 'nDI' | 'buy' | 'sell' | 'trendConfirm';
-export type AdxTypeDisplay = Record<AdxTypeDisplayItem, boolean>;
+export type DisplayItem = 'ADX' | 'pDI' | 'nDI' | 'buy' | 'sell' | 'trendConfirm';
+export type Display = Record<DisplayItem, boolean>;

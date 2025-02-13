@@ -1,7 +1,7 @@
 import { atom } from 'jotai';
-import { MacdVTypeDisplay } from './macdVType';
+import * as mType from './macdVType';
 
-const displayInit: MacdVTypeDisplay = {
+const initDisplay: mType.Display = {
   MACDV: true,
   signal: true,
   histogram: true,
@@ -10,4 +10,4 @@ const displayInit: MacdVTypeDisplay = {
   upsideMomentum: true,
   downsideMomentum: true,
 };
-export const MacdVStateDisplay = atom(displayInit);
+export const display = atom(initDisplay);
