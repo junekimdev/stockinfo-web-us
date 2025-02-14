@@ -1,4 +1,5 @@
 import { useAtomValue } from 'jotai';
+import { useEnterKeyAsClick } from '../../controllers/data/hooks';
 import * as gState from '../../controllers/data/states';
 import * as gType from '../../controllers/data/types';
 import styles from './mainFrame.module.scss';
@@ -9,12 +10,14 @@ const View = (props: { tab: gType.CompanyTab }) => {
   const currentTab = useAtomValue(gState.currentTab);
   const onMoveToTabClick = useMoveToTabClick(tab);
   const onRemoveTabClick = useRemoveTabClick(tab);
+  const onEnterKey = useEnterKeyAsClick();
 
   return (
     <li
       title={tab.company.name}
       className={tab.uuid === currentTab.uuid ? styles.tabItemCurrent : styles.tabItem}
       onClick={onMoveToTabClick}
+      onKeyUp={onEnterKey}
       tabIndex={0}
       data-drag-object
       data-data={JSON.stringify(tab)}
