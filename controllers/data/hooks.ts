@@ -1,6 +1,6 @@
 import { PrimitiveAtom, useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useRouter } from 'next/router';
-import { ChangeEvent, useCallback, useEffect } from 'react';
+import { ChangeEvent, KeyboardEvent, useCallback, useEffect } from 'react';
 import { LOCAL_STORAGE_KEY_COMPANY_TABS } from '../apiURLs';
 import * as gState from './states';
 import * as gType from './types';
@@ -66,4 +66,10 @@ export const useInputChange = <T>(atom: PrimitiveAtom<T>, what: keyof T) => {
     },
     [what, setState, values],
   );
+};
+
+export const useEnterKeyAsClick = () => {
+  return useCallback((e: KeyboardEvent<HTMLElement>) => {
+    if (e.key === 'Enter') e.currentTarget.click();
+  }, []);
 };
