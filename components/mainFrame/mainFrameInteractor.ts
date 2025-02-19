@@ -18,7 +18,7 @@ export const useMoveToHome = () => {
 
   return useCallback(() => {
     resetCurrent();
-    router.push('/');
+    if (router.pathname !== '/') router.replace('/');
   }, [resetCurrent, router]);
 };
 
@@ -32,7 +32,7 @@ export const useCloseAllClick = () => {
     resetTabs();
     resetCurrent();
     setOpened(false);
-    router.replace('/search');
+    if (router.pathname !== '/search') router.replace('/search');
   }, [resetTabs, resetCurrent, setOpened, router]);
 };
 
@@ -42,7 +42,7 @@ export const useAddNewTabClick = () => {
 
   return useCallback(() => {
     resetState();
-    router.push('/search');
+    if (router.pathname !== '/search') router.replace('/search');
   }, [resetState, router]);
 };
 
@@ -52,7 +52,7 @@ export const useMoveToTabClick = (tab: gType.CompanyTab) => {
 
   return useCallback(() => {
     setState(tab);
-    router.replace('/chart');
+    if (router.pathname !== '/chart') router.replace('/chart');
   }, [setState, tab, router]);
 };
 
@@ -69,7 +69,7 @@ export const useRemoveTabClick = (tab: gType.CompanyTab) => {
       setTabs(tabs.filter((v) => v.uuid !== tab.uuid));
       if (currentTab.uuid === tab.uuid) {
         resetCurrent();
-        router.replace('/search');
+        if (router.pathname !== '/search') router.replace('/search');
       }
     },
     [setTabs, resetCurrent, tabs, tab, currentTab, router],
