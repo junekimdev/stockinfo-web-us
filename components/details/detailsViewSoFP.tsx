@@ -12,7 +12,7 @@ const getLiabilitiesRatio = (liabilities?: number, equity?: number) => {
 
 const View = () => {
   const { company } = useAtomValue(gState.currentTab);
-  const { data } = useGetEdgarStatement(company.cik);
+  const { data } = useGetEdgarStatement(company.code);
   const assets = data?.assets ?? [];
   const equity = data?.equity ?? [];
   const liabilities = data?.liabilities ?? [];

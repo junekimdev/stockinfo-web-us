@@ -47,10 +47,16 @@ export type ChartData =
   | Chaikin
   | Stochastic;
 
+export type CompanyRaw = {
+  cik_str?: string;
+  ticker?: string;
+  title?: string;
+};
 export type Company = {
-  cik: string;
-  code: string;
   name: string;
+  code: string;
+  fullName: string;
+  mkt: string;
 };
 export type CompanyTab = {
   uuid: string;

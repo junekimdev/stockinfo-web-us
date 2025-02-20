@@ -23,7 +23,7 @@ const View = (props: { tab: gType.CompanyTab }) => {
       data-data={JSON.stringify(tab)}
     >
       <i title="move" className={`fa-solid fa-grip-vertical ${styles.tabIconDnD}`} draggable></i>
-      <div className={styles.tabItemText}>{tab.company.code}</div>
+      <div className={styles.tabItemText}>{tab.company.name}</div>
       <i
         title="close"
         className={`fa-solid fa-xmark ${styles.tabIconClose}`}
