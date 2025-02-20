@@ -8,7 +8,7 @@ import { useGetPrices } from '../../controllers/net/price';
 export const useStochastic = (
   req: gType.PriceRequest,
   period = [14, 3, 3],
-  over: gType.PriceValue = 'close',
+  over: gType.PriceItem = 'close',
 ) => {
   const { data } = useGetPrices(req);
   const [dataStochastic, setState] = useAtom(gState.stochastic(req));
@@ -47,7 +47,7 @@ export const getLowestLow = (data: gType.Price[], period: number, i: number) => 
   return data.slice(i + 1 - period, i + 1).reduce((p, v) => Math.min(p, v.low), Infinity);
 };
 
-export const getK = (data: gType.Price[], period: number, i: number, over: gType.PriceValue) => {
+export const getK = (data: gType.Price[], period: number, i: number, over: gType.PriceItem) => {
   const hh = getHighestHigh(data, period, i);
   const ll = getLowestLow(data, period, i);
   return hh === ll ? 100 : ((data[i][over] - ll) / (hh - ll)) * 100;

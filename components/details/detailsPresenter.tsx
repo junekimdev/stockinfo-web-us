@@ -11,7 +11,7 @@ import SoFP from './detailsViewSoFP';
 
 const Presenter = () => {
   const { company } = useAtomValue(gState.currentTab);
-  const { data } = useGetEdgarStatement(company.cik);
+  const { data } = useGetEdgarStatement(company.code);
 
   const onToggleDetails = useToggleDetails();
 

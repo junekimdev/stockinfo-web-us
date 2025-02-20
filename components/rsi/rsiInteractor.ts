@@ -7,7 +7,7 @@ import { useGetPrices } from '../../controllers/net/price';
 export const useRsi = (
   req: gType.PriceRequest,
   period = 14,
-  over: gType.PriceVolumeValue = 'close',
+  over: gType.PriceVolumeItem = 'close',
 ) => {
   const { data } = useGetPrices(req);
   const [dataRsi, setState] = useAtom(gState.rsi(req));
