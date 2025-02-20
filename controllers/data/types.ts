@@ -3,50 +3,16 @@ export type RectCoordi = { x: number; y: number; w: number; h: number };
 
 export type PriceRequestType = 'daily' | 'weekly' | 'latest';
 export type AvgMethod = 'simple' | 'exponential' | 'weighted';
-export type PriceValue = 'close' | 'open' | 'high' | 'low';
-export type PriceVolumeValue = PriceValue | 'volume';
-export type Chart =
-  | 'price'
-  | 'mini-price'
-  | 'volume'
-  | 'percent-change'
-  | 'heikin-aski'
-  | 'heikin-aski-smoothed'
-  | 'adx'
-  | 'rsi'
-  | 'macd'
-  | 'macd-v'
-  | 'atrp'
-  | 'co'
-  | 'cmf'
-  | 'so';
+export type PriceItem = 'close' | 'open' | 'high' | 'low';
+export type PriceVolumeItem = PriceItem | 'volume';
 
 export type IDWeek = { year: number; week: number };
 export type MyDate = { date: Date | IDWeek };
 export type PriceRequest = { code: string; type: PriceRequestType };
 export type IDPriceMA = PriceRequest & { method: AvgMethod; period: number };
 
-export type ChartData =
-  | Price
-  | PriceVolume
-  | PricePercentChange
-  | ParabolicSAR
-  | MovingAvg
-  | PriceBollingerBands
-  | Adx
-  | Rsi
-  | Macd
-  | MacdV
-  | Atrp
-  | Chaikin
-  | Stochastic;
-export type Price = MyDate & {
-  open: number;
-  close: number;
-  high: number;
-  low: number;
-};
-export type PriceVolume = Price & { volume: number };
+export type Price = MyDate & Record<PriceItem, number>;
+export type PriceVolume = MyDate & Record<PriceVolumeItem, number>;
 export type PriceVolumeRaw = PriceVolume & {
   trading_value: number;
   base_stock_cnt: number;
@@ -66,6 +32,20 @@ export type MacdV = MyDate & { macdV: number; signal: number; histogram: number 
 export type Atrp = MyDate & { atrp: number };
 export type Chaikin = MyDate & { cmf: number; co: number };
 export type Stochastic = MyDate & { fullK: number; fullD: number };
+export type ChartData =
+  | Price
+  | PriceVolume
+  | PricePercentChange
+  | ParabolicSAR
+  | MovingAvg
+  | PriceBollingerBands
+  | Adx
+  | Rsi
+  | Macd
+  | MacdV
+  | Atrp
+  | Chaikin
+  | Stochastic;
 
 export type Company = {
   cik: string;

@@ -40,10 +40,10 @@ export const emaStep = <T, P>(
 export const getPriceSMA = (
   data: gType.PriceVolume[] | undefined,
   period: number,
-  options?: { over?: gType.PriceVolumeValue },
+  options?: { over?: gType.PriceVolumeItem },
 ) => {
   const { over = 'close' } = options ?? {};
-  const func = (over: gType.PriceVolumeValue) => (d: gType.PriceVolume) => d[over];
+  const func = (over: gType.PriceVolumeItem) => (d: gType.PriceVolume) => d[over];
   const result: gType.MovingAvg[] = [];
 
   if (data && data.length >= period) {
@@ -59,13 +59,13 @@ export const getPriceSMA = (
 export const getPriceEMA = (
   data: gType.PriceVolume[] | undefined,
   period: number,
-  options?: { over?: gType.PriceVolumeValue; smoothing?: number },
+  options?: { over?: gType.PriceVolumeItem; smoothing?: number },
 ) => {
   const { over = 'close', smoothing = 2 } = options ?? {};
   const result: gType.MovingAvg[] = [];
 
   if (data && data.length > 1) {
-    const f1 = (over: gType.PriceVolumeValue) => (d: gType.PriceVolume) => d[over];
+    const f1 = (over: gType.PriceVolumeItem) => (d: gType.PriceVolume) => d[over];
     const f2 = (d: gType.MovingAvg) => d.avg;
     const k = getEMAFactorK(period, smoothing);
 
@@ -87,7 +87,7 @@ export const getPriceEMAOverAll = (
   const result: gType.Price[] = [];
 
   if (data && data.length > 0) {
-    const func = (over: gType.PriceValue) => (d: gType.Price) => d[over];
+    const func = (over: gType.PriceItem) => (d: gType.Price) => d[over];
     const k = getEMAFactorK(period, smoothing);
 
     for (let i = 0; i < data.length; i++) {

@@ -15,7 +15,7 @@ export const useMacdV = (
   req: gType.PriceRequest,
   options?: {
     period?: [number, number, number];
-    over?: gType.PriceVolumeValue;
+    over?: gType.PriceVolumeItem;
     smoothing?: number;
   },
 ) => {
@@ -26,7 +26,7 @@ export const useMacdV = (
 
   useEffect(() => {
     if (data && data.length && !dataMacdV.length) {
-      const f1 = (over: gType.PriceVolumeValue) => (d: gType.PriceVolume) => d[over];
+      const f1 = (over: gType.PriceVolumeItem) => (d: gType.PriceVolume) => d[over];
       const f2 = (d: number) => d;
       const k1 = getEMAFactorK(p1, smoothing);
       const k2 = getEMAFactorK(p2, smoothing);
