@@ -15,7 +15,7 @@ const View = (props: { data: gType.Company; uuid: string }) => {
       <div className={styles.companyCode}>{code}</div>
       <div className={styles.companyMkt}>{mkt}</div>
       <div className={styles.companyCorp} title={fullName}>
-        {name}
+        {fullName}
       </div>
     </li>
   );
