@@ -12,7 +12,7 @@ const getOperatingIncomeRatio = (operatingIncome?: number, revenue?: number) => 
 
 const View = () => {
   const { company } = useAtomValue(gState.currentTab);
-  const { data } = useGetEdgarStatement(company.code);
+  const { data } = useGetEdgarStatement(company.codeReport);
   const operatingIncome = data?.operatingIncome ?? [];
   const revenue = data?.revenue ?? [];
   const netIncome = data?.netIncome ?? [];

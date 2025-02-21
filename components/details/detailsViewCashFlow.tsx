@@ -6,7 +6,7 @@ import styles from './details.module.scss';
 
 const View = () => {
   const { company } = useAtomValue(gState.currentTab);
-  const { data } = useGetEdgarStatement(company.code);
+  const { data } = useGetEdgarStatement(company.codeReport);
   const cashflowOperating = data?.operatingCashFlow ?? [];
   const cashflowInvesting = data?.investingCashFlow ?? [];
   const cashflowFinancing = data?.financingCashFlow ?? [];

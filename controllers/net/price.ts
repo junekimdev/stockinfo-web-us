@@ -22,7 +22,7 @@ export const useGetPricesPrefetching = () => {
 
   useEffect(() => {
     for (const tab of tabs) {
-      const code = tab.company.code;
+      const code = tab.company.codePrice;
       const type = tab.mainType;
       queryClient.prefetchQuery({
         queryKey: ['prices', code, type],
