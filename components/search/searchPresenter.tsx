@@ -1,5 +1,4 @@
 import { useAtomValue } from 'jotai';
-import { useState } from 'react';
 import * as gState from '../../controllers/data/states';
 import { useGetCompanies } from '../../controllers/net/company';
 import styles from './search.module.scss';
@@ -13,8 +12,7 @@ import Card from './searchViewCompanyCard';
 const Presenter = () => {
   useLoadRecentSearchTabs();
 
-  const [random, _] = useState(Math.random);
-  const uuid = random.toString();
+  const uuid = crypto.randomUUID();
   const onSearchInputChange = useSearchInputChange();
   const onDeleteAllRecentClick = useDeleteAllRecentClick();
 
