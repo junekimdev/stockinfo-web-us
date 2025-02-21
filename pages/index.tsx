@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import MainFrame from '../components/mainFrame';
 import Meta from '../components/meta';
 import Search from '../components/search';
+import { useCheckCompanyVersion } from '../controllers/data/hooks';
 import * as gState from '../controllers/data/states';
 
 const Page = () => {
@@ -11,6 +12,7 @@ const Page = () => {
   const router = useRouter();
   const resetCurrent = useResetAtom(gState.currentTab);
 
+  useCheckCompanyVersion();
   useEffect(() => {
     window.scrollTo(0, 0);
     resetCurrent();
