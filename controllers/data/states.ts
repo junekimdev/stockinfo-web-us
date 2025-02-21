@@ -71,7 +71,7 @@ export const companyTabs = atomWithReset<gType.CompanyTab[]>([]);
 
 export const currentTab = atomWithReset<gType.CompanyTab>({
   uuid: '',
-  company: { name: '', code: '', fullName: '', mkt: '' },
+  company: { name: '', fullName: '', codePrice: '', codeReport: '', mkt: '' },
   mainType: 'daily',
 });
 

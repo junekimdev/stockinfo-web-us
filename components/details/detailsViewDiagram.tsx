@@ -12,8 +12,8 @@ const getRatioString = (n: number) => {
 
 const View = () => {
   const { company } = useAtomValue(gState.currentTab);
-  const req: gType.PriceRequest = { code: company.code, type: 'latest' };
-  const { data } = useGetEdgarStatement(company.code);
+  const req: gType.PriceRequest = { code: company.codePrice, type: 'latest' };
+  const { data } = useGetEdgarStatement(company.codeReport);
   const prices = useGetPricesLatest(req);
   const latestPrice = prices.data?.close ?? 0;
   const cap = latestPrice * (data?.outstandingStock[0]?.value ?? 0);

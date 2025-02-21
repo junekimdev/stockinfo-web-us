@@ -22,7 +22,7 @@ export const useGetPricesPrefetching = () => {
 
   useEffect(() => {
     for (const tab of tabs) {
-      const code = tab.company.code;
+      const code = tab.company.codePrice;
       const type = tab.mainType;
       queryClient.prefetchQuery({
         queryKey: ['prices', code, type],
@@ -46,6 +46,7 @@ export const useGetPricesLatest = (req: gType.PriceRequest) => {
 const getPrices = async ({ queryKey }: QueryFunctionContext<string[]>) => {
   const [_key, code, _t] = queryKey;
   const t = _t as gType.PriceRequestType;
+  if (!code) return [];
 
   const url = `${PRICES_URL}/${code}/${t}`;
   const res = await fetch(url, { method: 'GET' });
@@ -88,6 +89,7 @@ const getPrices = async ({ queryKey }: QueryFunctionContext<string[]>) => {
 const getPricesLatest = async ({ queryKey }: QueryFunctionContext<string[]>) => {
   const [_key, code, _t] = queryKey;
   const t = _t as gType.PriceRequestType;
+  if (!code) return;
 
   const url = `${PRICES_URL}/${code}/${t}`;
   const res = await fetch(url, { method: 'GET' });

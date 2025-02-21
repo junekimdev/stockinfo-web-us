@@ -26,7 +26,7 @@ export const useCompanyClick = (uuid: string, company: gType.Company) => {
 
   return useCallback(() => {
     const tabExists: gType.CompanyTab = companyTabs.reduce(
-      (p, v) => (v.company.code === company.code ? v : p),
+      (p, v) => (v.company.codePrice === company.codePrice ? v : p),
       { uuid: '', company, mainType: 'daily' },
     );
 
@@ -38,7 +38,7 @@ export const useCompanyClick = (uuid: string, company: gType.Company) => {
 
     // Add to recent search tabs
     const saved = recentSearchTabs.reduce(
-      (p, v) => p || v.company.code === tab.company.code,
+      (p, v) => p || v.company.codePrice === tab.company.codePrice,
       false,
     );
     if (!saved) {

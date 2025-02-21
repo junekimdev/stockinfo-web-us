@@ -1,5 +1,4 @@
 import { useAtomValue } from 'jotai';
-import { useState } from 'react';
 import * as gState from '../../controllers/data/states';
 import { useGetCompanies } from '../../controllers/net/company';
 import styles from './search.module.scss';
@@ -13,8 +12,7 @@ import Card from './searchViewCompanyCard';
 const Presenter = () => {
   useLoadRecentSearchTabs();
 
-  const [random, _] = useState(Math.random);
-  const uuid = random.toString();
+  const uuid = crypto.randomUUID();
   const onSearchInputChange = useSearchInputChange();
   const onDeleteAllRecentClick = useDeleteAllRecentClick();
 
@@ -49,7 +47,7 @@ const Presenter = () => {
       <ul className={styles.companyList}>
         {recentSearchTabs.length ? (
           recentSearchTabs.map((tab) => (
-            <Card key={`recent-${tab.company.code}`} data={tab.company} uuid={tab.uuid} />
+            <Card key={`recent-${tab.company.codePrice}`} data={tab.company} uuid={tab.uuid} />
           ))
         ) : (
           <div className={styles.placeholder}>None</div>
@@ -59,7 +57,9 @@ const Presenter = () => {
       <h3 className={styles.title}>Search Results</h3>
       <ul className={styles.companyList}>
         {data && data.length ? (
-          data.map((company) => <Card key={`search-${company.code}`} data={company} uuid={uuid} />)
+          data.map((company) => (
+            <Card key={`search-${company.codePrice}`} data={company} uuid={uuid} />
+          ))
         ) : (
           <div className={styles.placeholder}>None</div>
         )}

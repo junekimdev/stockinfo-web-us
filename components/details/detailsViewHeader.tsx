@@ -9,8 +9,8 @@ import styles from './details.module.scss';
 
 const View = () => {
   const { company } = useAtomValue(gState.currentTab);
-  const { data } = useGetEdgarStatement(company.code);
-  const req: gType.PriceRequest = { code: company.code, type: 'latest' };
+  const { data } = useGetEdgarStatement(company.codeReport);
+  const req: gType.PriceRequest = { code: company.codePrice, type: 'latest' };
   const { data: latestPrice } = useGetPricesLatest(req);
   const stockCnt = data?.outstandingStock[0].value;
 
@@ -19,7 +19,7 @@ const View = () => {
       <div className={styles.headerTitle}>
         <h2 className={styles.headerName}>{company.name}</h2>
         <a
-          href={EDGAR_VIEWER_LINK + company.code}
+          href={EDGAR_VIEWER_LINK + company.codeReport}
           className={styles.toViewer}
           target="_blank"
           rel="noreferrer noopener"

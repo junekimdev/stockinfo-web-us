@@ -13,53 +13,46 @@ export const useToggleMenu = () => {
 };
 
 export const useMoveToHome = () => {
-  const resetCurrent = useResetAtom(gState.currentTab);
   const router = useRouter();
 
   return useCallback(() => {
-    resetCurrent();
     if (router.pathname !== '/') router.replace('/');
-  }, [resetCurrent, router]);
+  }, [router]);
 };
 
 export const useCloseAllClick = () => {
   const resetTabs = useResetAtom(gState.companyTabs);
-  const resetCurrent = useResetAtom(gState.currentTab);
   const setOpened = useSetAtom(mState.menuOpened);
   const router = useRouter();
 
   return useCallback(() => {
     resetTabs();
-    resetCurrent();
     setOpened(false);
     if (router.pathname !== '/search') router.replace('/search');
-  }, [resetTabs, resetCurrent, setOpened, router]);
+  }, [resetTabs, setOpened, router]);
 };
 
 export const useAddNewTabClick = () => {
-  const resetState = useResetAtom(gState.currentTab);
   const router = useRouter();
 
   return useCallback(() => {
-    resetState();
     if (router.pathname !== '/search') router.replace('/search');
-  }, [resetState, router]);
+  }, [router]);
 };
 
 export const useMoveToTabClick = (tab: gType.CompanyTab) => {
-  const setState = useSetAtom(gState.currentTab);
+  const setCurrentTab = useSetAtom(gState.currentTab);
   const router = useRouter();
 
   return useCallback(() => {
-    setState(tab);
+    setCurrentTab(tab);
     if (router.pathname !== '/chart') router.replace('/chart');
-  }, [setState, tab, router]);
+  }, [setCurrentTab, tab, router]);
 };
 
 export const useRemoveTabClick = (tab: gType.CompanyTab) => {
   const [tabs, setTabs] = useAtom(gState.companyTabs);
   const currentTab = useAtomValue(gState.currentTab);
-  const resetCurrent = useResetAtom(gState.currentTab);
   const router = useRouter();
 
   return useCallback(
@@ -68,11 +61,10 @@ export const useRemoveTabClick = (tab: gType.CompanyTab) => {
 
       setTabs(tabs.filter((v) => v.uuid !== tab.uuid));
       if (currentTab.uuid === tab.uuid) {
-        resetCurrent();
         if (router.pathname !== '/search') router.replace('/search');
       }
     },
-    [setTabs, resetCurrent, tabs, tab, currentTab, router],
+    [setTabs, tabs, tab, currentTab, router],
   );
 };
 
