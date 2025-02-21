@@ -1,7 +1,12 @@
 import { PrimitiveAtom, useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { useResetAtom } from 'jotai/utils';
 import { useRouter } from 'next/router';
 import { ChangeEvent, KeyboardEvent, useCallback, useEffect } from 'react';
-import { LOCAL_STORAGE_KEY_COMPANY_TABS } from '../apiURLs';
+import {
+  LOCAL_STORAGE_KEY_COMPANY_TABS,
+  LOCAL_STORAGE_KEY_COMPANY_VERSION,
+  LOCAL_STORAGE_KEY_RECENT_SEARCH_TABS,
+} from '../apiURLs';
 import * as gState from './states';
 import * as gType from './types';
 
@@ -12,6 +17,23 @@ export const useCheckCurrentTab = () => {
   useEffect(() => {
     if (!currentTab.uuid) router.replace('/');
   }, [router, currentTab]);
+};
+
+export const useCheckCompanyVersion = () => {
+  const version = '1';
+  const resetTabs = useResetAtom(gState.companyTabs);
+  const resetSearchTabs = useResetAtom(gState.recentSearchTabs);
+
+  useEffect(() => {
+    const ver = window.localStorage.getItem(LOCAL_STORAGE_KEY_COMPANY_VERSION);
+    if (ver !== version) {
+      resetTabs();
+      resetSearchTabs();
+      window.localStorage.removeItem(LOCAL_STORAGE_KEY_COMPANY_TABS);
+      window.localStorage.removeItem(LOCAL_STORAGE_KEY_RECENT_SEARCH_TABS);
+      window.localStorage.setItem(LOCAL_STORAGE_KEY_COMPANY_VERSION, version);
+    }
+  }, [resetSearchTabs, resetTabs]);
 };
 
 export const useLoadCompanyTabs = () => {

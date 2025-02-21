@@ -18,10 +18,10 @@ const View = () => {
         Close All Tabs
       </button>
       <button className={styles.menuBtn} onClick={onSaveTabsClick} disabled={!tabs.length}>
-        Save Tabs in Browser
+        Save Tabs in Storage
       </button>
       <button className={styles.menuBtn} onClick={onClearTabsClick}>
-        Clear Tabs in Browser
+        Clear Tabs in Storage
       </button>
     </div>
   );
