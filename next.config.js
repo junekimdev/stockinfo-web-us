@@ -8,7 +8,6 @@ module.exports = {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
     NEXT_PUBLIC_DIFF_NATION_URL: process.env.NEXT_PUBLIC_DIFF_NATION_URL,
   },
-  eslint: { ignoreDuringBuilds: true },
   poweredByHeader: false,
   reactStrictMode: true,
 };
