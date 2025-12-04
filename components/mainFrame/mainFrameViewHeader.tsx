@@ -18,7 +18,7 @@ const View = () => {
   return (
     <header className={styles.header}>
       <div className={styles.companyInfo}>
-        <h1>{company.name}</h1>
+        <h1>{company.fullName}</h1>
         <div className={styles.companyInfoSub}>
           <h3>{company.mkt}</h3>
           <h3>{company.codePrice}</h3>
