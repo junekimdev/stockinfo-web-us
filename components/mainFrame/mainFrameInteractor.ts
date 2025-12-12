@@ -192,11 +192,15 @@ export const useTouchMove = (dragged: HTMLLIElement | undefined) => {
       if (!dragged) return;
       e.preventDefault(); // This stops window scrolling while this touch event is fired
 
-      // follow touch point
       const { height } = dragged.getBoundingClientRect();
       const { clientX, clientY } = e.touches[0];
+
+      // follow touch point
+      /* eslint-disable react-hooks/immutability */
+      // allow mutation of the dragged on the move
       dragged.style.left = `${clientX - 8}px`;
       dragged.style.top = `${clientY - height / 2}px`;
+      /* eslint-enable react-hooks/immutability */
 
       // if touch point enters into another element, change order
       const p = dragged.parentElement;
