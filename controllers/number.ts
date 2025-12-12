@@ -1,3 +1,6 @@
+import { useCallback } from 'react';
+
+export const useRandom = () => useCallback(() => Math.random(), []);
 export const to2DigitString = (n: number) => n.toString().padStart(2, '0');
 
 export const getNumString = (n?: string) => {

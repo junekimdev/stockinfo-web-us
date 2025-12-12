@@ -1,13 +1,16 @@
+import { useRandom } from '../../controllers/number';
 import styles from './charts.module.scss';
 
 const View = () => {
+  const random = useRandom()();
+
   const bars: React.JSX.Element[] = [];
   for (let i = 0; i < 10; i++) {
     const bar = (
       <div
         key={`placeholder-bar-${i}`}
         className={styles.bar}
-        style={{ height: `${10 + Math.floor(Math.random() * 60)}%` }}
+        style={{ height: `${10 + Math.floor(random * 60)}%` }}
       ></div>
     );
     bars.push(bar);
