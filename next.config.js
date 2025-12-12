@@ -10,4 +10,5 @@ module.exports = {
   },
   poweredByHeader: false,
   reactStrictMode: true,
+  turbopack: {},
 };
