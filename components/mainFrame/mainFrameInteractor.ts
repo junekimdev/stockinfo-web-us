@@ -60,6 +60,7 @@ export const useRemoveTabClick = (tab: gType.CompanyTab) => {
       e.stopPropagation();
 
       setTabs(tabs.filter((v) => v.uuid !== tab.uuid));
+      gState.removeRequestedData({ code: tab.company.codePrice, type: tab.mainType });
       if (currentTab.uuid === tab.uuid) {
         if (router.pathname !== '/search') router.replace('/search');
       }

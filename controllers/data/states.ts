@@ -1,5 +1,6 @@
 import { atom } from 'jotai';
-import { atomFamily, atomWithReset } from 'jotai/utils';
+import { atomFamily } from 'jotai-family';
+import { atomWithReset } from 'jotai/utils';
 import * as gType from './types';
 
 export const errorCode = atom(500);
@@ -58,6 +59,20 @@ export const stochastic = atomFamily(
   (_req: gType.PriceRequest) => atom<gType.Stochastic[]>([]),
   (a, b) => a.code === b.code && a.type === b.type,
 );
+
+export const removeRequestedData = (req: gType.PriceRequest) => {
+  pricePercentChange.remove(req);
+  priceHeikinAshi.remove(req);
+  priceHeikinAshiSmoothed.remove(req);
+  priceSAR.remove(req);
+  adx.remove(req);
+  rsi.remove(req);
+  macd.remove(req);
+  macdV.remove(req);
+  atrp.remove(req);
+  chaikin.remove(req);
+  stochastic.remove(req);
+};
 
 export const priceMA = atomFamily(
   (_req: gType.IDPriceMA) => atom<gType.MovingAvg[]>([]),
