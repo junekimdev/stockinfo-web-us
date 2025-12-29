@@ -60,6 +60,20 @@ export const stochastic = atomFamily(
   (a, b) => a.code === b.code && a.type === b.type,
 );
 
+export const removeRequestedData = (req: gType.PriceRequest) => {
+  pricePercentChange.remove(req);
+  priceHeikinAshi.remove(req);
+  priceHeikinAshiSmoothed.remove(req);
+  priceSAR.remove(req);
+  adx.remove(req);
+  rsi.remove(req);
+  macd.remove(req);
+  macdV.remove(req);
+  atrp.remove(req);
+  chaikin.remove(req);
+  stochastic.remove(req);
+};
+
 export const priceMA = atomFamily(
   (_req: gType.IDPriceMA) => atom<gType.MovingAvg[]>([]),
   (a, b) =>
