@@ -3881,6 +3881,11 @@ jest@^30.2.0:
     import-local "^3.2.0"
     jest-cli "30.2.0"
 
+jotai-family@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/jotai-family/-/jotai-family-1.0.1.tgz#0782aaaf22042b63111df4c1f9acf7b2ceff03cb"
+  integrity sha512-Zb/79GNDhC/z82R+6qTTpeKW4l4H6ZCApfF5W8G4SH37E4mhbysU7r8DkP0KX94hWvjB/6lt/97nSr3wB+64Zg==
+
 jotai@^2.16.0:
   version "2.16.0"
   resolved "https://registry.yarnpkg.com/jotai/-/jotai-2.16.0.tgz#454d29597cbdcbf42adb5dd79c3f81e3aa2d3abb"

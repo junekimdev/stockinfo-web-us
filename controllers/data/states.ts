@@ -1,5 +1,6 @@
 import { atom } from 'jotai';
-import { atomFamily, atomWithReset } from 'jotai/utils';
+import { atomFamily } from 'jotai-family';
+import { atomWithReset } from 'jotai/utils';
 import * as gType from './types';
 
 export const errorCode = atom(500);
