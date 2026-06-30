@@ -1,5 +1,5 @@
 import { useAtomValue } from 'jotai';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { DIFF_NATION_URL } from '../../controllers/apiURLs';
 import * as gState from '../../controllers/data/states';
 import styles from './mainFrame.module.scss';
@@ -21,19 +21,18 @@ import Tab from './mainFrameViewTab';
 const View = () => {
   const tabs = useAtomValue(gState.companyTabs);
   const menuOpened = useAtomValue(mState.menuOpened);
-  const [dragged, setDragged] = useState<HTMLLIElement>();
   const ulRef = useRef<HTMLUListElement>(null);
 
   const onToggleMenu = useToggleMenu();
   const moveToHome = useMoveToHome();
   const onAddNewTabClick = useAddNewTabClick();
-  const onDragStart = useDragStart(setDragged);
-  const onDragEnd = useDragEnd(dragged, setDragged);
-  const onDragEnterCapture = useDragEnterCapture(dragged);
+  const onDragStart = useDragStart();
+  const onDragEnd = useDragEnd();
+  const onDragEnterCapture = useDragEnterCapture();
   const onDrop = useDrop();
-  const onTouchStart = useTouchStart(setDragged);
-  const onTouchMove = useTouchMove(dragged);
-  const onTouchEnd = useTouchEnd(dragged, setDragged);
+  const onTouchStart = useTouchStart();
+  const onTouchMove = useTouchMove();
+  const onTouchEnd = useTouchEnd();
 
   // By `event.preventDefault()` "window scrolling" is disabled while touch events are being fired.
   // `touchstart` & `touchmove` are passive event listeners, which means
