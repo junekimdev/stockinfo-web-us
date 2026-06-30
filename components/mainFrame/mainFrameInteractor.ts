@@ -1,7 +1,7 @@
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useResetAtom } from 'jotai/utils';
 import { useRouter } from 'next/router';
-import { Dispatch, DragEvent, MouseEvent, SetStateAction, useCallback } from 'react';
+import { DragEvent, MouseEvent, useCallback } from 'react';
 import * as gState from '../../controllers/data/states';
 import * as gType from '../../controllers/data/types';
 import * as mState from './mainFrameState';
@@ -90,46 +90,39 @@ export const useSwitchTypeBtnClick = () => {
 
 //==================== Drag and Drop Event Handlers ====================
 
-export const useDragStart = (setDragged: Dispatch<SetStateAction<HTMLLIElement | undefined>>) => {
-  return useCallback(
-    (e: DragEvent<HTMLUListElement>) => {
-      const el = e.target;
-      if (!(el instanceof HTMLElement)) return;
-      const p = el.parentElement;
-      if (!(p instanceof HTMLLIElement)) return;
+export const useDragStart = () => {
+  return useCallback((e: DragEvent<HTMLUListElement>) => {
+    const el = e.target;
+    if (!(el instanceof HTMLElement)) return;
+    const p = el.parentElement;
+    if (!(p instanceof HTMLLIElement)) return;
 
-      p.classList.add('dragged');
-      e.dataTransfer.setDragImage(p, 0, 0);
-      setDragged(p);
-    },
-    [setDragged],
-  );
+    p.classList.add('dragged');
+    e.dataTransfer.setDragImage(p, 0, 0);
+  }, []);
 };
 
-export const useDragEnd = (
-  dragged: HTMLLIElement | undefined,
-  setDragged: Dispatch<SetStateAction<HTMLLIElement | undefined>>,
-) => {
+export const useDragEnd = () => {
   return useCallback(() => {
+    const dragged = document.querySelector('.dragged');
+    if (!(dragged instanceof HTMLLIElement)) return;
     dragged?.classList.remove('dragged');
-    setDragged(undefined);
-  }, [dragged, setDragged]);
+  }, []);
 };
 
-export const useDragEnterCapture = (dragged: HTMLLIElement | undefined) => {
-  return useCallback(
-    (e: DragEvent<HTMLUListElement>) => {
-      const el = e.target;
-      if (el instanceof HTMLElement && el.dataset.dragObject && dragged) {
-        e.stopPropagation();
-        const dy = el.offsetTop - dragged.offsetTop; // positive means moving downward
-        const where = dy > 0 ? 'afterend' : 'beforebegin';
-        dragged.parentElement?.removeChild(dragged);
-        el.insertAdjacentElement(where, dragged);
-      }
-    },
-    [dragged],
-  );
+export const useDragEnterCapture = () => {
+  return useCallback((e: DragEvent<HTMLUListElement>) => {
+    const el = e.target;
+    const dragged = document.querySelector('.dragged');
+    if (!(dragged instanceof HTMLLIElement)) return;
+    if (el instanceof HTMLElement && el.dataset.dragObject && dragged) {
+      e.stopPropagation();
+      const dy = el.offsetTop - dragged.offsetTop; // positive means moving downward
+      const where = dy > 0 ? 'afterend' : 'beforebegin';
+      dragged.parentElement?.removeChild(dragged);
+      el.insertAdjacentElement(where, dragged);
+    }
+  }, []);
 };
 
 export const useDrop = () => {
@@ -156,7 +149,7 @@ export const useDrop = () => {
 //==================== Touch Event Handlers ====================
 const placeholderId = 'move-placeholder';
 
-export const useTouchStart = (setDragged: Dispatch<SetStateAction<HTMLLIElement | undefined>>) => {
+export const useTouchStart = () => {
   return useCallback(
     // NOTICE: `TouchEvent` is Typescript event
     (e: TouchEvent) => {
@@ -173,7 +166,6 @@ export const useTouchStart = (setDragged: Dispatch<SetStateAction<HTMLLIElement 
       p.classList.add('draggedByTouch');
       p.style.left = `${e.touches[0].clientX}px`;
       p.style.top = `${e.touches[0].clientY - height / 2}px`;
-      setDragged(p);
 
       // Create a placeholder element
       const placeholder = document.createElement('li');
@@ -182,26 +174,24 @@ export const useTouchStart = (setDragged: Dispatch<SetStateAction<HTMLLIElement 
       placeholder.style.height = `${height}px`;
       p.insertAdjacentElement('afterend', placeholder);
     },
-    [setDragged],
+    [],
   );
 };
 
-export const useTouchMove = (dragged: HTMLLIElement | undefined) => {
+export const useTouchMove = () => {
   return useCallback(
     // NOTICE: `TouchEvent` is Typescript event
     (e: TouchEvent) => {
-      if (!dragged) return;
+      const dragged = document.querySelector('.draggedByTouch');
+      if (!(dragged instanceof HTMLLIElement)) return;
       e.preventDefault(); // This stops window scrolling while this touch event is fired
 
       const { height } = dragged.getBoundingClientRect();
       const { clientX, clientY } = e.touches[0];
 
       // follow touch point
-      /* eslint-disable react-hooks/immutability */
-      // allow mutation of the dragged on the move
       dragged.style.left = `${clientX - 8}px`;
       dragged.style.top = `${clientY - height / 2}px`;
-      /* eslint-enable react-hooks/immutability */
 
       // if touch point enters into another element, change order
       const p = dragged.parentElement;
@@ -238,19 +228,17 @@ export const useTouchMove = (dragged: HTMLLIElement | undefined) => {
         break;
       }
     },
-    [dragged],
+    [],
   );
 };
 
-export const useTouchEnd = (
-  dragged: HTMLLIElement | undefined,
-  setDragged: Dispatch<SetStateAction<HTMLLIElement | undefined>>,
-) => {
+export const useTouchEnd = () => {
   const setTabs = useSetAtom(gState.companyTabs);
 
   return useCallback(
     (e: React.TouchEvent<HTMLUListElement>) => {
-      if (!dragged) return;
+      const dragged = document.querySelector('.draggedByTouch');
+      if (!(dragged instanceof HTMLLIElement)) return;
 
       // Remove placeholder
       const placeholder = document.getElementById(placeholderId);
@@ -259,7 +247,6 @@ export const useTouchEnd = (
       // Reset place
       dragged.classList.remove('draggedByTouch');
       dragged.removeAttribute('style');
-      setDragged(undefined);
 
       // Update list state
       const tabs: gType.CompanyTab[] = [];
@@ -273,6 +260,6 @@ export const useTouchEnd = (
 
       setTabs(tabs);
     },
-    [setDragged, setTabs, dragged],
+    [setTabs],
   );
 };
