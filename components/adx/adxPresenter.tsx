@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import { useInputChange } from '../../controllers/data/hooks';
 import * as gState from '../../controllers/data/states';
 import * as gType from '../../controllers/data/types';
-import { useGetPrices } from '../../controllers/net/price';
 import styles from './adx.module.scss';
 import draw from './adxFnDraw';
 import { useAdx } from './adxInteractor';
@@ -13,7 +12,6 @@ const Presenter = (props: { req: gType.PriceRequest; marginLeft: number; max?: n
   const { req, marginLeft, max = 120 } = props;
 
   useAdx(req);
-  const { data } = useGetPrices(req);
   const dataAdx = useAtomValue(gState.adx(req));
   const display = useAtomValue(mState.display);
 
@@ -38,7 +36,7 @@ const Presenter = (props: { req: gType.PriceRequest; marginLeft: number; max?: n
     if (dataAdx.length) {
       draw(chartID, dataAdx.slice(-max), display, marginLeft);
     }
-  }, [chartID, marginLeft, max, data, dataAdx, display]);
+  }, [chartID, marginLeft, max, dataAdx, display]);
 
   return (
     <div className={styles.chartContainer}>

@@ -2,13 +2,11 @@ import { useAtomValue } from 'jotai';
 import { useEffect } from 'react';
 import * as gState from '../../controllers/data/states';
 import * as gType from '../../controllers/data/types';
-import { useGetPrices } from '../../controllers/net/price';
 import styles from './chaikin.module.scss';
 import draw from './chaikinFnDraw';
 
 const Presenter = (props: { req: gType.PriceRequest; marginLeft: number; max?: number }) => {
   const { req, marginLeft, max = 120 } = props;
-  const { data } = useGetPrices(req);
   const dataChaikin = useAtomValue(gState.chaikin(req));
 
   const chartTitle = `${req.type} CO`;
@@ -18,7 +16,7 @@ const Presenter = (props: { req: gType.PriceRequest; marginLeft: number; max?: n
     if (dataChaikin.length) {
       draw(chartID, dataChaikin.slice(-max), marginLeft);
     }
-  }, [chartID, marginLeft, max, data, dataChaikin]);
+  }, [chartID, marginLeft, max, dataChaikin]);
 
   return (
     <div className={styles.chartContainer}>

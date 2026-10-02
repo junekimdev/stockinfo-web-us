@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import { useInputChange } from '../../controllers/data/hooks';
 import * as gState from '../../controllers/data/states';
 import * as gType from '../../controllers/data/types';
-import { useGetPrices } from '../../controllers/net/price';
 import styles from './rsi.module.scss';
 import draw from './rsiFnDraw';
 import { useRsi } from './rsiInteractor';
@@ -13,7 +12,6 @@ const Presenter = (props: { req: gType.PriceRequest; marginLeft: number; max?: n
   const { req, marginLeft, max = 120 } = props;
 
   useRsi(req);
-  const { data } = useGetPrices(req);
   const dataRsi = useAtomValue(gState.rsi(req));
   const display = useAtomValue(mType.display);
 
@@ -30,7 +28,7 @@ const Presenter = (props: { req: gType.PriceRequest; marginLeft: number; max?: n
     if (dataRsi.length) {
       draw(chartID, dataRsi.slice(-max), display, marginLeft);
     }
-  }, [chartID, marginLeft, max, data, dataRsi, display]);
+  }, [chartID, marginLeft, max, dataRsi, display]);
 
   return (
     <div className={styles.chartContainer}>
