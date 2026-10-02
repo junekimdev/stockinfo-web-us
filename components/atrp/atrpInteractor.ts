@@ -15,12 +15,10 @@ export const useAtrp = (req: gType.PriceRequest, period = 14) => {
       const prevAtr: number[] = [];
 
       for (let i = 0; i < data.length; i++) {
+        const { date, close } = data[i];
         const atr = wilderSmoothEMA(getCurrentTR(data, i), prevAtr, i, period);
-        const atrp = (atr / data[i].close) * 100;
         prevAtr.push(atr);
-
-        const { date } = data[i];
-        result.push({ date, atrp });
+        result.push({ date, atrp: (atr / close) * 100 });
       }
       setState(result);
     }
