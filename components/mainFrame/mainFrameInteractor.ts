@@ -16,7 +16,7 @@ export const useMoveToHome = () => {
   const router = useRouter();
 
   return useCallback(() => {
-    if (router.pathname !== '/') router.replace('/');
+    if (router.pathname !== '/') void router.replace('/');
   }, [router]);
 };
 
@@ -28,7 +28,7 @@ export const useCloseAllClick = () => {
   return useCallback(() => {
     resetTabs();
     setOpened(false);
-    if (router.pathname !== '/search') router.replace('/search');
+    if (router.pathname !== '/search') void router.replace('/search');
   }, [resetTabs, setOpened, router]);
 };
 
@@ -36,7 +36,7 @@ export const useAddNewTabClick = () => {
   const router = useRouter();
 
   return useCallback(() => {
-    if (router.pathname !== '/search') router.replace('/search');
+    if (router.pathname !== '/search') void router.replace('/search');
   }, [router]);
 };
 
@@ -46,7 +46,7 @@ export const useMoveToTabClick = (tab: gType.CompanyTab) => {
 
   return useCallback(() => {
     setCurrentTab(tab);
-    if (router.pathname !== '/chart') router.replace('/chart');
+    if (router.pathname !== '/chart') void router.replace('/chart');
   }, [setCurrentTab, tab, router]);
 };
 
@@ -62,7 +62,7 @@ export const useRemoveTabClick = (tab: gType.CompanyTab) => {
       setTabs(tabs.filter((v) => v.uuid !== tab.uuid));
       gState.removeRequestedData({ code: tab.company.codePrice, type: tab.mainType });
       if (currentTab.uuid === tab.uuid) {
-        if (router.pathname !== '/search') router.replace('/search');
+        if (router.pathname !== '/search') void router.replace('/search');
       }
     },
     [setTabs, tabs, tab, currentTab, router],
@@ -137,7 +137,7 @@ export const useDrop = () => {
       for (let i = 0; i < children.length; i++) {
         const el = children[i];
         if (el instanceof HTMLElement && typeof el.dataset.data === 'string')
-          tabs.push(JSON.parse(el.dataset.data) as gType.CompanyTab);
+          tabs.push(JSON.parse(el.dataset.data));
       }
 
       setTabs(tabs);
@@ -255,7 +255,7 @@ export const useTouchEnd = () => {
       for (let i = 0; i < children.length; i++) {
         const el = children[i];
         if (el instanceof HTMLElement && typeof el.dataset.data === 'string')
-          tabs.push(JSON.parse(el.dataset.data) as gType.CompanyTab);
+          tabs.push(JSON.parse(el.dataset.data));
       }
 
       setTabs(tabs);
