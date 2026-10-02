@@ -43,13 +43,12 @@ export const getPriceSMA = (
   options?: { over?: gType.PriceVolumeItem },
 ) => {
   const { over = 'close' } = options ?? {};
-  const func = (over: gType.PriceVolumeItem) => (d: gType.PriceVolume) => d[over];
   const result: gType.MovingAvg[] = [];
 
   if (data && data.length >= period) {
     for (let i = 0; i < data.length; i++) {
       const { date } = data[i];
-      const avg = smaStep(data, period, i, func(over));
+      const avg = smaStep(data, period, i, (d: gType.PriceVolume) => d[over]);
       result.push({ date, avg });
     }
   }
@@ -65,12 +64,18 @@ export const getPriceEMA = (
   const result: gType.MovingAvg[] = [];
 
   if (data && data.length > 1) {
-    const f1 = (over: gType.PriceVolumeItem) => (d: gType.PriceVolume) => d[over];
-    const f2 = (d: gType.MovingAvg) => d.avg;
     const k = getEMAFactorK(period, smoothing);
 
     for (let i = 0; i < data.length; i++) {
-      const avg = emaStep(data, result, period, i, k, f1(over), f2);
+      const avg = emaStep(
+        data,
+        result,
+        period,
+        i,
+        k,
+        (d: gType.PriceVolume) => d[over],
+        (d: gType.MovingAvg) => d.avg,
+      );
       const { date } = data[i];
       result.push({ date, avg });
     }
@@ -78,6 +83,7 @@ export const getPriceEMA = (
   return result;
 };
 
+const fnOver = (over: gType.PriceItem) => (d: gType.Price) => d[over];
 export const getPriceEMAOverAll = (
   data: gType.Price[] | undefined,
   period: number,
@@ -87,14 +93,13 @@ export const getPriceEMAOverAll = (
   const result: gType.Price[] = [];
 
   if (data && data.length > 0) {
-    const func = (over: gType.PriceItem) => (d: gType.Price) => d[over];
     const k = getEMAFactorK(period, smoothing);
 
     for (let i = 0; i < data.length; i++) {
-      const open = emaStep(data, result, period, i, k, func('open'), func('open'));
-      const close = emaStep(data, result, period, i, k, func('close'), func('close'));
-      const high = emaStep(data, result, period, i, k, func('high'), func('high'));
-      const low = emaStep(data, result, period, i, k, func('low'), func('low'));
+      const open = emaStep(data, result, period, i, k, fnOver('open'), fnOver('open'));
+      const close = emaStep(data, result, period, i, k, fnOver('close'), fnOver('close'));
+      const high = emaStep(data, result, period, i, k, fnOver('high'), fnOver('high'));
+      const low = emaStep(data, result, period, i, k, fnOver('low'), fnOver('low'));
       const date = data[i].date;
       result.push({ date, open, close, high, low });
     }
