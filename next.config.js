@@ -10,5 +10,8 @@ module.exports = {
   },
   poweredByHeader: false,
   reactStrictMode: true,
-  turbopack: {},
+  turbopack: {}, // Use turbopack instead of webpack
+  experimental: {
+    useTypeScriptCli: true, // for typescript 7.0
+  },
 };
