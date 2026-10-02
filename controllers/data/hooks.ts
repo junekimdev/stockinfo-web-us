@@ -15,7 +15,7 @@ export const useCheckCurrentTab = () => {
   const currentTab = useAtomValue(gState.currentTab);
 
   useEffect(() => {
-    if (!currentTab.uuid) router.replace('/');
+    if (!currentTab.uuid) void router.replace('/');
   }, [router, currentTab]);
 };
 

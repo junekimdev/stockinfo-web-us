@@ -47,8 +47,8 @@ export const useBollinger = (
         bands.push({
           date: data[i].date,
           middle: avg,
-          upper: avg + stdv * 2,
-          lower: avg - stdv * 2,
+          upper: avg + stdv * sigma,
+          lower: avg - stdv * sigma,
         });
       }
       setState(bands);

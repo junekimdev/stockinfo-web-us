@@ -7,11 +7,12 @@ import styles from './mainFrame.module.scss';
 import Menu from './mainFrameViewMenu';
 import Navbar from './mainFrameViewNavbar';
 
+const year = new Date().getFullYear();
+
 const Presenter = (props: { children?: ReactNode[] | ReactNode }) => {
   const { children } = props;
   useLoadCompanyTabs();
   useGetPricesPrefetching();
-  const year = new Date().getFullYear();
 
   return (
     <main role="main" className={styles.main}>

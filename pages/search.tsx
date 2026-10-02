@@ -14,7 +14,7 @@ const Page = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     resetCurrent();
-    router.prefetch('/chart');
+    void router.prefetch('/chart');
   }, [resetCurrent, router]);
 
   return (

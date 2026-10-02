@@ -106,7 +106,7 @@ const draw = (id: string, data: gType.Adx[], display: mType.Display, marginLeft:
   }
 
   // Draw symbols
-  const buySellDiff = data.map((d) => (d.posDI >= d.negDI ? true : false));
+  const buySellDiff = data.map((d) => d.posDI >= d.negDI);
   if (display.buy) {
     const buySig = data.filter(
       (d, i) => i && buySellDiff[i - 1] !== buySellDiff[i] && d.posDI >= d.negDI,

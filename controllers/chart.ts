@@ -50,7 +50,7 @@ export const initChart = (
 ): {
   chart: d3.Selection<SVGGElement, unknown, HTMLElement, any>;
   x: d3.ScaleBand<string>;
-  y: d3.ScaleLinear<number, number, never>;
+  y: d3.ScaleLinear<number, number>;
 } => {
   const {
     id,
@@ -121,7 +121,7 @@ export const initChart = (
 export const drawCandle = (
   chart: d3.Selection<SVGGElement, unknown, HTMLElement, any>,
   x: d3.ScaleBand<string>,
-  y: d3.ScaleLinear<number, number, never>,
+  y: d3.ScaleLinear<number, number>,
   data: gType.Price[],
 ) => {
   const candleGroup = chart.append('g').attr('class', 'candle');
@@ -155,7 +155,7 @@ export const drawCandle = (
 export const drawLatestPrice = (
   chart: d3.Selection<SVGGElement, unknown, HTMLElement, any>,
   x: d3.ScaleBand<string>,
-  y: d3.ScaleLinear<number, number, never>,
+  y: d3.ScaleLinear<number, number>,
   end: gType.MyDate,
   data: gType.Price,
 ) => {
@@ -174,7 +174,7 @@ export const drawLatestPrice = (
 export const drawLatestChange = (
   chart: d3.Selection<SVGGElement, unknown, HTMLElement, any>,
   x: d3.ScaleBand<string>,
-  y: d3.ScaleLinear<number, number, never>,
+  y: d3.ScaleLinear<number, number>,
   end: gType.MyDate,
   data: number,
 ) => {
@@ -193,7 +193,7 @@ export const drawLatestChange = (
 export const drawSAR = (
   chart: d3.Selection<SVGGElement, unknown, HTMLElement, any>,
   x: d3.ScaleBand<string>,
-  y: d3.ScaleLinear<number, number, never>,
+  y: d3.ScaleLinear<number, number>,
   data: gType.ParabolicSAR[],
 ) => {
   chart
@@ -212,7 +212,7 @@ export const drawSAR = (
 export const drawMA = (
   chart: d3.Selection<SVGGElement, unknown, HTMLElement, any>,
   x: d3.ScaleBand<string>,
-  y: d3.ScaleLinear<number, number, never>,
+  y: d3.ScaleLinear<number, number>,
   data: gType.MovingAvg[],
   color: string,
 ) => {
@@ -237,7 +237,7 @@ export const drawMA = (
 export const drawBollingerBands = (
   chart: d3.Selection<SVGGElement, unknown, HTMLElement, any>,
   x: d3.ScaleBand<string>,
-  y: d3.ScaleLinear<number, number, never>,
+  y: d3.ScaleLinear<number, number>,
   data: gType.PriceBollingerBands[],
 ) => {
   const bbGroup = chart

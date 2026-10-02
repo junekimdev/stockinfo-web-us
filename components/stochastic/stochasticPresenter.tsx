@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import { useInputChange } from '../../controllers/data/hooks';
 import * as gState from '../../controllers/data/states';
 import * as gType from '../../controllers/data/types';
-import { useGetPrices } from '../../controllers/net/price';
 import styles from './stochastic.module.scss';
 import draw from './stochasticFnDraw';
 import { useStochastic } from './stochasticInteractor';
@@ -13,7 +12,6 @@ const Presenter = (props: { req: gType.PriceRequest; marginLeft: number; max?: n
   const { req, marginLeft, max = 120 } = props;
 
   useStochastic(req);
-  const { data } = useGetPrices(req);
   const dataStochastic = useAtomValue(gState.stochastic(req));
   const display = useAtomValue(mState.display);
 
@@ -36,7 +34,7 @@ const Presenter = (props: { req: gType.PriceRequest; marginLeft: number; max?: n
     if (dataStochastic.length) {
       draw(chartID, dataStochastic.slice(-max), display, marginLeft);
     }
-  }, [chartID, marginLeft, max, data, dataStochastic, display]);
+  }, [chartID, marginLeft, max, dataStochastic, display]);
 
   return (
     <div className={styles.chartContainer}>

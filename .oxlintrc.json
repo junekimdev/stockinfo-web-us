@@ -1,0 +1,21 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["oxc", "unicorn", "eslint", "typescript", "react", "react-perf", "nextjs"],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "warn",
+    "pedantic": "off"
+  },
+  "rules": {
+    "typescript/consistent-return": "off",
+    "react/react-in-jsx-scope": "off",
+    "eslint/no-unused-vars": [
+      "error",
+      { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_", "caughtErrorsIgnorePattern": "^_" }
+    ]
+  },
+  "options": {
+    "typeAware": true,
+    "typeCheck": true
+  }
+}

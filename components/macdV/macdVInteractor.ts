@@ -11,6 +11,9 @@ import * as gState from '../../controllers/data/states';
 import * as gType from '../../controllers/data/types';
 import { useGetPrices } from '../../controllers/net/price';
 
+const f1 = (over: gType.PriceVolumeItem) => (d: gType.PriceVolume) => d[over];
+const f2 = (d: number) => d;
+
 export const useMacdV = (
   req: gType.PriceRequest,
   options?: {
@@ -26,8 +29,6 @@ export const useMacdV = (
 
   useEffect(() => {
     if (data && data.length && !dataMacdV.length) {
-      const f1 = (over: gType.PriceVolumeItem) => (d: gType.PriceVolume) => d[over];
-      const f2 = (d: number) => d;
       const k1 = getEMAFactorK(p1, smoothing);
       const k2 = getEMAFactorK(p2, smoothing);
       const k3 = getEMAFactorK(p3, smoothing);

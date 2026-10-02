@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import { useInputChange } from '../../controllers/data/hooks';
 import * as gState from '../../controllers/data/states';
 import * as gType from '../../controllers/data/types';
-import { useGetPrices } from '../../controllers/net/price';
 import styles from './macd.module.scss';
 import draw from './macdFnDraw';
 import { useMacd } from './macdInteractor';
@@ -13,7 +12,6 @@ const Presenter = (props: { req: gType.PriceRequest; marginLeft: number; max?: n
   const { req, marginLeft, max = 120 } = props;
 
   useMacd(req);
-  const { data } = useGetPrices(req);
   const dataMacd = useAtomValue(gState.macd(req));
   const display = useAtomValue(mState.display);
 
@@ -32,7 +30,7 @@ const Presenter = (props: { req: gType.PriceRequest; marginLeft: number; max?: n
     if (dataMacd.length) {
       draw(chartID, dataMacd.slice(-max), display, marginLeft);
     }
-  }, [chartID, marginLeft, max, data, dataMacd, display]);
+  }, [chartID, marginLeft, max, dataMacd, display]);
 
   return (
     <div className={styles.chartContainer}>

@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import { useInputChange } from '../../controllers/data/hooks';
 import * as gState from '../../controllers/data/states';
 import * as gType from '../../controllers/data/types';
-import { useGetPrices } from '../../controllers/net/price';
 import styles from './macdV.module.scss';
 import draw from './macdVFnDraw';
 import { useMacdV } from './macdVInteractor';
@@ -13,7 +12,6 @@ const Presenter = (props: { req: gType.PriceRequest; marginLeft: number; max?: n
   const { req, marginLeft, max = 120 } = props;
 
   useMacdV(req);
-  const { data } = useGetPrices(req);
   const dataMacdV = useAtomValue(gState.macdV(req));
   const display = useAtomValue(mState.display);
 
@@ -40,7 +38,7 @@ const Presenter = (props: { req: gType.PriceRequest; marginLeft: number; max?: n
     if (dataMacdV.length) {
       draw(chartID, dataMacdV.slice(-max), display, marginLeft);
     }
-  }, [chartID, marginLeft, max, data, dataMacdV, display]);
+  }, [chartID, marginLeft, max, dataMacdV, display]);
 
   return (
     <div className={styles.chartContainer}>

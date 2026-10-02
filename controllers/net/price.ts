@@ -9,7 +9,7 @@ import { getTimestamp } from '../datetime';
 export const useGetPrices = (req: gType.PriceRequest) => {
   const { code, type } = req;
   return useQuery({
-    queryKey: ['prices', code, type],
+    queryKey: ['prices', code, type] as const,
     queryFn: getPrices,
     enabled: !!code && !!type,
     staleTime: Infinity,
@@ -24,8 +24,8 @@ export const useGetPricesPrefetching = () => {
     for (const tab of tabs) {
       const code = tab.company.codePrice;
       const type = tab.mainType;
-      queryClient.prefetchQuery({
-        queryKey: ['prices', code, type],
+      void queryClient.prefetchQuery({
+        queryKey: ['prices', code, type] as const,
         queryFn: getPrices,
         staleTime: Infinity,
       });
@@ -43,9 +43,11 @@ export const useGetPricesLatest = (req: gType.PriceRequest) => {
   });
 };
 
-const getPrices = async ({ queryKey }: QueryFunctionContext<string[]>) => {
+const getPrices = async ({
+  queryKey,
+}: QueryFunctionContext<readonly ['prices', string, gType.PriceRequestType]>) => {
   const [_key, code, _t] = queryKey;
-  const t = _t as gType.PriceRequestType;
+  const t = _t;
   if (!code) return [];
 
   const url = `${PRICES_URL}/${code}/${t}`;
@@ -61,9 +63,8 @@ const getPrices = async ({ queryKey }: QueryFunctionContext<string[]>) => {
   if (!prices.length) throw Error(`received an empty response for GET ${url}`);
 
   // parse numeric string to number
-  const data: gType.PriceVolume[] = prices.reverse().map((v) => {
-    const date =
-      t === 'weekly' ? ({ year: v.year, week: v.week } as gType.IDWeek) : new Date(v.date);
+  const data: gType.PriceVolume[] = prices.toReversed().map((v) => {
+    const date = t === 'weekly' ? { year: v.year, week: v.week } : new Date(v.date);
     const open = parseFloat(v.open);
     const close = parseFloat(v.close);
     const high = parseFloat(v.high);
@@ -86,9 +87,11 @@ const getPrices = async ({ queryKey }: QueryFunctionContext<string[]>) => {
   return data;
 };
 
-const getPricesLatest = async ({ queryKey }: QueryFunctionContext<string[]>) => {
+const getPricesLatest = async ({
+  queryKey,
+}: QueryFunctionContext<readonly ['prices', string, gType.PriceRequestType]>) => {
   const [_key, code, _t] = queryKey;
-  const t = _t as gType.PriceRequestType;
+  const t = _t;
   if (!code) return;
 
   const url = `${PRICES_URL}/${code}/${t}`;

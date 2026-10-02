@@ -4,7 +4,7 @@ import * as gType from '../data/types';
 
 export const useGetEdgarStatement = (cik: string) => {
   return useQuery({
-    queryKey: ['edgar', cik],
+    queryKey: ['edgar', cik] as const,
     queryFn: getEdgarStatement,
     enabled: !!cik,
     staleTime: Infinity,
@@ -21,11 +21,13 @@ export const useGetEdgarStatement = (cik: string) => {
       operatingCashFlow: [],
       investingCashFlow: [],
       financingCashFlow: [],
-    } as gType.EdgarStatementRes,
+    },
   });
 };
 
-const getEdgarStatement = async ({ queryKey }: QueryFunctionContext<string[]>) => {
+const getEdgarStatement = async ({
+  queryKey,
+}: QueryFunctionContext<readonly ['edgar', string]>) => {
   const [_key, cik] = queryKey;
 
   const url = `${EDGAR_URL}/${cik}`;

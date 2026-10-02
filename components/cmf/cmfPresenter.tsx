@@ -3,14 +3,12 @@ import { useEffect } from 'react';
 import { useInputChange } from '../../controllers/data/hooks';
 import * as gState from '../../controllers/data/states';
 import * as gType from '../../controllers/data/types';
-import { useGetPrices } from '../../controllers/net/price';
 import styles from './cmf.module.scss';
 import draw from './cmfFnDraw';
 import * as mState from './cmfState';
 
 const Presenter = (props: { req: gType.PriceRequest; marginLeft: number; max?: number }) => {
   const { req, marginLeft, max = 120 } = props;
-  const { data } = useGetPrices(req);
   const dataChaikin = useAtomValue(gState.chaikin(req));
   const display = useAtomValue(mState.display);
 
@@ -25,7 +23,7 @@ const Presenter = (props: { req: gType.PriceRequest; marginLeft: number; max?: n
     if (dataChaikin.length) {
       draw(chartID, dataChaikin.slice(-max), display, marginLeft);
     }
-  }, [chartID, marginLeft, max, data, dataChaikin, display]);
+  }, [chartID, marginLeft, max, dataChaikin, display]);
 
   return (
     <div className={styles.chartContainer}>

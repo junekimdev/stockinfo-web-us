@@ -90,8 +90,8 @@ NEXT_PUBLIC_API_URL=http://api.domain.com
 - Postcss plugin: Autoprefixer (included in NextJS)
 - Version control: Git
 - Source code repository: GitHub
-- Linter: ESLint
-- Formatter: Prettier
+- Linter: Oxlint
+- Formatter: Oxfmt
 - Template engine for code generation: EJS
 
 ## Directory Structure
