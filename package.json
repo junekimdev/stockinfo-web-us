@@ -5,6 +5,7 @@
   "author": "June Kim <godlyjune@gmail.com>",
   "license": "MIT",
   "private": true,
+  "packageManager": "pnpm@12.21.0",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
